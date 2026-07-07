@@ -1,0 +1,638 @@
+// Main Application Coordinator (Upgraded with 5-Stage Testing and Parallax bindings)
+import { questions } from './questions.js';
+import { AssessmentEngine } from './engine.js';
+import { calculateArchetype } from './archetypes.js';
+import { ReportRenderer } from './report.js';
+
+document.addEventListener("DOMContentLoaded", () => {
+  // DOM Views
+  const landingView = document.getElementById("landing-view");
+  const onboardingView = document.getElementById("onboarding-view");
+  const assessmentView = document.getElementById("assessment-view");
+  const reportView = document.getElementById("report-view");
+  
+  // Navigation Links
+  const logo = document.getElementById("platform-logo");
+  const navLinkHome = document.getElementById("nav-link-home");
+  const navLinkReset = document.getElementById("nav-link-reset");
+  
+  // Action Buttons
+  const btnEnterPortal = document.getElementById("btn-enter-portal");
+  const btnStartTest = document.getElementById("btn-start-test");
+  const btnSimulateReport = document.getElementById("btn-simulate-report");
+  const btnPrevQuestion = document.getElementById("btn-prev-question");
+  const btnNextQuestion = document.getElementById("btn-next-question");
+  const btnThemeToggle = document.getElementById("btn-theme-toggle");
+  const themeSwitchSlider = document.getElementById("theme-switch-slider");
+  
+  // Intake Form
+  const onboardingForm = document.getElementById("onboarding-form");
+  const studentNameInput = document.getElementById("student-name");
+  const academicGradeSelect = document.getElementById("academic-grade");
+  const streamSelectionContainer = document.getElementById("stream-selection-container");
+  const selectedStreamInput = document.getElementById("selected-stream");
+  const streamCards = document.querySelectorAll(".track-selection-card");
+  
+  // Assessment layout nodes
+  const questionCategoryBadge = document.getElementById("question-category-badge");
+  const sectionItemCounter = document.getElementById("section-item-counter");
+  const progressPercentLabel = document.getElementById("progress-percent-label");
+  const answeredQuestionsLabel = document.getElementById("answered-questions-label");
+  const progressBarFill = document.getElementById("progress-bar-fill");
+  const questionBoxWrapper = document.getElementById("question-box-wrapper");
+
+  // Instances
+  const engine = new AssessmentEngine(questions);
+  const renderer = new ReportRenderer();
+
+  // Initialize (Moved to the bottom of the DOMContentLoaded scope to prevent TDZ ReferenceErrors)
+
+  // ==========================================
+  // 1. SCROLL PARALLAX & ROTATING WHEELS
+  // ==========================================
+  window.addEventListener("scroll", () => {
+    const scrollVal = window.scrollY;
+    
+    // Parallax hero text
+    const title = document.getElementById("parallax-text-1");
+    const sub = document.getElementById("parallax-text-2");
+    if (title) title.style.transform = `translate3d(0, ${scrollVal * 0.25}px, 0)`;
+    if (sub) sub.style.transform = `translate3d(0, ${scrollVal * 0.12}px, 0)`;
+    
+    // Spinning gears
+    const gear1 = document.getElementById("parallax-gear-1");
+    const gear2 = document.getElementById("parallax-gear-2");
+    if (gear1) gear1.style.transform = `rotate(${scrollVal * 0.08}deg)`;
+    if (gear2) gear2.style.transform = `rotate(${-scrollVal * 0.05}deg)`;
+  });
+
+  // ==========================================
+  // 2. THEME CONTROLS (LIGHT/DARK)
+  // ==========================================
+  function initTheme() {
+    const savedTheme = localStorage.getItem("career_guidance_theme") || "dark";
+    applyTheme(savedTheme);
+  }
+
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    const body = document.body;
+    
+    if (theme === "light") {
+      root.classList.remove("theme-dark");
+      root.classList.add("theme-light");
+      body.classList.remove("theme-dark");
+      body.classList.add("theme-light");
+      themeSwitchSlider.innerText = "☀️";
+    } else {
+      root.classList.remove("theme-light");
+      root.classList.add("theme-dark");
+      body.classList.remove("theme-light");
+      body.classList.add("theme-dark");
+      themeSwitchSlider.innerText = "🌙";
+    }
+    localStorage.setItem("career_guidance_theme", theme);
+  }
+
+  btnThemeToggle.addEventListener("click", () => {
+    const isDark = document.body.classList.contains("theme-dark");
+    applyTheme(isDark ? "light" : "dark");
+  });
+
+  // ==========================================
+  // 3. STATE RESET & NAVIGATION (HOME RE-ACCESS)
+  // ==========================================
+  function resetToHome() {
+    engine.reset();
+    engine.clearLocalStorage();
+    
+    // Clear checklist indicators
+    const keys = Object.keys(localStorage);
+    keys.forEach(k => {
+      if (k.startsWith("career_guidance_skill_")) localStorage.removeItem(k);
+    });
+
+    landingView.classList.remove("hidden");
+    onboardingView.classList.add("hidden");
+    assessmentView.classList.add("hidden");
+    reportView.classList.add("hidden");
+  }
+
+  logo.addEventListener("click", resetToHome);
+  navLinkHome.addEventListener("click", resetToHome);
+  
+  navLinkReset.addEventListener("click", () => {
+    engine.reset();
+    engine.clearLocalStorage();
+    
+    landingView.classList.add("hidden");
+    onboardingView.classList.remove("hidden");
+    assessmentView.classList.add("hidden");
+    reportView.classList.add("hidden");
+    
+    studentNameInput.value = "";
+    academicGradeSelect.value = "";
+    clearSelectedStream();
+    streamSelectionContainer.classList.add("hidden");
+  });
+
+  btnEnterPortal.addEventListener("click", () => {
+    landingView.classList.add("hidden");
+    onboardingView.classList.remove("hidden");
+  });
+
+  academicGradeSelect.addEventListener("change", () => {
+    const gradeVal = parseInt(academicGradeSelect.value);
+    if (gradeVal >= 11) {
+      streamSelectionContainer.classList.remove("hidden");
+    } else {
+      streamSelectionContainer.classList.add("hidden");
+      clearSelectedStream();
+    }
+  });
+
+  streamCards.forEach(card => {
+    card.addEventListener("click", () => {
+      streamCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      selectedStreamInput.value = card.getAttribute("data-stream");
+    });
+  });
+
+  function clearSelectedStream() {
+    streamCards.forEach(c => c.classList.remove("active"));
+    selectedStreamInput.value = "";
+  }
+
+  // ==========================================
+  // 4. INTAKE ROUTING
+  // ==========================================
+  onboardingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const name = studentNameInput.value.trim();
+    const grade = academicGradeSelect.value;
+    const stream = selectedStreamInput.value;
+    
+    if (parseInt(grade) >= 11 && !stream) {
+      alert("Please select your academic stream concentration to customize the diagnostic questions.");
+      return;
+    }
+
+    engine.setUserInfo({ name, grade, stream });
+    startAssessment();
+  });
+
+  btnSimulateReport.addEventListener("click", () => {
+    let name = studentNameInput.value.trim();
+    let grade = academicGradeSelect.value;
+    let stream = selectedStreamInput.value;
+    
+    if (!name) name = "Sarah Jenkins";
+    if (!grade) grade = "12";
+    if (parseInt(grade) >= 11 && !stream) stream = "pcm";
+
+    engine.setUserInfo({ name, grade, stream });
+    engine.generateMockAnswers();
+    showFinalReport();
+  });
+
+  function startAssessment() {
+    landingView.classList.add("hidden");
+    onboardingView.classList.add("hidden");
+    assessmentView.classList.remove("hidden");
+    reportView.classList.add("hidden");
+    
+    renderCurrentQuestion();
+  }
+
+  // ==========================================
+  // 5. GAMIFIED TESTING LOOPS
+  // ==========================================
+  function renderCurrentQuestion() {
+    const q = engine.getCurrentQuestion();
+    if (!q) {
+      showFinalReport();
+      return;
+    }
+
+    const progress = engine.getSectionProgress();
+    const percent = engine.getProgressPercent();
+    
+    // Set category label
+    questionCategoryBadge.innerText = q.category;
+    questionCategoryBadge.className = `category-pill ${q.category}`;
+    sectionItemCounter.innerText = `Question ${progress.current + 1} of ${progress.total}`;
+    progressPercentLabel.innerText = `Pacing: ${percent}%`;
+    answeredQuestionsLabel.innerText = `${progress.answered} / ${progress.total} completed`;
+    progressBarFill.style.width = `${percent}%`;
+
+    // Map stages to bulbs: 0: personality, 1: ability, 2: interests, 3: learning, 4: skills
+    const categoryIndex = { personality: 0, ability: 1, interests: 2, learning: 3, skills: 4 };
+    const activeChapter = categoryIndex[q.category] !== undefined ? categoryIndex[q.category] : 0;
+    
+    updateChapterBulbs(activeChapter);
+
+    // Initializing structure for typewriter reveal
+    questionBoxWrapper.innerHTML = `
+      <div class="question-text" id="typewriter-question-text"></div>
+      <div class="answer-controls-area hidden" id="answer-controls-stage">
+        ${renderAnswerControls(q)}
+      </div>
+    `;
+
+    const textTarget = document.getElementById("typewriter-question-text");
+    const controlsTarget = document.getElementById("answer-controls-stage");
+
+    typePrintText(q.text, textTarget, () => {
+      controlsTarget.classList.remove("hidden");
+      bindAnswerEvents(q);
+    });
+
+    btnPrevQuestion.disabled = (engine.currentIndex === 0);
+    const currentAns = engine.answers[q.id];
+    btnNextQuestion.disabled = (currentAns === undefined);
+  }
+
+  function updateChapterBulbs(activeChapter) {
+    const bulbs = document.querySelectorAll(".chapter-bulb");
+    const categories = ["personality", "ability", "interests", "learning", "skills"];
+    const chapterCompletion = [false, false, false, false, false];
+
+    // Compute completion metrics
+    for (let c = 0; c < 5; c++) {
+      const cat = categories[c];
+      const catQuestions = engine.activeQuestions.filter(q => q.category === cat);
+      if (catQuestions.length === 0) {
+        chapterCompletion[c] = true;
+        continue;
+      }
+      const isCompleted = catQuestions.every(q => engine.answers[q.id] !== undefined);
+      chapterCompletion[c] = isCompleted;
+    }
+
+    bulbs.forEach((bulb, idx) => {
+      bulb.classList.remove("active", "completed");
+      if (idx === activeChapter) {
+        bulb.classList.add("active");
+      }
+      if (chapterCompletion[idx]) {
+        bulb.classList.add("completed");
+      }
+    });
+  }
+
+  // Typewriter printed text loops
+  function typePrintText(text, targetEl, onComplete) {
+    targetEl.innerHTML = "";
+    let charIndex = 0;
+    
+    if (window.typewriterTimer) clearInterval(window.typewriterTimer);
+    
+    window.typewriterTimer = setInterval(() => {
+      if (charIndex < text.length) {
+        targetEl.innerHTML = text.substring(0, charIndex + 1) + '<span class="typing-cursor"></span>';
+        charIndex++;
+      } else {
+        clearInterval(window.typewriterTimer);
+        targetEl.innerHTML = text;
+        if (onComplete) onComplete();
+      }
+    }, 18);
+  }
+
+  function renderAnswerControls(question) {
+    const savedVal = engine.answers[question.id];
+    
+    if (question.type === "choice") {
+      return `
+        <div class="choice-options-grid">
+          ${question.options.map((opt, idx) => {
+            const isSelected = savedVal !== undefined && question.options[idx].score === savedVal;
+            return `
+              <button type="button" class="choice-option-btn ${isSelected ? 'selected' : ''}" data-score="${opt.score}">
+                ${opt.text}
+              </button>
+            `;
+          }).join("")}
+        </div>
+      `;
+    } else if (question.type === "scale") {
+      const scaleLabels = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+      return `
+        <div class="likert-scale-container">
+          ${[1, 2, 3, 4, 5].map(val => {
+            const isSelected = savedVal !== undefined && savedVal === val;
+            return `
+              <div class="likert-option ${isSelected ? 'selected' : ''}" data-value="${val}">
+                <div class="likert-circle">${val}</div>
+                <span class="likert-label">${scaleLabels[val - 1]}</span>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+    return "";
+  }
+
+  function bindAnswerEvents(question) {
+    if (question.type === "choice") {
+      const buttons = questionBoxWrapper.querySelectorAll(".choice-option-btn");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          const score = parseInt(btn.getAttribute("data-score"));
+          
+          engine.answerQuestion(question.id, score);
+          btnNextQuestion.disabled = false;
+          
+          setTimeout(() => {
+            handleNextAction();
+          }, 350);
+        });
+      });
+    } else if (question.type === "scale") {
+      const options = questionBoxWrapper.querySelectorAll(".likert-option");
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          options.forEach(o => o.classList.remove("selected"));
+          opt.classList.add("selected");
+          const val = parseInt(opt.getAttribute("data-value"));
+          
+          engine.answerQuestion(question.id, val);
+          btnNextQuestion.disabled = false;
+          
+          setTimeout(() => {
+            handleNextAction();
+          }, 350);
+        });
+      });
+    }
+  }
+
+  btnPrevQuestion.addEventListener("click", () => {
+    if (window.typewriterTimer) clearInterval(window.typewriterTimer);
+    if (engine.prevSectionIndex()) {
+      renderCurrentQuestion();
+    }
+  });
+
+  btnNextQuestion.addEventListener("click", () => {
+    handleNextAction();
+  });
+
+  function handleNextAction() {
+    if (window.typewriterTimer) clearInterval(window.typewriterTimer);
+    
+    const currentQ = engine.getCurrentQuestion();
+    const currentCategory = currentQ ? currentQ.category : "";
+
+    const hasNext = engine.nextSectionIndex();
+    if (hasNext) {
+      const nextQ = engine.getCurrentQuestion();
+      if (nextQ && nextQ.category !== currentCategory) {
+        showCategoryCheckpoint(currentCategory, nextQ.category);
+      } else {
+        renderCurrentQuestion();
+      }
+    } else {
+      showFinalReport();
+    }
+  }
+
+  function showCategoryCheckpoint(oldCat, newCat) {
+    btnPrevQuestion.disabled = true;
+    btnNextQuestion.disabled = true;
+
+    const categoryNames = {
+      personality: "Stage 1: Personality Diagnostics",
+      ability: "Stage 2: Logical Aperture & Aptitude",
+      interests: "Stage 3: Vocational Career Interests",
+      learning: "Stage 4: Behavioral Learning Styles",
+      skills: "Stage 5: Specialized Skills Grid"
+    };
+
+    questionBoxWrapper.innerHTML = `
+      <div class="vt-card checkpoint-card fade-in-section" style="padding: 2.5rem 1.5rem; border: 2.2px double var(--color-accent-rust); text-align: center; background: var(--color-bg-card); box-shadow: var(--shadow-flat); margin-top: 1.5rem;">
+        <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.8rem; font-weight: 700; letter-spacing: 2px;">
+          DIAGNOSTIC BLOCK COMPLETE
+        </div>
+        <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; margin-bottom: 1.2rem; color: var(--color-text-heading); line-height: 1.3;">
+          ${categoryNames[oldCat] || oldCat.toUpperCase()} Sealed
+        </h3>
+        <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; max-width: 440px; margin-inline: auto; color: var(--color-text-body);">
+          Your responses for this section have been certified and locked into the dossier cabinet. Ready to initiate the next calibration segment.
+        </p>
+        <button class="btn btn-primary" id="btn-checkpoint-proceed" style="font-size: 1rem; padding: 0.7rem 1.8rem; box-shadow: 4px 4px 0px var(--color-border-dark);">
+          Unlock ${categoryNames[newCat] || newCat.toUpperCase()} &rarr;
+        </button>
+      </div>
+    `;
+
+    const proceedBtn = document.getElementById("btn-checkpoint-proceed");
+    proceedBtn.addEventListener("click", () => {
+      renderCurrentQuestion();
+    });
+  }
+
+  // ==========================================
+  // 6. SHOW COMPREHENSIVE REPORT
+  // ==========================================
+  function showFinalReport() {
+    landingView.classList.add("hidden");
+    onboardingView.classList.add("hidden");
+    assessmentView.classList.add("hidden");
+    reportView.classList.remove("hidden");
+
+    const finalScores = engine.calculateScores();
+    finalScores.userName = engine.userInfo.name;
+    finalScores.userGrade = engine.userInfo.grade;
+    finalScores.userTrack = engine.userInfo.track;
+    finalScores.userStream = engine.userInfo.stream ? getStreamFullName(engine.userInfo.stream) : "";
+
+    // Mapped proxies to match vector signature inside archetypes.js
+    const valuesProxy = {
+      creative: finalScores.interests.artistic,
+      autonomy: finalScores.interests.investigative,
+      stability: finalScores.interests.conventional,
+      financial: finalScores.interests.enterprising
+    };
+
+    const aptitudeProxy = {
+      spatial: finalScores.ability.spatial,
+      verbal: finalScores.ability.verbal,
+      numerical: finalScores.ability.numerical,
+      abstract: finalScores.ability.logical
+    };
+
+    const eqProxy = {
+      stress: finalScores.skills.leadership,
+      grit: Math.round(finalScores.skills.administrative * 0.7 + finalScores.ability.logical * 0.3),
+      collaboration: finalScores.skills.social
+    };
+
+    const archetype = calculateArchetype(
+      finalScores.interests,
+      valuesProxy,
+      aptitudeProxy,
+      eqProxy
+    );
+
+    renderer.render(finalScores, archetype, reportView);
+  }
+
+  function getStreamFullName(stream) {
+    const streams = {
+      pcm: "Science (PCM)",
+      pcb: "Science (PCB)",
+      commerce: "Commerce & Finance",
+      humanities: "Humanities & Arts"
+    };
+    return streams[stream.toLowerCase()] || stream;
+  }
+
+  // ==========================================
+  // 7. STATE RESTORE RESUME
+  // ==========================================
+  function checkAndResumeState() {
+    if (engine.loadFromLocalStorage()) {
+      if (engine.isCompleted) {
+        showFinalReport();
+      } else if (Object.keys(engine.answers).length > 0) {
+        const resume = confirm("An in-progress psychometric diagnostic session was found. Do you want to resume?");
+        if (resume) {
+          startAssessment();
+        } else {
+          engine.reset();
+          engine.clearLocalStorage();
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // DISCLAIMER MODAL
+  // ==========================================
+  const disclaimerModal = document.getElementById("disclaimer-modal");
+  const btnOpenDisclaimer = document.getElementById("btn-open-disclaimer-modal");
+  const btnCloseDisclaimer = document.getElementById("btn-close-disclaimer-modal");
+  const btnAgreeDisclaimer = document.getElementById("btn-agree-disclaimer");
+
+  function initDisclaimerModal() {
+    if (!btnOpenDisclaimer) return;
+    
+    btnOpenDisclaimer.addEventListener("click", () => {
+      disclaimerModal.classList.remove("hidden");
+    });
+    
+    btnCloseDisclaimer.addEventListener("click", () => {
+      disclaimerModal.classList.add("hidden");
+    });
+    
+    btnAgreeDisclaimer.addEventListener("click", () => {
+      disclaimerModal.classList.add("hidden");
+      localStorage.setItem("disclaimer_agreed", "true");
+    });
+    
+    disclaimerModal.addEventListener("click", (e) => {
+      if (e.target === disclaimerModal) {
+        disclaimerModal.classList.add("hidden");
+      }
+    });
+  }
+
+  // ==========================================
+  // APPARATUS SIMULATOR PANEL
+  // ==========================================
+  const simLogic = document.getElementById("sim-range-logic");
+  const simArt = document.getElementById("sim-range-art");
+  const simSocial = document.getElementById("sim-range-social");
+
+  const simValLogic = document.getElementById("sim-val-logic");
+  const simValArt = document.getElementById("sim-val-art");
+  const simValSocial = document.getElementById("sim-val-social");
+
+  const simSvgStage = document.getElementById("sim-svg-stage");
+  const simMatchCareer = document.getElementById("sim-match-career");
+
+  function initSimulator() {
+    if (!simLogic) return;
+
+    [simLogic, simArt, simSocial].forEach(el => {
+      el.addEventListener("input", updateSimulator);
+    });
+
+    updateSimulator();
+  }
+
+  function updateSimulator() {
+    const valLogic = parseInt(simLogic.value);
+    const valArt = parseInt(simArt.value);
+    const valSocial = parseInt(simSocial.value);
+
+    simValLogic.innerText = valLogic;
+    simValArt.innerText = valArt;
+    simValSocial.innerText = valSocial;
+
+    // Matching logic
+    let career = "";
+    let score = 0;
+
+    if (valLogic >= valArt && valLogic >= valSocial) {
+      career = "Machine Learning Engineer";
+      score = Math.round(valLogic * 0.85 + valArt * 0.1 + valSocial * 0.05);
+    } else if (valArt >= valLogic && valArt >= valSocial) {
+      career = "UI/UX Product Designer";
+      score = Math.round(valArt * 0.9 + valLogic * 0.08 + valSocial * 0.02);
+    } else {
+      career = "Clinical Trials Director";
+      score = Math.round(valSocial * 0.8 + valLogic * 0.15 + valArt * 0.05);
+    }
+
+    simMatchCareer.innerText = `${career} (${score}% Match)`;
+
+    // Draw triangle grid polygon
+    const cx = 65;
+    const cy = 65;
+    const maxExt = 50;
+
+    const logicExt = (valLogic / 100) * maxExt;
+    const artExt = (valArt / 100) * maxExt;
+    const socialExt = (valSocial / 100) * maxExt;
+
+    const pLogic = { x: cx, y: cy - logicExt };
+    const pArt = { x: cx + artExt * 0.866, y: cy + artExt * 0.5 };
+    const pSocial = { x: cx - socialExt * 0.866, y: cy + socialExt * 0.5 };
+
+    const polyStr = `${pLogic.x},${pLogic.y} ${pArt.x},${pArt.y} ${pSocial.x},${pSocial.y}`;
+
+    simSvgStage.innerHTML = `
+      <svg viewBox="0 0 130 130" style="width:100%; height:auto;">
+        <polygon points="65,10 110,90 20,90" fill="none" stroke="var(--color-border)" stroke-dasharray="2 2" stroke-width="1" />
+        <polygon points="65,25 94,80 36,80" fill="none" stroke="var(--color-border)" stroke-dasharray="2 2" stroke-width="1" />
+        <polygon points="65,40 79,70 51,70" fill="none" stroke="var(--color-border)" stroke-dasharray="2 2" stroke-width="1" />
+        
+        <line x1="65" y1="65" x2="65" y2="10" stroke="var(--color-border-dark)" stroke-width="1.2" />
+        <line x1="65" y1="65" x2="110" y2="90" stroke="var(--color-border-dark)" stroke-width="1.2" />
+        <line x1="65" y1="65" x2="20" y2="90" stroke="var(--color-border-dark)" stroke-width="1.2" />
+
+        <text x="65" y="8" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="7" font-weight="700" fill="var(--color-text-heading)">LOGIC</text>
+        <text x="115" y="94" text-anchor="end" font-family="'Courier Prime', monospace" font-size="7" font-weight="700" fill="var(--color-text-heading)">ART</text>
+        <text x="15" y="94" text-anchor="start" font-family="'Courier Prime', monospace" font-size="7" font-weight="700" fill="var(--color-text-heading)">SOCIAL</text>
+
+        <polygon points="${polyStr}" fill="var(--color-accent-rust)" fill-opacity="0.25" stroke="var(--color-accent-rust)" stroke-width="2" />
+        <circle cx="${pLogic.x}" cy="${pLogic.y}" r="2.5" fill="var(--color-accent-rust)" />
+        <circle cx="${pArt.x}" cy="${pArt.y}" r="2.5" fill="var(--color-accent-rust)" />
+        <circle cx="${pSocial.x}" cy="${pSocial.y}" r="2.5" fill="var(--color-accent-rust)" />
+      </svg>
+    `;
+  }
+
+  // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
+  initTheme();
+  checkAndResumeState();
+  initDisclaimerModal();
+  initSimulator();
+});

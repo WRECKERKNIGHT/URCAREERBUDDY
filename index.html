@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Driven Psychometric Career Guidance Platform</title>
+  
+  <!-- Preconnecting to Google Fonts for performance optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Primary Styling -->
+  <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body class="theme-dark">
+
+  <!-- Parallax Scrolling Canvas Background Graphics -->
+  <div class="parallax-graphics-container" aria-hidden="true">
+    <!-- Top Right Gear -->
+    <svg class="vintage-gear-svg gear-top-right" id="parallax-gear-1" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="10" stroke-dasharray="2 1"></circle>
+      <circle cx="50" cy="50" r="30"></circle>
+      <circle cx="50" cy="50" r="35" stroke-dasharray="5 3"></circle>
+      <!-- Spokes -->
+      <line x1="50" y1="20" x2="50" y2="80"></line>
+      <line x1="20" y1="50" x2="80" y2="50"></line>
+      <line x1="28.78" y1="28.78" x2="71.22" y2="71.22"></line>
+      <line x1="28.78" y1="71.22" x2="71.22" y2="28.78"></line>
+    </svg>
+
+    <!-- Bottom Left Gear -->
+    <svg class="vintage-gear-svg gear-bottom-left" id="parallax-gear-2" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="15" stroke-dasharray="1 2"></circle>
+      <circle cx="50" cy="50" r="28"></circle>
+      <circle cx="50" cy="50" r="38"></circle>
+      <circle cx="50" cy="50" r="42" stroke-dasharray="4 2"></circle>
+      <!-- Spokes -->
+      <line x1="50" y1="8" x2="50" y2="92"></line>
+      <line x1="8" y1="50" x2="92" y2="50"></line>
+      <line x1="20.5" y1="20.5" x2="79.5" y2="79.5"></line>
+      <line x1="20.5" y1="79.5" x2="79.5" y2="20.5"></line>
+    </svg>
+  </div>
+  
+  <!-- Primary Content Container -->
+  <div class="app-container">
+    <!-- Platform Header -->
+    <header>
+      <div class="header-left">
+        <div class="logo-area" id="platform-logo" title="Click to start over and return home">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; vertical-align: middle;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+          LE COMPASS
+        </div>
+        <p style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; text-transform: uppercase; color: var(--color-text-body); margin: 0; opacity: 0.85;">
+          Intelligent Psychometrics &bull; Vol. II &bull; Made by Harshit Mishra
+        </p>
+      </div>
+
+      <!-- Navigation Menu & Theme Switch -->
+      <div style="display: flex; align-items: center; gap: 2rem;">
+        <nav class="nav-menu" aria-label="Header Navigation Menu">
+          <span class="nav-link" id="nav-link-home">Home</span>
+          <span class="nav-link" id="nav-link-reset">Reset Portal</span>
+        </nav>
+        
+        <div class="theme-toggle-container">
+          <button class="theme-switch" id="btn-theme-toggle" aria-label="Switch Theme mode (Sepia Dark / Parchment Light)">
+            <span style="opacity: 0.5; font-size: 0.65rem;">LT</span>
+            <div class="theme-switch-slider" id="theme-switch-slider">☀️</div>
+            <span style="opacity: 0.5; font-size: 0.65rem;">DK</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Views -->
+    <main>
+      
+      <!-- 1. LANDING/HOMEPAGE VIEW -->
+      <section id="landing-view" class="homepage-container fade-in-section">
+        <!-- Hero Section -->
+        <div class="hero-block" style="padding: 4rem 1rem; text-align: center; background: radial-gradient(circle, rgba(171,71,48,0.05) 0%, transparent 80%);">
+          <div class="hero-brand" style="margin-bottom: 1rem;">
+            <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem;">THE APPARATUS OF</span>
+            <h1 class="parallax-title" id="parallax-text-1" style="font-size: 4rem; font-family: 'Playfair Display', Georgia, serif; line-height: 1.1; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: -1px; text-shadow: 2px 2px 0px rgba(0,0,0,0.15); display: block;">URCAREERBUDDY</h1>
+            <p style="font-family: 'Courier Prime', monospace; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
+              BY HARSHIT MISHRA
+            </p>
+          </div>
+          <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.85;">
+            An advanced psychometric engine designed to guide student trajectories through scientific diagnostic metrics. Calibrating Core Aptitude, Behavioral Traits, Workplace Values, and Skill Matrix maps across 130 structural data points.
+          </p>
+          <button class="btn btn-primary" id="btn-enter-portal" style="font-size: 1.1rem; padding: 0.8rem 2.2rem; box-shadow: 4px 4px 0px var(--color-border-dark);">
+            Access Diagnostic Portal
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 8px; vertical-align: middle;">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- Diagnostic Quadrants Feature Cards -->
+        <div class="quadrants-section">
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem; font-style: italic;">Platform Diagnostic Pillars & Methodology</h3>
+          <div class="quadrants-grid">
+            
+            <div class="vt-card quadrant-card vt-card-hover">
+              <div class="quadrant-icon">Ⅰ</div>
+              <h4 class="quadrant-title">Logical Aperture</h4>
+              <p class="quadrant-desc">Evaluating verbal fluid reasoning, spatial rotation speeds, numerical pattern logic, and abstract calculations.</p>
+            </div>
+
+            <div class="vt-card quadrant-card vt-card-hover">
+              <div class="quadrant-icon">Ⅱ</div>
+              <h4 class="quadrant-title">Vocational RIASEC</h4>
+              <p class="quadrant-desc">Probing six interest domains: Realistic environments, Investigative inquiry, Artistic creation, Social collaboration, Enterprising leadership, and Conventional database files.</p>
+            </div>
+
+            <div class="vt-card quadrant-card vt-card-hover">
+              <div class="quadrant-icon">Ⅲ</div>
+              <h4 class="quadrant-title">Workplace Drivers</h4>
+              <p class="quadrant-desc">Mapping structural career motivations: Stability focus, Autonomy thresholds, Creative freedom indexes, and Financial targets.</p>
+            </div>
+
+            <div class="vt-card quadrant-card vt-card-hover">
+              <div class="quadrant-icon">Ⅳ</div>
+              <h4 class="quadrant-title">Temperament Threshold</h4>
+              <p class="quadrant-desc">Calculating Stress Tolerance thresholds, Grit/persistence index, and team integration protocols under loading.</p>
+            </div>
+
+            <div class="vt-card quadrant-card vt-card-hover" style="border-color: var(--color-accent-rust);">
+              <div class="quadrant-icon" style="color: var(--color-accent-rust);">Ⅴ</div>
+              <h4 class="quadrant-title">Anti-Gaming Control Loop</h4>
+              <p class="quadrant-desc">Sprinkles control questions throughout the test to detect random clicking or forced choices, adjusting the overall precision index.</p>
+            </div>
+
+            <div class="vt-card quadrant-card vt-card-hover" style="border-color: var(--color-accent-rust);">
+              <div class="quadrant-icon" style="color: var(--color-accent-rust);">Ⅵ</div>
+              <h4 class="quadrant-title">Euclidean Vector Alignment</h4>
+              <p class="quadrant-desc">Uses multi-dimensional distance calculations to align your coordinates with optimal global career profiles.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- 5-STAGE ASSESSMENT PIPELINE VISUAL TIMELINE -->
+        <div class="timeline-section">
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2.5rem; font-style: italic;">The 5-Stage Testing Sequence</h3>
+          <div class="pipeline-timeline">
+            
+            <div class="timeline-item">
+              <div class="timeline-badge">1</div>
+              <h4 class="timeline-title">Stage 1: Personality (MBTI + Big Five)</h4>
+              <p class="timeline-desc">Resolving communication patterns, decision filters, environmental stressors, and stress tolerance thresholds.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">2</div>
+              <h4 class="timeline-title">Stage 2: Cognitive Aptitude</h4>
+              <p class="timeline-desc">Assessing numerical fluid pattern logic, verbal semantic comprehension, and abstract speed thresholds under high load.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">3</div>
+              <h4 class="timeline-title">Stage 3: Holland Interest Mapping</h4>
+              <p class="timeline-desc">Profiling your vocational parameters across Realistic, Investigative, Artistic, Social, Enterprising, and Conventional vectors.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">4</div>
+              <h4 class="timeline-title">Stage 4: Learning Style (VARK)</h4>
+              <p class="timeline-desc">Determining your preferred data input channel: Visual grids, Auditory debates, Read/Write text, or Kinesthetic lab trials.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-badge">5</div>
+              <h4 class="timeline-title">Stage 5: Skills Grid Alignment</h4>
+              <p class="timeline-desc">Calibrating your specialized capabilities in Administrative, Spatial, Leadership, Social, and Mechanical categories.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- INTERACTIVE TRAIT COORDINATES SIMULATOR -->
+        <div class="simulator-section">
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 1.5rem; font-style: italic;">Apparatus Simulator Panel</h3>
+          <p class="text-center section-sub" style="margin-bottom: 2rem;">Adjust the dial sliders to mentally simulate career suitability matches on the fly.</p>
+          
+          <div class="simulator-layout">
+            <div class="vt-card simulator-controls">
+              <div class="sim-slider-group">
+                <label for="sim-range-logic" style="font-family:'Courier Prime', monospace; font-size:0.85rem; font-weight:700;">System Logic & Math: <span id="sim-val-logic">70</span>%</label>
+                <input type="range" id="sim-range-logic" min="20" max="100" value="70" class="sim-slider">
+              </div>
+              <div class="sim-slider-group">
+                <label for="sim-range-art" style="font-family:'Courier Prime', monospace; font-size:0.85rem; font-weight:700;">Creative Design: <span id="sim-val-art">40</span>%</label>
+                <input type="range" id="sim-range-art" min="20" max="100" value="40" class="sim-slider">
+              </div>
+              <div class="sim-slider-group">
+                <label for="sim-range-social" style="font-family:'Courier Prime', monospace; font-size:0.85rem; font-weight:700;">Social Collaboration: <span id="sim-val-social">50</span>%</label>
+                <input type="range" id="sim-range-social" min="20" max="100" value="50" class="sim-slider">
+              </div>
+            </div>
+            
+            <div class="vt-card simulator-output" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 200px;">
+              <h5 style="font-family: 'Courier Prime', monospace; margin-bottom: 1rem; text-transform: uppercase; font-size:0.8rem; font-weight: 700;">Simulated Match Alignment</h5>
+              <div id="sim-svg-stage" style="width: 130px; height: 130px; margin-bottom: 1rem;">
+                <!-- Animated dynamically via js/app.js -->
+              </div>
+              <div id="sim-match-career" style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; font-weight: 700; color: var(--color-accent-rust); max-width: 180px; line-height: 1.3;">
+                Machine Learning Engineer (76% Match)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- SCIENTIFIC FOUNDATIONS SECTION -->
+        <div class="scientific-foundations-section">
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem; font-style: italic;">Scientific Foundations & Models</h3>
+          <div class="foundations-deck">
+            
+            <div class="vt-card foundation-card">
+              <h4 class="foundation-card-title">MBTI & Big Five Core</h4>
+              <p class="foundation-card-desc">We combine Myers-Briggs cognitive axes with Big Five stability constructs. Instead of flat buckets, we evaluate personality as percentage continuums mapping exact behaviors.</p>
+            </div>
+
+            <div class="vt-card foundation-card">
+              <h4 class="foundation-card-title">Holland's RIASEC Codes</h4>
+              <p class="foundation-card-desc">Utilizes the standard vocational theory model to assess interests across six axes. These formulate a dominant 3-letter profile matching industry environments.</p>
+            </div>
+
+            <div class="vt-card foundation-card">
+              <h4 class="foundation-card-title">VARK Learning Styles</h4>
+              <p class="foundation-card-desc">Maps data intake modes to adjust report blueprints. The final output triggers unique visual, auditory, textual, or hands-on study roadmaps based on your scores.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- HOW THE SYSTEM WORKS & HOW IT WAS MADE SECTION -->
+        <div class="manifest-technical-section">
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem; font-style: italic;">The System Manifest & Engineering Log</h3>
+          <p class="text-center section-sub" style="margin-bottom: 2.5rem;">An open technical catalog detailing the psychometric calculations and codebase files.</p>
+          
+          <div class="vt-card manifest-card-full" style="padding: 2rem; border-style: solid; margin-bottom: 2rem; background-color: var(--color-bg-card);">
+            
+            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem;">
+              1. The Algorithmic Flow & Data Pipelines
+            </h4>
+            
+            <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; line-height: 1.4; background: var(--color-bg-base); padding: 1.2rem; border: 1.5px solid var(--color-border-dark); border-radius: 4px; overflow-x: auto; margin-bottom: 1.5rem; white-space: pre;">
+[Stage 1-5 Questionnaire Matrix]  ───►  [js/questions.js]
+                                            │
+                                            ▼
+[Multi-Weight Coordinate Scoring]  ───►  [js/engine.js]
+                                            │  ├─► MBTI Code & Ratios
+                                            │  ├─► RIASEC 3-Letter Code
+                                            │  ├─► VARK Ratios
+                                            │  └─► Consistency Verification Check
+                                            ▼
+[Euclidean Vector Matcher Engine]  ───►  Calculates d = √∑(u_i - c_i)² against Career Benchmarks
+                                            │
+                                            ▼
+[9-Tab Cabinet Presentation Drawer] ──►  [js/report.js]  ──► Dynamic VARK Sandboxes & Gaps
+            </div>
+
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: var(--color-text-body);">
+              The platform implements a multi-stage scoring loop. When a user submits an answer, 
+              <strong>URCAREERBUDDY</strong> maps the score dynamically across coordinates in 
+              <a href="file:///Users/wreckerknight/.gemini/antigravity/scratch/career-guidance-platform/js/questions.js" style="color: var(--color-accent-rust); font-weight: 700; text-decoration: underline;">questions.js</a>.
+              If a question has multi-dimensional weights (e.g. `extravert: 1.0`, `enterprising: 0.3`, `social: 0.2`), the engine in 
+              <a href="file:///Users/wreckerknight/.gemini/antigravity/scratch/career-guidance-platform/js/engine.js" style="color: var(--color-accent-rust); font-weight: 700; text-decoration: underline;">engine.js</a> 
+              adds the points to multiple category buckets simultaneously.
+            </p>
+
+            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
+              2. Mathematical Foundations & Vector Distance Math
+            </h4>
+            
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.2rem; color: var(--color-text-body);">
+              Unlike standard career systems that rely on hardcoded rules, this system uses <strong>Euclidean distance matching</strong> 
+              to determine career suitability. Your scores for RIASEC interests (6 dimensions) and Specialized Skills (5 dimensions) 
+              form an <strong>11-dimensional vector</strong>. This vector is compared directly against the ideal coordinates of 25+ global career benchmarks:
+            </p>
+            
+            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; background: var(--color-bg-base); padding: 1rem; border: 1px dashed var(--color-border-dark); text-align: center; margin-bottom: 1.5rem; border-radius: 4px; font-weight: 700; color: var(--color-text-heading);">
+              d = &radic;&sum;<sub>i=1</sub><sup>11</sup> (User<sub>i</sub> - Career<sub>i</sub>)<sup>2</sup> / 11
+            </div>
+
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: var(--color-text-body);">
+              The distance is normalized to a percentage compatibility score. An <strong>Anti-Gaming consistency check</strong> evaluates 
+              rephrased questions to detect random clicking. Discrepancies apply a penalty multiplier, reducing the career suitability percentage to maintain diagnostic integrity.
+            </p>
+
+            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
+              3. The Codebase Components & File Map
+            </h4>
+
+            <ul style="font-size: 0.88rem; line-height: 1.6; padding-left: 1.2rem; list-style: square; color: var(--color-text-body);">
+              <li style="margin-bottom: 0.6rem;">
+                <strong>index.html:</strong> The HTML5 structure displaying progress bulbs, landing pages, simulator widgets, and modal accord drawers.
+              </li>
+              <li style="margin-bottom: 0.6rem;">
+                <strong>styles/main.css:</strong> Contains sepia color definitions, paper layout textures, parallax settings, and modal transitions.
+              </li>
+              <li style="margin-bottom: 0.6rem;">
+                <strong>js/questions.js:</strong> The structural database holding exactly 130 questions and control verification pairs.
+              </li>
+              <li style="margin-bottom: 0.6rem;">
+                <strong>js/engine.js:</strong> Coordinates state indices, runs multi-weight additions, anti-gaming checks, and career vector math.
+              </li>
+              <li style="margin-bottom: 0.6rem;">
+                <strong>js/report.js:</strong> The cabinet report compiler, drawing SVG charts (spider, column, donut, funnel) and matching gap checklists.
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- LEGAL DISCLAIMER PANEL -->
+        <div class="disclaimer-panel-section">
+          <div class="vt-card disclaimer-card-panel">
+            <div class="disclaimer-seal" style="flex-shrink: 0;">
+              <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="var(--color-accent-rust)" fill-opacity="0.15" stroke="var(--color-accent-rust)" stroke-width="3" />
+                <circle cx="50" cy="50" r="38" fill="none" stroke="var(--color-accent-rust)" stroke-width="1.5" stroke-dasharray="3 3" />
+                <path d="M50 25 L50 75 M25 50 L75 50 M32 32 L68 68 M32 68 L68 32" stroke="var(--color-accent-rust)" stroke-width="2" />
+                <circle cx="50" cy="50" r="10" fill="var(--color-accent-rust)" />
+              </svg>
+            </div>
+            <div class="disclaimer-text-area">
+              <h4 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; margin-bottom: 0.5rem; color: var(--color-accent-rust);">
+                Legal Carriage & Assessment Disclaimer
+              </h4>
+              <p style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem; color: var(--color-text-body);">
+                Le Compass is designed to serve as an informational career discovery guide. The results, score vectors, and matches represent suitability indexes calculated under standardized psychometric logic. 
+                They do not constitute professional counselor declarations or career guarantees.
+              </p>
+              <button type="button" class="btn btn-secondary" id="btn-open-disclaimer-modal" style="font-size: 0.75rem; padding: 0.4rem 1rem;">
+                Review Full Disclaimer & Waiver Accord
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
+
+        <!-- Statistics feature strip -->
+        <div class="stats-strip">
+          <div class="vt-card stat-card">
+            <div class="stat-number">130+</div>
+            <div class="stat-label">Data Points</div>
+          </div>
+          <div class="vt-card stat-card">
+            <div class="stat-number">5-Stage</div>
+            <div class="stat-label">Bulb Progress</div>
+          </div>
+          <div class="vt-card stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Anti-Bias Rating</div>
+          </div>
+          <div class="vt-card stat-card">
+            <div class="stat-number">Cabinet</div>
+            <div class="stat-label">Index Reports</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. ONBOARDING & BRANCH SELECTION VIEW -->
+      <section id="onboarding-view" class="vt-card onboarding-card hidden fade-in-section">
+        <h2 style="margin-bottom: 2rem; text-align: center;">Intake Profile Registration</h2>
+        
+        <form id="onboarding-form">
+          <!-- Student Name -->
+          <div class="form-group">
+            <label for="student-name">Student Full Name</label>
+            <input type="text" id="student-name" class="form-control" placeholder="Jane Doe" required autocomplete="name">
+          </div>
+
+          <!-- Academic Bracket (Track A/B determination) -->
+          <div class="form-group">
+            <label for="academic-grade">Academic Bracket</label>
+            <select id="academic-grade" class="form-control" required>
+              <option value="" disabled selected>Select Current Bracket</option>
+              <option value="8">Grade 8 (Track A - Open Horizon)</option>
+              <option value="9">Grade 9 (Track A - Open Horizon)</option>
+              <option value="10">Grade 10 (Track A - Open Horizon)</option>
+              <option value="11">Grade 11 (Track B - Specialized Pipeline)</option>
+              <option value="12">Grade 12 (Track B - Specialized Pipeline)</option>
+              <option value="13">Higher Education (Track B - Specialized Pipeline)</option>
+            </select>
+          </div>
+
+          <!-- Stream specialization toggle for Grade 11+ -->
+          <div class="form-group hidden" id="stream-selection-container">
+            <label style="margin-bottom: 1rem; display: block;">Select Stream Concentration</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <button type="button" class="track-selection-card" data-stream="pcm">
+                <span class="track-title">Science (PCM)</span>
+                <span class="track-desc">Physics, Chemistry, Mathematics</span>
+              </button>
+              <button type="button" class="track-selection-card" data-stream="pcb">
+                <span class="track-title">Science (PCB)</span>
+                <span class="track-desc">Physics, Chemistry, Biology</span>
+              </button>
+              <button type="button" class="track-selection-card" data-stream="commerce">
+                <span class="track-title">Commerce</span>
+                <span class="track-desc">Accountancy, Economics, Business Studies</span>
+              </button>
+              <button type="button" class="track-selection-card" data-stream="humanities">
+                <span class="track-title">Humanities</span>
+                <span class="track-desc">Literature, History, Arts, Psychology</span>
+              </button>
+            </div>
+            <input type="hidden" id="selected-stream" value="">
+          </div>
+
+          <!-- Action buttons -->
+          <div style="margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem;">
+            <button type="submit" class="btn btn-primary" id="btn-start-test" style="width: 100%;">
+              Begin Diagnostic Testing
+            </button>
+            <div class="text-center" style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; color: var(--color-text-body); opacity: 0.7; margin: 0.2rem 0;">&mdash; OR &mdash;</div>
+            
+            <button type="button" class="btn btn-secondary" id="btn-simulate-report" style="width: 100%;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px; vertical-align: middle;">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Simulate Diagnostic Profile Report
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 3. ASSESSMENT ENGINE SCREEN -->
+      <section id="assessment-view" class="vt-card assessment-view-card hidden fade-in-section">
+        <!-- Gamified Chapter Bulb Pipeline -->
+        <div class="chapter-bulb-pipeline" id="chapter-bulb-pipeline">
+          <div class="chapter-pipeline-track"></div>
+          
+          <div class="chapter-bulb active" data-chapter="0">
+            <div class="chapter-bulb-key">I</div>
+            <span class="chapter-bulb-label">Personality</span>
+          </div>
+
+          <div class="chapter-bulb" data-chapter="1">
+            <div class="chapter-bulb-key">II</div>
+            <span class="chapter-bulb-label">Aptitude</span>
+          </div>
+
+          <div class="chapter-bulb" data-chapter="2">
+            <div class="chapter-bulb-key">III</div>
+            <span class="chapter-bulb-label">Interests</span>
+          </div>
+
+          <div class="chapter-bulb" data-chapter="3">
+            <div class="chapter-bulb-key">IV</div>
+            <span class="chapter-bulb-label">Learning</span>
+          </div>
+
+          <div class="chapter-bulb" data-chapter="4">
+            <div class="chapter-bulb-key">V</div>
+            <span class="chapter-bulb-label">Skills</span>
+          </div>
+        </div>
+
+        <div class="assessment-header container-flex justify-between">
+          <div class="category-pill" id="question-category-badge">Aptitude</div>
+          <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; font-weight: 700;" id="section-item-counter">Question 1 of 100</div>
+        </div>
+
+        <!-- Ruler Progress Section -->
+        <div class="progress-section">
+          <div class="progress-stats justify-between container-flex">
+            <span id="progress-percent-label">Pacing: 0%</span>
+            <span id="answered-questions-label">0 / 100 completed</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Current Question Container -->
+        <div class="question-container" id="question-box-wrapper">
+          <!-- Populated dynamically via JavaScript with typewriter print animations -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="action-footer">
+          <button class="btn btn-secondary" id="btn-prev-question" disabled>Previous</button>
+          <button class="btn btn-primary" id="btn-next-question">Next</button>
+        </div>
+      </section>
+
+      <!-- 4. COMPREHENSIVE DUAL-COLUMN REPORT & SIDEBAR CABINET VIEW -->
+      <section id="report-view" class="report-view-layout hidden fade-in-section">
+        <!-- Sidebar Cabinet index drawers (Left) -->
+        <nav class="report-sidebar-nav" id="report-sidebar-nav" aria-label="Cabinet Index Drawers">
+          <!-- Populated dynamically by js/report.js -->
+        </nav>
+
+        <!-- Dynamic Output Stage (Right) -->
+        <div class="report-output-stage" id="report-output-stage">
+          <!-- Populated dynamically by js/report.js based on active tab -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Platform Footer -->
+    <footer>
+      <p>&copy; 2026 AI-Driven Psychometric Career Guidance Platform. Constructed with classic sepia styling, scroll parallax gears, and wax-seal diagnostic checks. Made by Harshit Mishra.</p>
+    </footer>
+  </div>
+
+  <!-- Legal Disclaimer & Waiver Modal Overlay -->
+  <div id="disclaimer-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="vt-card modal-container">
+      <div class="modal-header">
+        <h4 id="modal-title" style="font-style: italic; color: var(--color-accent-rust); margin: 0;">Registry Waiver & Psychometric Accord</h4>
+        <button type="button" class="modal-close-btn" id="btn-close-disclaimer-modal" aria-label="Close Disclaimer Modal">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.9rem; line-height: 1.6; max-height: 320px; overflow-y: auto; padding-right: 0.5rem; margin-top: 1rem;">
+        <p style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 1.2rem;">
+          Official Carriage Registry Code: LC-2026-DISCLAIMER
+        </p>
+        <p style="margin-bottom: 1rem;"><strong>1. Informational Carriage Waiver:</strong> All calculations, career vector matches, suitability index rates, and learning channel diagnostics output by this platform are generated through automated algorithmic cross-referencing. They do not constitute certified psychiatric audits, clinical assessments, or binding academic guidance counselling.</p>
+        <p style="margin-bottom: 1rem;"><strong>2. Psychometric Limits:</strong> Human personality, grit thresholds, and cognitive abilities evolve dynamically. The outputs represent a single static snapshot of trait coordinates under standard test constraints, rather than fixed boundaries on personal potential.</p>
+        <p style="margin-bottom: 1rem;"><strong>3. Anti-Gaming Auditing:</strong> The platform contains control logic checks. Inconsistent response loops or random clicks adjust the precision rating of the final dossier down, reflecting compromised integrity parameters.</p>
+        <p style="margin-bottom: 1rem;"><strong>4. Intellectual Property:</strong> All vintage layouts, compass vector charts, and sepia design indicators are property of the platform constructed under Harshit Mishra's guidance.</p>
+      </div>
+      <div class="modal-footer" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--color-border);">
+        <button type="button" class="btn btn-primary" id="btn-agree-disclaimer" style="width: 100%;">I Acknowledge & Consent to the Assessment Parameters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entry Script Loader (ES6 Module) -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
