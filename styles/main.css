@@ -379,6 +379,14 @@
     box-shadow: var(--shadow-flat-hover);
   }
 
+  .career-path-card {
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  }
+  .career-path-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 6px 6px 0px var(--color-border-dark) !important;
+  }
+
   /* HOMEPAGE PARALLAX LAYOUT */
   .homepage-container {
     display: flex;

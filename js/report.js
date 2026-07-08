@@ -94,6 +94,7 @@ export class ReportRenderer {
       case "clusters":
         stageEl.innerHTML = this.getClustersHTML();
         this.drawFunnelChart();
+        this.bindClustersEvents();
         break;
       case "deep_dive":
         stageEl.innerHTML = this.getDeepDiveHTML();
@@ -255,8 +256,8 @@ export class ReportRenderer {
         <p class="section-sub">Visualization of your logic pathways and data processing capabilities under load.</p>
         
         <!-- 4-Axis Spider Chart (PRD Part 2 Section 2) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center;">
-          <div style="width: 280px; height: 280px;">
+        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(171,71,48,0.02) 0%, transparent 70%);">
+          <div style="width: 380px; height: 380px; margin: 0 auto;">
             ${this.generate4AxisSpiderChartSVG()}
           </div>
         </div>
@@ -347,7 +348,7 @@ export class ReportRenderer {
               RIASEC ANCHOR: ${this.scores.riasecCode || "N/A"}
             </span>
           </div>
-          <div id="riasec-bar-chart-container" style="width:100%; height:200px; display:flex; justify-content:center; align-items:center;">
+          <div id="riasec-bar-chart-container" style="width:100%; max-width: 480px; height:240px; margin: 0 auto; display:flex; justify-content:center; align-items:center;">
             <!-- Rendered by drawRiasecBarChart() -->
           </div>
         </div>
@@ -427,7 +428,7 @@ export class ReportRenderer {
         
         <!-- VARK Donut Graph (PRD Part 2 Section 4) -->
         <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 1.5rem;">
-          <div id="vark-donut-container" style="width: 160px; height: 160px;">
+          <div id="vark-donut-container" style="width: 260px; height: 260px;">
             <!-- Rendered by drawVARKDonutChart() -->
           </div>
           
@@ -507,15 +508,15 @@ export class ReportRenderer {
         <p class="section-sub">Suitability index of career fields ranked from most compatible to least compatible based on your results.</p>
         
         <!-- Horizontal Funnel Chart (PRD Part 3) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center;">
-          <div id="funnel-container" style="width:100%; max-width: 420px; height:220px;">
+        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(171,71,48,0.02) 0%, transparent 70%);">
+          <div id="funnel-container" style="width:100%; max-width: 600px; height:280px;">
             <!-- Rendered by drawFunnelChart() -->
           </div>
         </div>
 
-        <div class="analysis-narrative-box" style="margin-bottom: 2rem;">
+        <div class="analysis-narrative-box" style="margin-bottom: 2rem; border-left: 3px solid var(--color-accent-rust); padding-left: 1.2rem;">
           <h4>Universal Synthesis Context</h4>
-          <p style="line-height: 1.6;">
+          <p style="line-height: 1.6; font-size: 0.92rem; opacity: 0.9;">
             Your unified psychometric profile combines high logical capacity, an introverted troubleshooting mindset, and strong spatial visualization. 
             This dictates an alignment toward structured, technical systems where you formulate digital blueprints or analyze datasets, mapping strongly to the **Technology** and **Engineering** clusters.
           </p>
@@ -523,106 +524,338 @@ export class ReportRenderer {
       </section>
 
       <section class="vt-card">
-        <h3>Part 4: Stream-Based Cross-Disciplinary Suitability Index</h3>
-        <p class="section-sub">Detailed suitability matrix displaying 5 distinct Career Clusters containing specialized career pathways.</p>
+        <h3>Part 4: Interactive Career Cluster Explorer</h3>
+        <p class="section-sub">Detailed suitability matrix displaying 5 distinct Career Clusters. Toggle tabs to explore career options and click cards to view skills gaps.</p>
         
-        <div id="cluster-tables-stage">
-          ${this.getDetailedSuitabilityTableHTML()}
+        <!-- Cluster Tabs -->
+        <div class="cluster-subtabs" style="display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--color-border-dark); padding-bottom: 0.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <button type="button" class="cluster-tab-btn active" data-cluster="0" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-accent-rust); color:var(--color-bg-base); transition: all 0.2s ease;">TECH & AI</button>
+          <button type="button" class="cluster-tab-btn" data-cluster="1" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); opacity: 0.85; transition: all 0.2s ease;">FINANCE & COMMERCE</button>
+          <button type="button" class="cluster-tab-btn" data-cluster="2" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); opacity: 0.85; transition: all 0.2s ease;">MECHATRONICS</button>
+          <button type="button" class="cluster-tab-btn" data-cluster="3" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); opacity: 0.85; transition: all 0.2s ease;">BIOTECH & HEALTH</button>
+          <button type="button" class="cluster-tab-btn" data-cluster="4" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); opacity: 0.85; transition: all 0.2s ease;">MEDIA & DESIGN</button>
+        </div>
+
+        <div style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; margin-bottom: 1.5rem; color: var(--color-accent-rust); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
+          <span>💡</span> <span>Click any career pathway card below to toggle a live Skills Gap analysis checklist!</span>
+        </div>
+
+        <div id="active-cluster-content" style="min-height: 250px;">
+          <!-- Active Cluster Content dynamically loaded by bindClustersEvents() -->
         </div>
       </section>
     `;
   }
 
-  getDetailedSuitabilityTableHTML() {
-    const fields = [
+  getDetailedClusterData() {
+    return [
       {
         name: "Technology & AI Architecture",
         careers: [
-          { name: "Machine Learning Engineer", checkKey: "investigative", driver: "High Logical Matrix / High Investigative Driver" },
-          { name: "Full-Stack Product Builder", checkKey: "realistic", driver: "High Visual / Methodical Planning State" },
-          { name: "Cybersecurity Infrastructure lead", checkKey: "conventional", driver: "High Compliance Matrix / Investigative" },
-          { name: "Cloud Solutions Architect", checkKey: "investigative", driver: "High Autonomy Driver / Systems Planning" },
-          { name: "HMI Interface Developer", checkKey: "artistic", driver: "High Spatial Capability / Artistic" }
+          { 
+            name: "Machine Learning Engineer", 
+            profile: "Investigative / Analytical", 
+            description: "Build models, train neural networks, and deploy automated predictive algorithms.",
+            skills: ["numerical", "logical", "abstract"]
+          },
+          { 
+            name: "Full-Stack Product Builder", 
+            profile: "Realistic / Enterprising", 
+            description: "Construct client applications, handle database state, and scale user interfaces.",
+            skills: ["spatial", "logical", "administrative"]
+          },
+          { 
+            name: "Cybersecurity Infrastructure Lead", 
+            profile: "Conventional / Stability", 
+            description: "Audit network firewalls, monitor log files, and enforce system security protocols.",
+            skills: ["logical", "numerical", "administrative"]
+          },
+          { 
+            name: "Cloud Solutions Architect", 
+            profile: "Investigative / Systems", 
+            description: "Design server instances, plan network routing tables, and optimize load balancing.",
+            skills: ["logical", "abstract", "administrative"]
+          },
+          { 
+            name: "HMI Interface Developer", 
+            profile: "Artistic / Spatial", 
+            description: "Stylize interactive visual controls and calibrate tactile user responses.",
+            skills: ["spatial", "abstract", "social"]
+          }
         ]
       },
       {
         name: "Corporate Finance & Commerce",
         careers: [
-          { name: "Actuarial Risk Specialist", checkKey: "conventional", driver: "High Quantitative / Methodical State" },
-          { name: "Quantitative Investment Analyst", checkKey: "investigative", driver: "High Logical Matrix / Financial Driver" },
-          { name: "Corporate Compliance Lead", checkKey: "conventional", driver: "High Compliance / Stability Driver" },
-          { name: "Operations Systems Auditor", checkKey: "conventional", driver: "High Administrative / Methodical State" },
-          { name: "Business Development Lead", checkKey: "enterprising", driver: "High Enterprising / Autonomy Driver" }
+          { 
+            name: "Actuarial Risk Specialist", 
+            profile: "Conventional / Quantitative", 
+            description: "Evaluate statistical mortality logs, calculate insurance premiums, and audit risk portfolios.",
+            skills: ["numerical", "administrative", "logical"]
+          },
+          { 
+            name: "Quantitative Investment Analyst", 
+            profile: "Investigative / Financial", 
+            description: "Write math models to trade stocks, parse corporate logs, and calculate profit forecasts.",
+            skills: ["numerical", "logical", "abstract"]
+          },
+          { 
+            name: "Corporate Compliance Lead", 
+            profile: "Conventional / Stability", 
+            description: "Review legal compliance codes, audit corporate balance sheets, and draft ledger procedures.",
+            skills: ["administrative", "logical", "leadership"]
+          },
+          { 
+            name: "Operations Systems Auditor", 
+            profile: "Conventional / Methodical", 
+            description: "Inspect operational pipelines, identify financial errors, and verify balance sheets.",
+            skills: ["administrative", "numerical", "logical"]
+          },
+          { 
+            name: "Business Development Lead", 
+            profile: "Enterprising / Autonomy", 
+            description: "Pitch corporate contracts, negotiate partnerships, and manage sales representatives.",
+            skills: ["leadership", "social", "administrative"]
+          }
         ]
       },
       {
         name: "Industrial & Mechatronics Engineering",
         careers: [
-          { name: "Robotics Sensor Fusion Developer", checkKey: "realistic", driver: "High Mechanical / Investigative Driver" },
-          { name: "Industrial CAD Prototyper", checkKey: "spatial", driver: "High Spatial / Methodical Planning State" },
-          { name: "Grid Automation Analyst", checkKey: "investigative", driver: "High Mechanical / Stability Driver" },
-          { name: "Embedded Systems Inspector", checkKey: "realistic", driver: "High Mechanical / Conventional Driver" },
-          { name: "Acoustics Hardware Designer", checkKey: "artistic", driver: "High Spatial / Artistic Driver" }
+          { 
+            name: "Robotics Sensor Fusion Developer", 
+            profile: "Realistic / Investigative", 
+            description: "Calibrate lidar coordinates, write motor control drivers, and align physical sensors.",
+            skills: ["spatial", "numerical", "logical"]
+          },
+          { 
+            name: "Industrial CAD Prototyper", 
+            profile: "Spatial / Methodical", 
+            description: "Draw physical gear structures in CAD, inspect spatial clearances, and generate blueprints.",
+            skills: ["spatial", "administrative", "logical"]
+          },
+          { 
+            name: "Grid Automation Analyst", 
+            profile: "Investigative / Stability", 
+            description: "Deploy electrical distribution logic, audit transformer logs, and manage switch gears.",
+            skills: ["logical", "numerical", "administrative"]
+          },
+          { 
+            name: "Embedded Systems Inspector", 
+            profile: "Realistic / Conventional", 
+            description: "Test printed circuit board traces, solder hardware relays, and debug firmware loops.",
+            skills: ["logical", "spatial", "mechanical"]
+          },
+          { 
+            name: "Acoustics Hardware Designer", 
+            profile: "Artistic / Spatial", 
+            description: "Optimize speaker chamber resonance, visualize audio wave reflections, and stylize casing.",
+            skills: ["spatial", "abstract", "numerical"]
+          }
         ]
       },
       {
         name: "Healthcare & Biotech Sciences",
         careers: [
-          { name: "Bioinformatics Data Analyst", checkKey: "investigative", driver: "High Quantitative / Investigative" },
-          { name: "Clinical Trials Director", checkKey: "social", driver: "High Collaboration / Social Driver" },
-          { name: "Genetic Sequencing Specialist", checkKey: "investigative", driver: "High Logical / Stability Driver" },
-          { name: "Hospital Systems Auditor", checkKey: "conventional", driver: "High Compliance / Administrative" },
-          { name: "Health Policy Consultant", checkKey: "social", driver: "High Collaboration / Enterprising" }
+          { 
+            name: "Bioinformatics Data Analyst", 
+            profile: "Investigative / Quantitative", 
+            description: "Parse genetic sequencing databases, compile DNA alignments, and compute statistics.",
+            skills: ["numerical", "logical", "abstract"]
+          },
+          { 
+            name: "Clinical Trials Director", 
+            profile: "Social / Collaboration", 
+            description: "Coordinate patient intake interviews, check compliance codes, and manage research staff.",
+            skills: ["social", "administrative", "leadership"]
+          },
+          { 
+            name: "Genetic Sequencing Specialist", 
+            profile: "Investigative / Stability", 
+            description: "Process laboratory assays, align chromosome files, and check diagnostic markers.",
+            skills: ["logical", "numerical", "administrative"]
+          },
+          { 
+            name: "Hospital Systems Auditor", 
+            profile: "Conventional / Compliance", 
+            description: "Audit patient charts, review medical coding bills, and verify administrative compliance.",
+            skills: ["administrative", "logical", "numerical"]
+          },
+          { 
+            name: "Health Policy Consultant", 
+            profile: "Social / Enterprising", 
+            description: "Advise government agencies, write regulatory summaries, and present clinical reports.",
+            skills: ["social", "leadership", "administrative"]
+          }
         ]
       },
       {
         name: "Media, Systems & Design",
         careers: [
-          { name: "UI/UX Product Designer", checkKey: "artistic", driver: "High Spatial Capability / Perceiving Trait" },
-          { name: "Technical Systems Animator", checkKey: "artistic", driver: "Moderate Mechanical / High Artistic Trait" },
-          { name: "AR Experience Architect", checkKey: "artistic", driver: "High Spatial / Innovative Driver" },
-          { name: "Brand Systems Director", checkKey: "enterprising", driver: "High Enterprising / Autonomy Driver" },
-          { name: "Creative Studio Lead", checkKey: "enterprising", driver: "High Collaboration / Artistic Driver" }
+          { 
+            name: "UI/UX Product Designer", 
+            profile: "Artistic / Spatial", 
+            description: "Stylize mobile screen blueprints, draw vector buttons, and map user flows.",
+            skills: ["spatial", "social", "abstract"]
+          },
+          { 
+            name: "Technical Systems Animator", 
+            profile: "Artistic / Mechanical", 
+            description: "Rig character bone structures, align animation keyframes, and render textures.",
+            skills: ["spatial", "abstract", "mechanical"]
+          },
+          { 
+            name: "AR Experience Architect", 
+            profile: "Artistic / Innovative", 
+            description: "Project digital graphics onto spatial camera coordinates and design audio soundscapes.",
+            skills: ["spatial", "abstract", "logical"]
+          },
+          { 
+            name: "Brand Systems Director", 
+            profile: "Enterprising / Autonomy", 
+            description: "Deploy marketing campaigns, align corporate colors, and lead designer groups.",
+            skills: ["leadership", "social", "administrative"]
+          },
+          { 
+            name: "Creative Studio Lead", 
+            profile: "Enterprising / Artistic", 
+            description: "Coordinate video production schedules, pitching concepts to clients, and styling scenes.",
+            skills: ["social", "leadership", "spatial"]
+          }
         ]
       }
     ];
+  }
 
-    let html = "";
-    fields.forEach(field => {
-      // Calculate dynamic suitability scores using our Euclidean distance matching algorithm (PRD Stage 3)
-      const careerRows = field.careers.map(car => {
-        const calculated = this.calculateEuclideanSuitability(car.name, this.scores);
-        return { name: car.name, score: calculated, driver: car.driver };
+  generateSkillsGapHTML(requiredSkills) {
+    const currentScores = this.scores;
+    const ability = currentScores.ability || {};
+    const skills = currentScores.skills || {};
+
+    const getScore = (key) => {
+      if (ability[key] !== undefined) return ability[key];
+      if (skills[key] !== undefined) return skills[key];
+      return 50; 
+    };
+
+    const getSkillName = (key) => {
+      const names = {
+        numerical: "Numerical Reasoning",
+        logical: "Logical Reasoning",
+        verbal: "Verbal Reasoning",
+        abstract: "Abstract Reasoning",
+        spatial: "Spatial Visualization",
+        administrative: "Administrative & Audit",
+        leadership: "Leadership & Stress Threshold",
+        social: "Social Collaboration",
+        mechanical: "Mechanical Mechanics"
+      };
+      return names[key] || key;
+    };
+
+    return `
+      <div style="margin-top: 0.8rem; border-top: 1px dashed var(--color-border); padding-top: 0.6rem;">
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem;">
+          ${requiredSkills.map(sk => {
+            const userVal = getScore(sk);
+            const requiredVal = 70;
+            const met = userVal >= requiredVal;
+            const icon = met ? "🟢 [PASSED]" : "🔴 [GAP DETECTED]";
+            const color = met ? "var(--color-text-heading)" : "var(--color-accent-rust)";
+            return `
+              <li style="display: flex; justify-content: space-between; font-size: 0.72rem; color: ${color};">
+                <span>${icon} ${getSkillName(sk)}</span>
+                <span style="font-weight: 700;">${userVal}% / ${requiredVal}%</span>
+              </li>
+            `;
+          }).join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  bindClustersEvents() {
+    const clusterTabs = this.container.querySelectorAll(".cluster-tab-btn");
+    const clusterContent = this.container.querySelector("#active-cluster-content");
+
+    if (!clusterTabs.length || !clusterContent) return;
+
+    const selectCluster = (index) => {
+      clusterTabs.forEach((tab, idx) => {
+        if (idx === index) {
+          tab.classList.add("active");
+          tab.style.background = "var(--color-accent-rust)";
+          tab.style.color = "var(--color-bg-base)";
+          tab.style.opacity = "1";
+        } else {
+          tab.classList.remove("active");
+          tab.style.background = "var(--color-bg-card)";
+          tab.style.color = "var(--color-text-body)";
+          tab.style.opacity = "0.85";
+        }
       });
-      careerRows.sort((a,b)=>b.score - a.score);
 
-      html += `
-        <div class="vt-card" style="padding: 1.5rem; margin-bottom: 2rem; border-style: solid;">
-          <h4 style="font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; margin-bottom: 1rem;">
-            ${field.name}
-          </h4>
-          <table style="width: 100%; border-collapse: collapse; font-family: 'Courier Prime', monospace; font-size: 0.8rem;">
-            <thead>
-              <tr style="border-bottom: 1.5px solid var(--color-border-dark); text-align: left; font-weight: 700; opacity: 0.8;">
-                <th style="padding: 0.5rem 0; width: 45%;">SPECIALIZED CAREER PATH</th>
-                <th style="padding: 0.5rem 0; text-align: center; width: 15%;">SUITABILITY</th>
-                <th style="padding: 0.5rem 0; text-align: right; width: 40%;">PRIMARY DRIVER MATCH STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${careerRows.map(r => `
-                <tr style="border-bottom: 1px dashed var(--color-border);">
-                  <td style="padding: 0.6rem 0;">${r.name}</td>
-                  <td style="padding: 0.6rem 0; text-align: center; font-weight: 700; color: var(--color-accent-rust);">${r.score}%</td>
-                  <td style="padding: 0.6rem 0; text-align: right; font-size: 0.72rem; opacity: 0.85;">${r.driver}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
+      const clusterData = this.getDetailedClusterData()[index];
+      if (!clusterData) return;
+
+      const careerRows = clusterData.careers.map(car => {
+        const calculated = this.calculateEuclideanSuitability(car.name, this.scores);
+        return { ...car, score: calculated };
+      });
+      careerRows.sort((a, b) => b.score - a.score);
+
+      clusterContent.innerHTML = `
+        <h4 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-style: italic; margin-bottom: 1.5rem; border-bottom: 1.5px solid var(--color-border-dark); padding-bottom: 0.5rem;">
+          ${clusterData.name} Options
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          ${careerRows.map((r, idx) => {
+            const isMatch = r.score >= 70 ? "High Compatibility" : "Moderate Compatibility";
+            const badgeColor = r.score >= 70 ? "var(--color-accent-rust)" : "var(--color-text-body)";
+            return `
+              <div class="vt-card vt-card-hover career-path-card" data-idx="${idx}" style="padding: 1.5rem; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid var(--color-border-dark);">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
+                  <h5 style="font-size: 1.05rem; font-family: 'Playfair Display', serif; font-weight: 700; margin: 0; line-height: 1.2;">${r.name}</h5>
+                  <span style="font-family: 'Courier Prime', monospace; font-size: 1.15rem; font-weight: 700; color: var(--color-accent-rust);">${r.score}%</span>
+                </div>
+                <div style="font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: ${badgeColor}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 700;">
+                  ${isMatch}
+                </div>
+                <p style="font-size: 0.85rem; line-height: 1.5; opacity: 0.85; margin-bottom: 1rem; font-style: italic;">
+                  ${r.description}
+                </p>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; border-top: 1px dashed var(--color-border); padding-top: 0.8rem; opacity: 0.9;">
+                  <strong>Ideal Profile:</strong> ${r.profile}
+                </div>
+                
+                <div class="career-detail-popup hidden" id="popup-${index}-${idx}" style="margin-top: 1rem; background: var(--color-bg-base); padding: 0.8rem; border: 1px solid var(--color-border-dark);">
+                  <div style="font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.72rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.4rem;">
+                    Skills Gap Analysis Checklists
+                  </div>
+                  ${this.generateSkillsGapHTML(r.skills)}
+                </div>
+              </div>
+            `;
+          }).join("")}
         </div>
       `;
+
+      const cards = clusterContent.querySelectorAll(".career-path-card");
+      cards.forEach(card => {
+        card.addEventListener("click", () => {
+          const popup = card.querySelector(".career-detail-popup");
+          if (popup) {
+            popup.classList.toggle("hidden");
+          }
+        });
+      });
+    };
+
+    clusterTabs.forEach((tab, idx) => {
+      tab.addEventListener("click", () => selectCluster(idx));
     });
-    return html;
+
+    selectCluster(0);
   }
 
   getDeepDiveHTML() {

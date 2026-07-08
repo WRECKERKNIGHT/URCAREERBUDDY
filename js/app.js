@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnNextQuestion = document.getElementById("btn-next-question");
   const btnThemeToggle = document.getElementById("btn-theme-toggle");
   const themeSwitchSlider = document.getElementById("theme-switch-slider");
+
+  // Bilingual Selectors
+  const btnLangEn = document.getElementById("btn-lang-en");
+  const btnLangHi = document.getElementById("btn-lang-hi");
   
   // Intake Form
   const onboardingForm = document.getElementById("onboarding-form");
@@ -40,6 +44,116 @@ document.addEventListener("DOMContentLoaded", () => {
   const answeredQuestionsLabel = document.getElementById("answered-questions-label");
   const progressBarFill = document.getElementById("progress-bar-fill");
   const questionBoxWrapper = document.getElementById("question-box-wrapper");
+
+  // Language State
+  let activeLang = "en";
+
+  const translations = {
+    en: {
+      navHome: "Home",
+      navReset: "Reset Portal",
+      heroTitle: "URCAREERBUDDY",
+      heroBy: "BY HARSHIT MISHRA",
+      heroSubtitle: "An advanced psychometric engine designed to guide student trajectories through scientific diagnostic metrics. Calibrating Core Aptitude, Behavioral Traits, Workplace Values, and Skill Matrix maps across 130 structural data points.",
+      btnEnterPortal: "Access Diagnostic Portal",
+      intakeTitle: "Intake Profile Registration",
+      labelName: "Student Name",
+      labelGrade: "Academic Grade / Stream Track",
+      btnStartTest: "Begin Diagnostic Testing",
+      btnSimulate: "Simulate Diagnostic Dossier Report",
+      prevBtn: "Previous",
+      nextBtn: "Next",
+      disclaimerTitle: "Registry Waiver & Psychometric Accord",
+      disclaimerAgree: "I Agree & Accept Terms",
+      disclaimerClose: "Decline"
+    },
+    hi: {
+      navHome: "होम",
+      navReset: "पोर्टल रीसेट करें",
+      heroTitle: "यूआरकैरियरबडी",
+      heroBy: "हर्षित मिश्रा द्वारा निर्मित",
+      heroSubtitle: "छात्रों के करियर विकल्पों को वैज्ञानिक डायग्नोस्टिक मेट्रिक्स के माध्यम से मार्गदर्शन करने के लिए डिज़ाइन किया गया एक उन्नत साइकोमेट्रिक इंजन। 130 संरचनात्मक डेटा बिंदुओं पर मूल योग्यता, व्यवहार लक्षण, कार्यस्थल मूल्यों और कौशल मैट्रिक्स को कैलिब्रेट करना।",
+      btnEnterPortal: "डायग्नोस्टिक पोर्टल खोलें",
+      intakeTitle: "दाखिला प्रोफ़ाइल पंजीकरण",
+      labelName: "छात्र का नाम",
+      labelGrade: "शैक्षणिक ग्रेड / स्ट्रीम ट्रैक",
+      btnStartTest: "डायग्नोस्टिक परीक्षण शुरू करें",
+      btnSimulate: "डायग्नोस्टिक रिपोर्ट का अनुकरण करें",
+      prevBtn: "पीछे",
+      nextBtn: "आगे",
+      disclaimerTitle: "पंजीकरण छूट और साइकोमेट्रिक समझौता",
+      disclaimerAgree: "मैं सहमत हूँ और शर्तें स्वीकार करता हूँ",
+      disclaimerClose: "अस्वीकार करें"
+    }
+  };
+
+  function translateStaticUI() {
+    const t = translations[activeLang];
+    
+    const homeEl = document.getElementById("nav-link-home");
+    const resetEl = document.getElementById("nav-link-reset");
+    if (homeEl) homeEl.innerText = t.navHome;
+    if (resetEl) resetEl.innerText = t.navReset;
+
+    const heroTitleEl = document.getElementById("parallax-text-1");
+    const heroByEl = heroTitleEl ? heroTitleEl.nextElementSibling : null;
+    const heroSubtitleEl = document.getElementById("parallax-text-2");
+    if (heroTitleEl) heroTitleEl.innerText = t.heroTitle;
+    if (heroByEl) heroByEl.innerText = t.heroBy;
+    if (heroSubtitleEl) heroSubtitleEl.innerText = t.heroSubtitle;
+    if (btnEnterPortal) {
+      btnEnterPortal.innerHTML = `${t.btnEnterPortal} <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 8px; vertical-align: middle;"><polyline points="9 18 15 12 9 6"></polyline></svg>`;
+    }
+
+    const intakeTitleEl = document.querySelector("#onboarding-view h2");
+    if (intakeTitleEl) intakeTitleEl.innerText = t.intakeTitle;
+    
+    const labelNameEl = document.querySelector("label[for='student-name']");
+    if (labelNameEl) labelNameEl.innerText = t.labelName;
+    
+    const labelGradeEl = document.querySelector("label[for='academic-grade']");
+    if (labelGradeEl) labelGradeEl.innerText = t.labelGrade;
+
+    if (btnStartTest) btnStartTest.innerText = t.btnStartTest;
+    if (btnSimulateReport) btnSimulateReport.innerText = t.btnSimulate;
+
+    if (btnPrevQuestion) btnPrevQuestion.innerText = t.prevBtn;
+    if (btnNextQuestion) btnNextQuestion.innerText = t.nextBtn;
+  }
+
+  function setLanguage(lang) {
+    activeLang = lang;
+    localStorage.setItem("career_guidance_lang", lang);
+
+    if (!btnLangEn || !btnLangHi) return;
+
+    if (lang === "hi") {
+      btnLangEn.style.background = "none";
+      btnLangEn.style.color = "var(--color-text-body)";
+      btnLangEn.style.opacity = "0.85";
+      btnLangHi.style.background = "var(--color-accent-rust)";
+      btnLangHi.style.color = "var(--color-bg-base)";
+      btnLangHi.style.opacity = "1";
+    } else {
+      btnLangHi.style.background = "none";
+      btnLangHi.style.color = "var(--color-text-body)";
+      btnLangHi.style.opacity = "0.85";
+      btnLangEn.style.background = "var(--color-accent-rust)";
+      btnLangEn.style.color = "var(--color-bg-base)";
+      btnLangEn.style.opacity = "1";
+    }
+
+    translateStaticUI();
+
+    if (!assessmentView.classList.contains("hidden")) {
+      renderCurrentQuestion();
+    }
+  }
+
+  if (btnLangEn && btnLangHi) {
+    btnLangEn.addEventListener("click", () => setLanguage("en"));
+    btnLangHi.addEventListener("click", () => setLanguage("hi"));
+  }
 
   // Instances
   const engine = new AssessmentEngine(questions);
@@ -244,7 +358,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const textTarget = document.getElementById("typewriter-question-text");
     const controlsTarget = document.getElementById("answer-controls-stage");
 
-    typePrintText(q.text, textTarget, () => {
+    const textToPrint = activeLang === "hi" && q.textHi ? q.textHi : q.text;
+
+    typePrintText(textToPrint, textTarget, () => {
       controlsTarget.classList.remove("hidden");
       bindAnswerEvents(q);
     });
@@ -309,16 +425,19 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="choice-options-grid">
           ${question.options.map((opt, idx) => {
             const isSelected = savedVal !== undefined && question.options[idx].score === savedVal;
+            const displayChoiceText = activeLang === "hi" && opt.textHi ? opt.textHi : opt.text;
             return `
               <button type="button" class="choice-option-btn ${isSelected ? 'selected' : ''}" data-score="${opt.score}">
-                ${opt.text}
+                ${displayChoiceText}
               </button>
             `;
           }).join("")}
         </div>
       `;
     } else if (question.type === "scale") {
-      const scaleLabels = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+      const scaleLabelsEn = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+      const scaleLabelsHi = ["दृढ़ता से असहमत", "असहमत", "तटस्थ", "सहमत", "दृढ़ता से सहमत"];
+      const scaleLabels = activeLang === "hi" ? scaleLabelsHi : scaleLabelsEn;
       return `
         <div class="likert-scale-container">
           ${[1, 2, 3, 4, 5].map(val => {
@@ -406,7 +525,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnPrevQuestion.disabled = true;
     btnNextQuestion.disabled = true;
 
-    const categoryNames = {
+    const categoryNamesEn = {
       personality: "Stage 1: Personality Diagnostics",
       ability: "Stage 2: Logical Aperture & Aptitude",
       interests: "Stage 3: Vocational Career Interests",
@@ -414,19 +533,37 @@ document.addEventListener("DOMContentLoaded", () => {
       skills: "Stage 5: Specialized Skills Grid"
     };
 
+    const categoryNamesHi = {
+      personality: "चरण 1: व्यक्तित्व निदान",
+      ability: "चरण 2: तार्किक क्षमता और योग्यता",
+      interests: "चरण 3: व्यावसायिक कैरियर रुचि",
+      learning: "चरण 4: व्यवहार संबंधी सीखने की शैली",
+      skills: "चरण 5: विशिष्ट कौशल ग्रिड"
+    };
+
+    const catNameOld = activeLang === "hi" ? categoryNamesHi[oldCat] : categoryNamesEn[oldCat];
+    const catNameNew = activeLang === "hi" ? categoryNamesHi[newCat] : categoryNamesEn[newCat];
+
+    const blockCompleteText = activeLang === "hi" ? "डायग्नोस्टिक ब्लॉक पूरा हुआ" : "DIAGNOSTIC BLOCK COMPLETE";
+    const sealedText = activeLang === "hi" ? "सत्यापित और सुरक्षित" : "Sealed";
+    const descText = activeLang === "hi" 
+      ? "इस अनुभाग के लिए आपके उत्तरों को प्रमाणित कर दिया गया है और फ़ाइल अलमारी में लॉक कर दिया गया है। अगला अंशांकन खंड शुरू करने के लिए तैयार।" 
+      : "Your responses for this section have been certified and locked into the dossier cabinet. Ready to initiate the next calibration segment.";
+    const btnText = activeLang === "hi" ? `${catNameNew} खोलें &rarr;` : `Unlock ${catNameNew} &rarr;`;
+
     questionBoxWrapper.innerHTML = `
       <div class="vt-card checkpoint-card fade-in-section" style="padding: 2.5rem 1.5rem; border: 2.2px double var(--color-accent-rust); text-align: center; background: var(--color-bg-card); box-shadow: var(--shadow-flat); margin-top: 1.5rem;">
         <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.8rem; font-weight: 700; letter-spacing: 2px;">
-          DIAGNOSTIC BLOCK COMPLETE
+          ${blockCompleteText}
         </div>
         <h3 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; margin-bottom: 1.2rem; color: var(--color-text-heading); line-height: 1.3;">
-          ${categoryNames[oldCat] || oldCat.toUpperCase()} Sealed
+          ${catNameOld} ${sealedText}
         </h3>
         <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; max-width: 440px; margin-inline: auto; color: var(--color-text-body);">
-          Your responses for this section have been certified and locked into the dossier cabinet. Ready to initiate the next calibration segment.
+          ${descText}
         </p>
         <button class="btn btn-primary" id="btn-checkpoint-proceed" style="font-size: 1rem; padding: 0.7rem 1.8rem; box-shadow: 4px 4px 0px var(--color-border-dark);">
-          Unlock ${categoryNames[newCat] || newCat.toUpperCase()} &rarr;
+          ${btnText}
         </button>
       </div>
     `;
@@ -632,6 +769,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
   initTheme();
+  const savedLang = localStorage.getItem("career_guidance_lang") || "en";
+  setLanguage(savedLang);
   checkAndResumeState();
   initDisclaimerModal();
   initSimulator();
