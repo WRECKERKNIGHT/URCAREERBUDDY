@@ -798,6 +798,72 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // Lightweight Floating Particles Script
+  function initHeroParticles() {
+    const container = document.getElementById("hero-particles-container");
+    if (!container) return;
+
+    const maxParticles = 22;
+    const particles = [];
+
+    function spawnParticle() {
+      const p = document.createElement("div");
+      p.className = "data-particle";
+      
+      const size = Math.random() * 3 + 1.8;
+      const left = Math.random() * 100;
+      const bottom = Math.random() * 25;
+      const speed = Math.random() * 0.8 + 0.4;
+      const wobbleSpeed = Math.random() * 0.015 + 0.008;
+      const wobbleRange = Math.random() * 15 + 8;
+      
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.left = `${left}%`;
+      p.style.bottom = `${bottom}%`;
+      
+      container.appendChild(p);
+      
+      particles.push({
+        element: p,
+        x: left,
+        y: bottom,
+        speed: speed,
+        wobbleSpeed: wobbleSpeed,
+        wobbleRange: wobbleRange,
+        wobbleOffset: Math.random() * 100,
+        opacity: Math.random() * 0.45 + 0.35
+      });
+    }
+
+    for (let i = 0; i < maxParticles; i++) {
+      spawnParticle();
+      particles[i].y = Math.random() * 100;
+      particles[i].element.style.bottom = `${particles[i].y}%`;
+    }
+
+    function updateParticles() {
+      particles.forEach((p) => {
+        p.y += p.speed * 0.16;
+        p.wobbleOffset += p.wobbleSpeed;
+        const currentX = p.x + Math.sin(p.wobbleOffset) * (p.wobbleRange / 10);
+        
+        p.element.style.bottom = `${p.y}%`;
+        p.element.style.left = `${currentX}%`;
+        p.element.style.opacity = p.opacity * (1 - (p.y / 100));
+
+        if (p.y >= 100) {
+          p.y = 0;
+          p.x = Math.random() * 100;
+          p.speed = Math.random() * 0.8 + 0.4;
+        }
+      });
+      requestAnimationFrame(updateParticles);
+    }
+
+    requestAnimationFrame(updateParticles);
+  }
+
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
   initTheme();
   const savedLang = localStorage.getItem("career_guidance_lang") || "en";
@@ -805,4 +871,5 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAndResumeState();
   initDisclaimerModal();
   initSimulator();
+  initHeroParticles();
 });

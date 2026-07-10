@@ -138,26 +138,34 @@
             </g>
           </svg>
 
-          <!-- Four-Pointed Sparkle Star (Bottom-Right) -->
-          <svg class="vintage-sparkle" viewBox="0 0 24 24" style="position: absolute; width: 45px; height: 45px; bottom: 15%; right: 12%; z-index: 1; pointer-events: none; opacity: 0.6; fill: var(--color-border-dark);">
-            <path d="M12,0 L14.5,9.5 L24,12 L14.5,14.5 L12,24 L9.5,14.5 L0,12 L9.5,9.5 Z" />
-          </svg>
+          <!-- Sparse Floating Data Particles Container -->
+          <div class="hero-particles-container" id="hero-particles-container"></div>
 
-          <!-- Central Title and Text Block (Floating directly on astrolabe backdrop with radial fade mask) -->
-          <div class="hero-central-card-clean" style="position: relative; z-index: 1; max-width: 780px; text-align: center; padding: 2.2rem 2rem; background: radial-gradient(circle, var(--color-bg-base) 45%, transparent 80%); transition: all 0.3s ease;">
-            <div class="hero-brand" style="margin-bottom: 1.5rem;">
-              <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem; text-shadow: 1px 1px 0px var(--color-bg-base), -1px -1px 0px var(--color-bg-base);">THE APPARATUS OF</span>
-              <h1 class="parallax-title" id="parallax-text-1" style="font-size: 6.2rem; font-family: 'Playfair Display', Georgia, serif; line-height: 1.05; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; color: #dfbe6c; text-shadow: 2px 2px 0px var(--color-bg-base), -2px -2px 0px var(--color-bg-base), 2px -2px 0px var(--color-bg-base), -2px 2px 0px var(--color-bg-base), 3px 3px 0px #bca059, 4px 4px 0px #8e763a, 5px 5px 12px rgba(0,0,0,0.7); display: block;">URCAREERBUDDY</h1>
-              <p style="font-family: 'Courier Prime', monospace; font-size: 1.05rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem; text-shadow: 1px 1px 0px var(--color-bg-base), -1px -1px 0px var(--color-bg-base);">
-                BY HARSHIT MISHRA
+          <!-- Central Title and Text Block (Wrapped inside double-bordered vintage Plaque apparatus) -->
+          <div class="apparatus-outer-wrapper">
+            <div class="apparatus-inner-container">
+              <!-- Corner Screws -->
+              <div class="apparatus-screw top-left"></div>
+              <div class="apparatus-screw top-right"></div>
+              <div class="apparatus-screw bottom-left"></div>
+              <div class="apparatus-screw bottom-right"></div>
+
+              <div class="hero-brand" style="margin-bottom: 1.5rem;">
+                <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem;">THE APPARATUS OF</span>
+                <h1 class="parallax-title" id="parallax-text-1" style="font-size: clamp(2.8rem, 6.8vw, 5.8rem); font-family: 'Playfair Display', Georgia, serif; line-height: 1.05; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; color: #dfbe6c; text-shadow: 2px 2px 0px var(--color-bg-base), 4px 4px 0px rgba(0,0,0,0.85); display: block;">URCAREERBUDDY</h1>
+                <p style="font-family: 'Courier Prime', monospace; font-size: 1.05rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
+                  BY HARSHIT MISHRA
+                </p>
+              </div>
+              
+              <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.95;">
+                An advanced 130-point psychometric engine designed to calibrate your cognitive aptitudes, behavioral traits, and values to align your optimal career path.
               </p>
+              
+              <button class="btn btn-indicator-glow" id="btn-enter-portal">
+                ACCESS DIAGNOSTIC PORTAL
+              </button>
             </div>
-            <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.95; text-shadow: 1px 1px 0px var(--color-bg-base), -1px -1px 0px var(--color-bg-base), 1px -1px 0px var(--color-bg-base), -1px 1px 0px var(--color-bg-base);">
-              An advanced 130-point psychometric engine designed to calibrate your cognitive aptitudes, behavioral traits, and values to align your optimal career path.
-            </p>
-            <button class="btn btn-hero-portal" id="btn-enter-portal" style="font-size: 1.1rem; padding: 0.8rem 2.8rem; background-color: var(--color-accent-gold) !important; color: var(--color-bg-base) !important; border: 1.5px solid var(--color-border-dark) !important; outline: 2px double var(--color-border-dark) !important; outline-offset: -5px !important; box-shadow: 4px 4px 0px var(--color-border-dark) !important; border-radius: 0px !important;">
-              ACCESS DIAGNOSTIC PORTAL
-            </button>
           </div>
         </div>
 
