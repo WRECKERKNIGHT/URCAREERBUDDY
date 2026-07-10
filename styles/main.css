@@ -150,7 +150,7 @@
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-    padding: 2rem 1.5rem;
+    padding: 0 1.5rem 2rem 1.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -159,6 +159,8 @@
   }
 
   header {
+    margin-top: 0;
+    padding-top: 1.5rem;
     margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
     border-bottom: 3px double var(--color-border-dark);
@@ -297,17 +299,25 @@
   }
 
   .gear-top-right {
-    top: -50px;
-    right: -50px;
-    animation: spinClockwise 25s linear infinite;
+    top: 15%;
+    right: -130px;
+    width: 380px;
+    height: 380px;
+    animation: spinClockwise 45s linear infinite;
+    stroke: var(--color-accent-gold) !important;
+    opacity: 0.38 !important;
+    filter: drop-shadow(0 0 10px rgba(255, 223, 109, 0.35));
   }
 
   .gear-bottom-left {
-    bottom: -80px;
-    left: -80px;
-    width: 450px;
-    height: 450px;
-    animation: spinCounterClockwise 35s linear infinite;
+    top: 45%;
+    left: -130px;
+    width: 380px;
+    height: 380px;
+    animation: spinCounterClockwise 55s linear infinite;
+    stroke: var(--color-accent-gold) !important;
+    opacity: 0.38 !important;
+    filter: drop-shadow(0 0 10px rgba(255, 223, 109, 0.35));
   }
 
   @keyframes spinClockwise {
@@ -451,10 +461,13 @@
     gap: 0.8rem;
     text-align: left;
     border-top: 4px double var(--color-border-dark);
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .quadrant-card:hover {
     border-top: 4px double var(--color-accent-rust);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45), 0 0 15px rgba(255, 223, 109, 0.15);
   }
 
   .quadrant-icon {
@@ -1496,55 +1509,63 @@
   fill: none !important;
 }
 
-/* Apparatus Content Box Plaque */
+/* Viewport Corners Double Border Frame */
+.viewport-corners-frame {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border: 1px solid var(--color-border-dark);
+  outline: 2px double var(--color-border-dark);
+  outline-offset: 3px;
+  pointer-events: none;
+  z-index: 9999;
+}
+.viewport-corners-frame::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 18px;
+  height: 18px;
+  border-top: 3px solid var(--color-accent-gold);
+  border-left: 3px solid var(--color-accent-gold);
+}
+.viewport-corners-frame::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-bottom: 3px solid var(--color-accent-gold);
+  border-right: 3px solid var(--color-accent-gold);
+}
+
+/* Apparatus Content Box Plaque (Removed borders & background from center) */
 .apparatus-outer-wrapper {
-  border: 3.5px solid var(--color-border-dark);
-  padding: 5px;
-  background: transparent;
-  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.65);
+  border: none !important;
+  padding: 0;
+  background: transparent !important;
+  box-shadow: none !important;
   position: relative;
   z-index: 2;
-  max-width: 860px;
+  max-width: 900px;
   width: 95%;
-  margin: 2.5rem auto;
+  margin: 2rem auto;
   transition: all 0.3s ease;
 }
 
 .apparatus-inner-container {
-  border: 1.5px solid var(--color-accent-gold);
-  padding: 3.5rem 2rem;
+  border: none !important;
+  padding: 2.5rem 1.5rem;
   position: relative;
-  background: rgba(20, 18, 16, 0.45);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   text-align: center;
 }
-
-/* Mechanical Corner Screws */
-.apparatus-screw {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #141210;
-  border: 1.5px solid var(--color-accent-gold);
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.apparatus-screw::before {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 1.5px;
-  background: var(--color-accent-gold);
-  transform: rotate(45deg);
-}
-.apparatus-screw.top-left { top: 10px; left: 10px; }
-.apparatus-screw.top-right { top: 10px; right: 10px; }
-.apparatus-screw.bottom-left { bottom: 10px; left: 10px; }
-.apparatus-screw.bottom-right { bottom: 10px; right: 10px; }
 
 /* 3D Gold Engraved Text Shadow on Hero Title */
 #parallax-text-1 {

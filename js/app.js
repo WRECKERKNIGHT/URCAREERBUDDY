@@ -803,8 +803,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("hero-particles-container");
     if (!container) return;
 
-    const maxParticles = 22;
+    const maxParticles = 24;
     const particles = [];
+    let mouseX = null;
+    let mouseY = null;
+
+    // Track mouse position over the hero area
+    const heroBlock = document.querySelector(".hero-block");
+    if (heroBlock) {
+      heroBlock.addEventListener("mousemove", (e) => {
+        const rect = heroBlock.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+        mouseY = 100 - (((e.clientY - rect.top) / rect.height) * 100);
+      });
+      heroBlock.addEventListener("mouseleave", () => {
+        mouseX = null;
+        mouseY = null;
+      });
+    }
 
     function spawnParticle() {
       const p = document.createElement("div");
@@ -846,13 +862,21 @@ document.addEventListener("DOMContentLoaded", () => {
       particles.forEach((p) => {
         p.y += p.speed * 0.16;
         p.wobbleOffset += p.wobbleSpeed;
+        
+        if (mouseX !== null && mouseY !== null) {
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          p.x += dx * 0.035;
+          p.y += dy * 0.035;
+        }
+
         const currentX = p.x + Math.sin(p.wobbleOffset) * (p.wobbleRange / 10);
         
         p.element.style.bottom = `${p.y}%`;
         p.element.style.left = `${currentX}%`;
         p.element.style.opacity = p.opacity * (1 - (p.y / 100));
 
-        if (p.y >= 100) {
+        if (p.y >= 100 || p.y < 0 || p.x < 0 || p.x > 100) {
           p.y = 0;
           p.x = Math.random() * 100;
           p.speed = Math.random() * 0.8 + 0.4;
@@ -862,6 +886,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     requestAnimationFrame(updateParticles);
+
+    // Interactive Central Astrolabe Speed-up on CTA Hover
+    const centralAstrolabe = document.querySelector(".hero-compass-svg");
+    const ctaBtn = document.getElementById("btn-enter-portal");
+    if (ctaBtn && centralAstrolabe) {
+      ctaBtn.addEventListener("mouseenter", () => {
+        centralAstrolabe.style.animationDuration = "15s";
+      });
+      ctaBtn.addEventListener("mouseleave", () => {
+        centralAstrolabe.style.animationDuration = "80s";
+      });
+    }
   }
 
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
