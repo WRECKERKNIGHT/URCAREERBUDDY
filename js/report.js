@@ -206,17 +206,27 @@ export class ReportRenderer {
         <h3>Stage 1: Personality Diagnostics (MBTI Model)</h3>
         <p class="section-sub">Percentile distribution mapping your cognitive focus, data filters, decision methods, and scheduling style.</p>
         
-        <!-- bi-directional high-contrast horizontal percentage gauges (PRD Part 2 Section 1) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem;">
-          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase;">Bi-Directional Percentage Gauges</h4>
-          
-          ${this.generateBiDirectionalGauge("Introversion", m.introvert, "Extroversion", m.extravert, "🧠", "🟧")}
-          ${this.generateBiDirectionalGauge("Sensing", m.sensing, "Intuition", m.intuitive, "🔍", "🟪")}
-          ${this.generateBiDirectionalGauge("Thinking", m.thinking, "Feeling", m.feeling, "⚖️", "🟦")}
-          ${this.generateBiDirectionalGauge("Judging", m.judging, "Perceiving", m.perceiving, "📅", "🟩")}
-          
-          <div style="text-align: center; margin-top: 1.5rem; font-family: 'Courier Prime', monospace; font-size: 1.1rem; font-weight: 700; color: var(--color-accent-rust);">
-            CALCULATED CODE: ${this.scores.mbtiCode}
+        <!-- Gauges & Typology side-by-side grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; margin-bottom: 2rem;">
+          <!-- Bi-Directional Gauges -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase;">Bi-Directional Percentage Gauges</h4>
+            ${this.generateBiDirectionalGauge("Introversion", m.introvert, "Extroversion", m.extravert, "🧠", "🟧")}
+            ${this.generateBiDirectionalGauge("Sensing", m.sensing, "Intuition", m.intuitive, "🔍", "🟪")}
+            ${this.generateBiDirectionalGauge("Thinking", m.thinking, "Feeling", m.feeling, "⚖️", "🟦")}
+            ${this.generateBiDirectionalGauge("Judging", m.judging, "Perceiving", m.perceiving, "📅", "🟩")}
+            <div style="text-align: center; margin-top: 1.5rem; font-family: 'Courier Prime', monospace; font-size: 1.1rem; font-weight: 700; color: var(--color-accent-rust);">
+              CALCULATED CODE: ${this.scores.mbtiCode}
+            </div>
+          </div>
+
+          <!-- Typology Quadrant Map -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase; text-align: center;">Typology Quadrant Map (Jungian Grid)</h4>
+            ${this.generateTypologyGridSVG()}
+            <p style="font-size: 0.72rem; line-height: 1.4; opacity: 0.85; text-align: center; margin-top: 1rem; font-family: 'Courier Prime', monospace;">
+              This interactive quadrant calculates your placement coordinates along the Introversion-Extraversion and Sensing-Intuition spectra.
+            </p>
           </div>
         </div>
 
@@ -383,16 +393,28 @@ export class ReportRenderer {
         <h3>Stage 3: Holland’s Career Interest Analysis</h3>
         <p class="section-sub">Profiling your professional parameters using the six RIASEC categories.</p>
         
-        <!-- 6-Column Vertical Bar Chart (PRD Part 2 Section 3) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem;">
-          <div class="justify-between container-flex" style="margin-bottom: 1rem;">
-            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase;">RIASEC Vertical Columns</h4>
-            <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; font-weight: 700; color: var(--color-accent-rust);">
-              RIASEC ANCHOR: ${this.scores.riasecCode || "N/A"}
-            </span>
+        <!-- Bar Chart & Hexagon side-by-side grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; margin-bottom: 2rem;">
+          <!-- 6-Column Vertical Bar Chart -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center;">
+            <div class="justify-between container-flex" style="margin-bottom: 1rem;">
+              <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase;">RIASEC Vertical Columns</h4>
+              <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; font-weight: 700; color: var(--color-accent-rust);">
+                ANCHOR: ${this.scores.riasecCode || "N/A"}
+              </span>
+            </div>
+            <div id="riasec-bar-chart-container" style="width:100%; max-width: 480px; height:220px; margin: 0 auto; display:flex; justify-content:center; align-items:center;">
+              <!-- Rendered by drawRiasecBarChart() -->
+            </div>
           </div>
-          <div id="riasec-bar-chart-container" style="width:100%; max-width: 480px; height:240px; margin: 0 auto; display:flex; justify-content:center; align-items:center;">
-            <!-- Rendered by drawRiasecBarChart() -->
+
+          <!-- Holland Hexagon Ring Diagram -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase; text-align: center;">Holland RIASEC Hexagon Ring</h4>
+            ${this.generateHollandHexagonSVG()}
+            <p style="font-size: 0.72rem; line-height: 1.4; opacity: 0.85; text-align: center; margin-top: 0.5rem; font-family: 'Courier Prime', monospace;">
+              Concentric geometric mapping displays your vocational anchor profile outline overlay.
+            </p>
           </div>
         </div>
 
@@ -468,29 +490,63 @@ export class ReportRenderer {
       <section class="vt-card">
         <h3>Stage 4: Behavioral Learning Style Blueprint</h3>
         <p class="section-sub">Visualizing your cognitive inputs for studying, retaining, and recalling information.</p>
-        
-        <!-- VARK Donut Graph (PRD Part 2 Section 4) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around; gap: 1.5rem;">
-          <div id="vark-donut-container" style="width: 260px; height: 260px;">
-            <!-- Rendered by drawVARKDonutChart() -->
+
+        <!-- Donut & Sensory Quadrants side-by-side grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; margin-bottom: 2rem;">
+          <!-- Donut Graph -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: uppercase;">VARK Distribution Donut</h4>
+            <div id="vark-donut-container" style="width: 200px; height: 200px;">
+              <!-- Rendered by drawVARKDonutChart() -->
+            </div>
+            <div style="width: 100%; margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; justify-items: start;">
+              <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; display: flex; align-items: center;">
+                <span style="display:inline-block; width:10px; height:10px; background-color: var(--color-accent-rust); margin-right: 6px;"></span>
+                VISUAL: ${l.visual}%
+              </div>
+              <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; display: flex; align-items: center;">
+                <span style="display:inline-block; width:10px; height:10px; background-color: var(--color-accent-sage); margin-right: 6px;"></span>
+                AUDITORY: ${l.auditory}%
+              </div>
+              <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; display: flex; align-items: center;">
+                <span style="display:inline-block; width:10px; height:10px; background-color: var(--color-accent-gold); margin-right: 6px;"></span>
+                READ/WRITE: ${l.readwrite}%
+              </div>
+              <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; display: flex; align-items: center;">
+                <span style="display:inline-block; width:10px; height:10px; background-color: var(--color-border-dark); margin-right: 6px;"></span>
+                KINESTHETIC: ${l.kinesthetic}%
+              </div>
+            </div>
           </div>
-          
-          <div style="flex-grow: 1; max-width: 320px;">
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; margin-bottom: 0.5rem; display: flex; align-items: center;">
-              <span style="display:inline-block; width:12px; height:12px; background-color: var(--color-accent-rust); margin-right: 8px;"></span>
-              VISUAL: ${l.visual}%
-            </div>
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; margin-bottom: 0.5rem; display: flex; align-items: center;">
-              <span style="display:inline-block; width:12px; height:12px; background-color: var(--color-accent-sage); margin-right: 8px;"></span>
-              AUDITORY: ${l.auditory}%
-            </div>
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; margin-bottom: 0.5rem; display: flex; align-items: center;">
-              <span style="display:inline-block; width:12px; height:12px; background-color: var(--color-accent-gold); margin-right: 8px;"></span>
-              READ & WRITE: ${l.readwrite}%
-            </div>
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; display: flex; align-items: center;">
-              <span style="display:inline-block; width:12px; height:12px; background-color: var(--color-border-dark); margin-right: 8px;"></span>
-              KINESTHETIC: ${l.kinesthetic}%
+
+          <!-- Sensory Preferences 2x2 Quadrant Grid -->
+          <div class="vt-card" style="padding: 1.5rem; border-style: dashed; display: flex; flex-direction: column; justify-content: center;">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.2rem; text-transform: uppercase; text-align: center;">Sensory Input Preference Grid</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+              <!-- Visual -->
+              <div style="padding: 0.6rem; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-base); text-align: center; border-color: ${dominant === 'visual' ? 'var(--color-accent-rust)' : 'var(--color-border-dark)'};">
+                <div style="font-size: 1.2rem; margin-bottom: 0.2rem;">👁️</div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; font-weight: 700;">VISUAL</div>
+                <div style="font-size: 0.95rem; font-weight: 800; color: var(--color-accent-rust);">${l.visual}%</div>
+              </div>
+              <!-- Auditory -->
+              <div style="padding: 0.6rem; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-base); text-align: center; border-color: ${dominant === 'auditory' ? 'var(--color-accent-rust)' : 'var(--color-border-dark)'};">
+                <div style="font-size: 1.2rem; margin-bottom: 0.2rem;">👂</div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; font-weight: 700;">AUDITORY</div>
+                <div style="font-size: 0.95rem; font-weight: 800; color: var(--color-accent-sage);">${l.auditory}%</div>
+              </div>
+              <!-- ReadWrite -->
+              <div style="padding: 0.6rem; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-base); text-align: center; border-color: ${dominant === 'readwrite' ? 'var(--color-accent-rust)' : 'var(--color-border-dark)'};">
+                <div style="font-size: 1.2rem; margin-bottom: 0.2rem;">✍️</div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; font-weight: 700;">READ/WRITE</div>
+                <div style="font-size: 0.95rem; font-weight: 800; color: var(--color-accent-gold);">${l.readwrite}%</div>
+              </div>
+              <!-- Kinesthetic -->
+              <div style="padding: 0.6rem; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-base); text-align: center; border-color: ${dominant === 'kinesthetic' ? 'var(--color-accent-rust)' : 'var(--color-border-dark)'};">
+                <div style="font-size: 1.2rem; margin-bottom: 0.2rem;">🛠️</div>
+                <div style="font-family: 'Courier Prime', monospace; font-size: 0.65rem; font-weight: 700;">KINESTHETIC</div>
+                <div style="font-size: 0.95rem; font-weight: 800; color: var(--color-border-dark);">${l.kinesthetic}%</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1051,6 +1107,130 @@ export class ReportRenderer {
             </text>
           `;
         }).join("")}
+      </svg>
+    `;
+  }
+
+  generateTypologyGridSVG() {
+    const m = this.scores.mbti;
+    // Map E vs I to X axis: Extroversion (100) is right, Introversion (100) is left.
+    const xVal = 100 + ((m.extravert - m.introvert) / 100) * 80;
+    // Map N vs S to Y axis: Intuitive (100) is top, Sensing (100) is bottom.
+    const yVal = 100 - ((m.intuitive - m.sensing) / 100) * 80;
+
+    return `
+      <svg viewBox="0 0 200 200" style="width:100%; max-width:300px; height:auto; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-base); margin: 0 auto; display: block;">
+        <!-- Quadrant Divider Axes -->
+        <line x1="100" y1="10" x2="100" y2="190" stroke="var(--color-border)" stroke-width="1.2" />
+        <line x1="10" y1="100" x2="190" y2="100" stroke="var(--color-border)" stroke-width="1.2" />
+        
+        <!-- Outer Frame -->
+        <rect x="5" y="5" width="190" height="190" fill="none" stroke="var(--color-border-dark)" stroke-width="1" stroke-dasharray="2 2" />
+        
+        <!-- Axis Labels -->
+        <text x="100" y="14" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="700" fill="var(--color-accent-rust)">INTUITION (N)</text>
+        <text x="100" y="193" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="700" fill="var(--color-accent-rust)">SENSING (S)</text>
+        <text x="193" y="103" text-anchor="end" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="700" fill="var(--color-accent-rust)">EXTRAVERSION (E)</text>
+        <text x="7" y="103" text-anchor="start" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="700" fill="var(--color-accent-rust)">INTROVERSION (I)</text>
+        
+        <!-- Quadrant Names -->
+        <text x="50" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="6.5" font-style="italic" fill="var(--color-text-body)" opacity="0.35">INTUITIVE THINKER</text>
+        <text x="150" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="6.5" font-style="italic" fill="var(--color-text-body)" opacity="0.35">EXECUTIVE SOCIAL</text>
+        <text x="50" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="6.5" font-style="italic" fill="var(--color-text-body)" opacity="0.35">PRAGMATIC ANALYST</text>
+        <text x="150" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="6.5" font-style="italic" fill="var(--color-text-body)" opacity="0.35">ACTION ORIENTED</text>
+        
+        <!-- Projection lines -->
+        <line x1="100" y1="${yVal.toFixed(1)}" x2="${xVal.toFixed(1)}" y2="${yVal.toFixed(1)}" stroke="var(--color-accent-gold)" stroke-width="1.2" stroke-dasharray="1 2" />
+        <line x1="${xVal.toFixed(1)}" y1="100" x2="${xVal.toFixed(1)}" y2="${yVal.toFixed(1)}" stroke="var(--color-accent-gold)" stroke-width="1.2" stroke-dasharray="1 2" />
+        
+        <!-- Active User Coordinate -->
+        <circle cx="${xVal.toFixed(1)}" cy="${yVal.toFixed(1)}" r="6" fill="var(--color-accent-gold)" stroke="var(--color-border-dark)" stroke-width="1.8" />
+        <circle cx="${xVal.toFixed(1)}" cy="${yVal.toFixed(1)}" r="12" fill="none" stroke="var(--color-accent-gold)" stroke-width="0.8" opacity="0.5">
+          <animate attributeName="r" values="6;16;6" dur="3s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.8;0;0.8" dur="3s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    `;
+  }
+
+  generateHollandHexagonSVG() {
+    const riasec = this.scores.interests;
+    const cx = 100;
+    const cy = 100;
+    const rMax = 80;
+
+    const angles = [0, Math.PI / 3, 2 * Math.PI / 3, Math.PI, 4 * Math.PI / 3, 5 * Math.PI / 3];
+    const categories = [
+      { key: "realistic", label: "REALISTIC (R)" },
+      { key: "investigative", label: "INVESTIGATIVE (I)" },
+      { key: "artistic", label: "ARTISTIC (A)" },
+      { key: "social", label: "SOCIAL (S)" },
+      { key: "enterprising", label: "ENTERPRISING (E)" },
+      { key: "conventional", label: "CONVENTIONAL (C)" }
+    ];
+
+    const points = categories.map((cat, idx) => {
+      const val = riasec[cat.key] || 0;
+      const dist = Math.max(15, (val / 100) * rMax);
+      const x = cx + dist * Math.cos(angles[idx]);
+      const y = cy + dist * Math.sin(angles[idx]);
+      return { x, y };
+    });
+
+    const polyStr = points.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+    const gridRings = [25, 50, 75, 100].map(radiusPct => {
+      const radius = (radiusPct / 100) * rMax;
+      const pts = angles.map(a => {
+        const x = cx + radius * Math.cos(a);
+        const y = cy + radius * Math.sin(a);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
+      return `<polygon points="${pts}" fill="none" stroke="var(--color-border)" stroke-width="0.8" stroke-dasharray="2 3" />`;
+    }).join("");
+
+    const spokes = angles.map((a, idx) => {
+      const x = cx + rMax * Math.cos(a);
+      const y = cy + rMax * Math.sin(a);
+      return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--color-border)" stroke-width="0.8" />`;
+    }).join("");
+
+    const outerPts = angles.map(a => {
+      const x = cx + rMax * Math.cos(a);
+      const y = cy + rMax * Math.sin(a);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+
+    const labelsHTML = categories.map((cat, idx) => {
+      const labelDist = rMax + 14;
+      const x = cx + labelDist * Math.cos(angles[idx]);
+      const y = cy + labelDist * Math.sin(angles[idx]);
+      
+      let textAnchor = "middle";
+      if (Math.cos(angles[idx]) > 0.2) textAnchor = "start";
+      else if (Math.cos(angles[idx]) < -0.2) textAnchor = "end";
+
+      return `
+        <text x="${x.toFixed(1)}" y="${y.toFixed(1) + 3}" text-anchor="${textAnchor}" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="700" fill="var(--color-text-heading)">
+          ${cat.label}
+        </text>
+      `;
+    }).join("");
+
+    return `
+      <svg viewBox="0 0 240 220" style="width:100%; max-width:320px; height:auto; margin: 0 auto; display:block;">
+        <!-- Concentric hex rings -->
+        ${gridRings}
+        <!-- Spoke dividers -->
+        ${spokes}
+        <!-- Outer Frame Hexagon -->
+        <polygon points="${outerPts}" fill="none" stroke="var(--color-border-dark)" stroke-width="1.2" />
+        <!-- User Interests Footprint -->
+        <polygon points="${polyStr}" fill="var(--color-accent-rust)" fill-opacity="0.25" stroke="var(--color-accent-rust)" stroke-width="2.2" />
+        <!-- Point indicators -->
+        ${points.map(p => `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="var(--color-accent-rust)" />`).join("")}
+        <!-- Labels -->
+        ${labelsHTML}
       </svg>
     `;
   }
