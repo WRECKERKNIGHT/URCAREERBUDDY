@@ -107,18 +107,18 @@
             <circle cx="300" cy="300" r="274" fill="none" stroke="#ffdf6d" stroke-width="1.2" stroke-dasharray="3 3" />
             <circle cx="300" cy="300" r="260" fill="none" stroke="#ffdf6d" stroke-width="2.2" />
             <circle cx="300" cy="300" r="220" fill="none" stroke="#ffdf6d" stroke-width="1.2" stroke-dasharray="12 4" />
-            <circle cx="300" cy="300" r="160" fill="none" stroke="#ffdf6d" stroke-width="1.8" />
+            <circle cx="300" cy="300" r="160" fill="none" stroke="#eb5e28" stroke-width="1.8" />
             <circle cx="300" cy="300" r="100" fill="none" stroke="#ffdf6d" stroke-width="1.2" stroke-dasharray="4 2" />
-            <circle cx="300" cy="300" r="40" fill="none" stroke="#ffdf6d" stroke-width="1.8" />
+            <circle cx="300" cy="300" r="40" fill="none" stroke="#eb5e28" stroke-width="1.8" />
             
-            <line x1="300" y1="10" x2="300" y2="590" stroke="#ffdf6d" stroke-width="1.2" opacity="0.65" />
-            <line x1="10" y1="300" x2="590" y2="300" stroke="#ffdf6d" stroke-width="1.2" opacity="0.65" />
+            <line x1="300" y1="10" x2="300" y2="590" stroke="#eb5e28" stroke-width="1.2" opacity="0.65" />
+            <line x1="10" y1="300" x2="590" y2="300" stroke="#eb5e28" stroke-width="1.2" opacity="0.65" />
             
             <line x1="95" y1="95" x2="505" y2="505" stroke="#ffdf6d" stroke-width="1" stroke-dasharray="5 5" opacity="0.45" />
             <line x1="95" y1="505" x2="505" y2="95" stroke="#ffdf6d" stroke-width="1" stroke-dasharray="5 5" opacity="0.45" />
             
-            <polygon points="300,40 525,430 75,430" fill="none" stroke="#ffdf6d" stroke-width="1" opacity="0.35" />
-            <polygon points="300,560 525,170 75,170" fill="none" stroke="#ffdf6d" stroke-width="1" opacity="0.35" />
+            <polygon points="300,40 525,430 75,430" fill="none" stroke="#eb5e28" stroke-width="1" opacity="0.35" />
+            <polygon points="300,560 525,170 75,170" fill="none" stroke="#eb5e28" stroke-width="1" opacity="0.35" />
             
             <circle cx="300" cy="300" r="267" fill="none" stroke="#ffdf6d" stroke-width="6.5" stroke-dasharray="1 5.95" opacity="0.75" />
             <circle cx="300" cy="300" r="154" fill="none" stroke="#ffdf6d" stroke-width="4.5" stroke-dasharray="1 3.97" opacity="0.55" />
@@ -153,6 +153,28 @@
                 <p style="font-family: 'Courier Prime', monospace; font-size: 1.05rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
                   BY HARSHIT MISHRA
                 </p>
+                <!-- Katana Divider Stand SVG -->
+                <div style="margin: 1.5rem auto 1rem; text-align: center;">
+                  <svg class="katana-divider-svg" width="300" height="40" viewBox="0 0 300 40" style="display: inline-block;">
+                    <!-- Ornate Stand Base -->
+                    <path d="M 30 35 L 270 35" stroke="#eb5e28" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 50 35 L 50 38 L 40 38" stroke="#eb5e28" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <path d="M 250 35 L 250 38 L 260 38" stroke="#eb5e28" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <!-- Sword Hooks -->
+                    <path d="M 80 35 L 80 20 Q 80 15 88 15 C 92 15 95 18 95 20 Q 95 25 80 25" stroke="#ffdf6d" stroke-width="2" fill="none"/>
+                    <path d="M 220 35 L 220 20 Q 220 15 212 15 C 208 15 205 18 205 20 Q 205 25 220 25" stroke="#ffdf6d" stroke-width="2" fill="none"/>
+                    <!-- Rested Sword (Katana Blade with Wrap Handle) -->
+                    <path d="M 70 17 L 230 17" stroke="#FFFDF9" stroke-width="1.8" stroke-linecap="round"/>
+                    <!-- Curved Blade Line -->
+                    <path d="M 230 17 Q 235 17 240 15" stroke="#ffdf6d" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <!-- Wrap handle texture -->
+                    <path d="M 60 17 L 72 17" stroke="#eb5e28" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="63" y1="15" x2="63" y2="19" stroke="#141210" stroke-width="1"/>
+                    <line x1="67" y1="15" x2="67" y2="19" stroke="#141210" stroke-width="1"/>
+                    <!-- Small gold tassel/menuki -->
+                    <circle cx="58" cy="17" r="1.5" fill="#ffdf6d"/>
+                  </svg>
+                </div>
               </div>
               
               <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.95;">
@@ -169,7 +191,7 @@
         <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
 
         <!-- Diagnostic Quadrants Feature Cards -->
-        <div class="quadrants-section">
+        <div class="quadrants-section scroll-reveal">
           <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem; font-style: italic;">Platform Diagnostic Pillars & Methodology</h3>
           <div class="quadrants-grid">
             
@@ -227,7 +249,7 @@
         <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
 
         <!-- 5-STAGE ASSESSMENT PIPELINE VISUAL TIMELINE -->
-        <div class="timeline-section">
+        <div class="timeline-section scroll-reveal">
           <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2.5rem; font-style: italic;">The 5-Stage Testing Sequence</h3>
           <div class="pipeline-timeline">
             
@@ -267,7 +289,7 @@
         <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>
 
         <!-- INTERACTIVE TRAIT COORDINATES SIMULATOR -->
-        <div class="simulator-section">
+        <div class="simulator-section scroll-reveal">
           <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 1.5rem; font-style: italic;">Apparatus Simulator Panel</h3>
           <p class="text-center section-sub" style="margin-bottom: 2rem;">Adjust the dial sliders to mentally simulate career suitability matches on the fly.</p>
           

@@ -157,6 +157,9 @@
     position: relative;
     z-index: 2;
   }
+  .app-container.layout-expanded {
+    max-width: 1440px !important;
+  }
 
   header {
     margin-top: 0;
@@ -1619,5 +1622,16 @@
   opacity: 0.65;
   box-shadow: 0 0 6px rgba(235, 94, 40, 0.7);
   pointer-events: none;
+}
+
+/* Scroll Entrance Animations */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.scroll-reveal.reveal-active {
+  opacity: 1;
+  transform: translateY(0);
 }
 

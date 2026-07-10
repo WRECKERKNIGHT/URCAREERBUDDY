@@ -257,6 +257,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (k.startsWith("career_guidance_skill_")) localStorage.removeItem(k);
     });
 
+    const appContainer = document.querySelector(".app-container");
+    if (appContainer) appContainer.classList.remove("layout-expanded");
+
     landingView.classList.remove("hidden");
     onboardingView.classList.add("hidden");
     assessmentView.classList.add("hidden");
@@ -614,6 +617,9 @@ document.addEventListener("DOMContentLoaded", () => {
     assessmentView.classList.add("hidden");
     reportView.classList.remove("hidden");
 
+    const appContainer = document.querySelector(".app-container");
+    if (appContainer) appContainer.classList.add("layout-expanded");
+
     const finalScores = engine.calculateScores();
     finalScores.userName = engine.userInfo.name;
     finalScores.userGrade = engine.userInfo.grade;
@@ -900,6 +906,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Scroll reveal intersection observer
+  function initScrollReveal() {
+    const reveals = document.querySelectorAll(".scroll-reveal");
+    if (!reveals.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("reveal-active");
+        }
+      });
+    }, { threshold: 0.05 });
+
+    reveals.forEach(el => observer.observe(el));
+  }
+
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
   initTheme();
   const savedLang = localStorage.getItem("career_guidance_lang") || "en";
@@ -908,4 +930,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initDisclaimerModal();
   initSimulator();
   initHeroParticles();
+  initScrollReveal();
 });

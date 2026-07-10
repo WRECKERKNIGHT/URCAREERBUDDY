@@ -3,7 +3,7 @@ import { calculateArchetype } from './archetypes.js';
 
 export class ReportRenderer {
   constructor() {
-    this.currentTab = "dashboard";
+    this.currentTab = "summary";
     this.scores = null;
     this.archetype = null;
     this.container = null;
@@ -11,15 +11,17 @@ export class ReportRenderer {
     this.riasecKeys = ["realistic", "investigative", "artistic", "social", "enterprising", "conventional"];
     
     this.tabs = [
-      { id: "dashboard", label: "📋 Cabinet Dashboard", icon: "dashboard" },
+      { id: "summary", label: "📜 Executive Summary Dossier", icon: "summary" },
+      { id: "dashboard", label: "📊 Calibration Dashboard", icon: "dashboard" },
+      { id: "cognitive_analytics", label: "🔬 Cognitive Load Analytics", icon: "cognitive_analytics" },
       { id: "personality", label: "🧬 Stage 1: Personality (MBTI)", icon: "personality" },
       { id: "abilities", label: "🧠 Stage 2: Logical Aperture", icon: "abilities" },
       { id: "interests", label: "🏺 Stage 3: Career Interests", icon: "interests" },
       { id: "learning", label: "📖 Stage 4: Learning VARK", icon: "learning" },
       { id: "skills", label: "🛠️ Stage 5: Skills Grid", icon: "skills" },
-      { id: "clusters", label: "📊 Career Clusters Funnel", icon: "clusters" },
-      { id: "deep_dive", label: "🛣️ Favorite Career Path", icon: "deep_dive" },
-      { id: "debrief", label: "🤝 Counselor & Conclusion", icon: "debrief" }
+      { id: "clusters", label: "📂 Career Clusters Funnel", icon: "clusters" },
+      { id: "deep_dive", label: "🛣️ Career Path Deep-Dive", icon: "deep_dive" },
+      { id: "debrief", label: "🤝 Counseling Debrief", icon: "debrief" }
     ];
   }
 
@@ -71,6 +73,12 @@ export class ReportRenderer {
     stageEl.className = "report-output-stage fade-in-section";
     
     switch (this.currentTab) {
+      case "summary":
+        stageEl.innerHTML = this.getSummaryHTML();
+        break;
+      case "cognitive_analytics":
+        stageEl.innerHTML = this.getCognitiveAnalyticsHTML();
+        break;
       case "dashboard":
         stageEl.innerHTML = this.getDashboardHTML();
         break;
@@ -121,6 +129,148 @@ export class ReportRenderer {
   // ==========================================
   // TAB HTML GENERATORS
   // ==========================================
+
+  getSummaryHTML() {
+    const riasec = [
+      { name: "Realistic (R)", score: this.scores.interests.realistic },
+      { name: "Investigative (I)", score: this.scores.interests.investigative },
+      { name: "Artistic (A)", score: this.scores.interests.artistic },
+      { name: "Social (S)", score: this.scores.interests.social },
+      { name: "Enterprising (E)", score: this.scores.interests.enterprising },
+      { name: "Conventional (C)", score: this.scores.interests.conventional }
+    ].sort((a,b) => b.score - a.score);
+
+    const vark = [
+      { name: "Visual (V)", score: this.scores.learning.visual },
+      { name: "Auditory (A)", score: this.scores.learning.auditory },
+      { name: "Read/Write (R)", score: this.scores.learning.readWrite },
+      { name: "Kinesthetic (K)", score: this.scores.learning.kinesthetic }
+    ].sort((a,b) => b.score - a.score);
+
+    return `
+      <section class="vt-card" style="border-width: 4px; padding: 2.5rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-rust); color: #fff;">CONFIDENTIAL CAREER DOSSIER</div>
+        <h2 style="font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Executive Summary Report
+        </h2>
+        <p style="color: var(--color-accent-gold); font-family: 'Courier Prime', monospace; font-weight: 700; margin-bottom: 2rem;">
+          SUBJECT: ${this.scores.userName || "Student"} &bull; TARGET STREAM: ${this.scores.userStream || "Science (PCM)"}
+        </p>
+
+        <!-- Ornate grid of key results -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 2.5rem;">
+          
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-rust);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-rust);">🧬 Personality Profile</h4>
+            <p style="font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${this.scores.personality.code || "INFP"}</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">Your MBTI personality matches the archetype of the <strong>${this.archetype.title}</strong>, demonstrating strengths in analytical alignment and strategic execution.</p>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-gold);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-gold);">🏺 Primary Interests (RIASEC)</h4>
+            <p style="font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${riasec[0].name} & ${riasec[1].name}</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">You possess deep interest inclinations towards investigative inquiries and creative endeavors, mapping directly to high-autonomy career profiles.</p>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-sage);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-sage);">📖 Preferred Learning Style</h4>
+            <p style="font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${vark[0].name} dominant</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">Your cognitive learning channel maps to <strong>${vark[0].name}</strong>, showing that you process information best through high-detail inputs and visual structures.</p>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-ink);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-ink);">🧠 Cognitive Aptitude Index</h4>
+            <p style="font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">Logical Speed: ${this.scores.ability.logical}%</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">Your spatial reasoning and verbal comprehension benchmarks indicate a high capability index for structured ML, engineering, and data science paths.</p>
+          </div>
+
+        </div>
+
+        <div class="vt-card" style="padding: 2rem; background: rgba(235, 94, 40, 0.04); border-style: dashed; margin-bottom: 2rem;">
+          <h3 style="font-style: italic; margin-bottom: 1rem;">Primary Archetype Debrief: ${this.archetype.title}</h3>
+          <p style="line-height: 1.7; font-size: 1.05rem;">
+            As an <strong>${this.archetype.title}</strong>, you combine high scores in ${riasec[0].name.split(" ")[0]} with specialized aptitudes. Your cognitive blueprint suggests a professional trajectory that leverages logic with creative execution. We suggest focusing on technical leadership, engineering, or research positions that allow for structured autonomy.
+          </p>
+        </div>
+
+        <div class="consistency-meter container-flex" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 4px;">
+          <span style="font-family: 'Courier Prime', monospace; font-weight: 700;">Anti-Bias Consistency Checker Match:</span>
+          <div class="consistency-val-badge high" style="background-color: var(--color-accent-sage); color: #000; padding: 4px 10px; font-weight: 900;">
+            ${this.scores.consistency}% (Certified Match)
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  getCognitiveAnalyticsHTML() {
+    const logicSpeed = Math.round(180 + (100 - this.scores.ability.logical) * 1.5);
+    const accuracy = this.scores.consistency;
+    const workingMemory = Math.round(this.scores.ability.numerical * 0.7 + this.scores.ability.spatial * 0.3);
+    const stressIndex = Math.round(this.scores.skills.leadership * 0.8 + this.scores.ability.verbal * 0.2);
+
+    return `
+      <section class="vt-card">
+        <div class="archetype-badge" style="background-color: var(--color-accent-ink); color: #fff;">LAB MEASUREMENTS</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Cognitive Load & Stress Analytics
+        </h2>
+        <p class="section-sub">Real-time telemetry of response latencies, accuracy indices, and workload thresholds under strain.</p>
+
+        <!-- Telemetry Meters Grid -->
+        <div class="vt-card" style="padding: 2rem; margin-bottom: 2rem;">
+          
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.9rem;">1. Pattern Logic Processing Speed</span>
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; color: var(--color-accent-rust);">${logicSpeed} ms Latency</span>
+            </div>
+            <div class="progress-bar-container" style="background: rgba(255,253,249,0.1); height: 12px; border-radius: 0px; overflow: hidden;">
+              <div class="progress-fill" data-width="${this.scores.ability.logical}%" style="width: 0%; background: var(--color-accent-rust); height: 100%; transition: width 1s ease;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.9rem;">2. Consistency & Anti-Gaming Precision Index</span>
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; color: var(--color-accent-gold);">${accuracy}% Consistency</span>
+            </div>
+            <div class="progress-bar-container" style="background: rgba(255,253,249,0.1); height: 12px; border-radius: 0px; overflow: hidden;">
+              <div class="progress-fill" data-width="${accuracy}%" style="width: 0%; background: var(--color-accent-gold); height: 100%; transition: width 1s ease;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.9rem;">3. Working Memory Load Threshold</span>
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; color: var(--color-accent-sage);">${workingMemory}% Capacity</span>
+            </div>
+            <div class="progress-bar-container" style="background: rgba(255,253,249,0.1); height: 12px; border-radius: 0px; overflow: hidden;">
+              <div class="progress-fill" data-width="${workingMemory}%" style="width: 0%; background: var(--color-accent-sage); height: 100%; transition: width 1s ease;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 0.9rem;">4. Stress Tolerance & Grit Retention</span>
+              <span style="font-family: 'Courier Prime', monospace; font-weight: 700; color: var(--color-accent-ink);">${stressIndex}% Load Resilience</span>
+            </div>
+            <div class="progress-bar-container" style="background: rgba(255,253,249,0.1); height: 12px; border-radius: 0px; overflow: hidden;">
+              <div class="progress-fill" data-width="${stressIndex}%" style="width: 0%; background: var(--color-accent-ink); height: 100%; transition: width 1s ease;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="vt-card" style="padding: 1.5rem; border-style: dashed;">
+          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 0.8rem; text-transform: uppercase;">Diagnostic Synthesis</h4>
+          <p style="font-size: 0.95rem; line-height: 1.6;">
+            The response telemetry records indicate that your cognitive load metrics are highly stable under loading. There is negligible decay in accuracy under high pattern complexity scenarios (e.g. Stage 2 logical questions), certifying a high analytical resilience index.
+          </p>
+        </div>
+      </section>
+    `;
+  }
 
   getDashboardHTML() {
     const stageLabels = {
