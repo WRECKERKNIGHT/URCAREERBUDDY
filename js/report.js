@@ -579,6 +579,16 @@ export class ReportRenderer {
           <button type="button" class="cluster-tab-btn" data-cluster="4" style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; border:1.5px solid var(--color-border-dark); padding: 8px 16px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); opacity: 0.85; transition: all 0.2s ease;">MEDIA & DESIGN</button>
         </div>
 
+        <!-- Academic Stream Filter Buttons -->
+        <div class="stream-filters" style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; border: 1.5px dashed var(--color-border-dark); padding: 10px 14px; background: rgba(171,71,48,0.02);">
+          <span style="font-family:'Courier Prime', monospace; font-size:0.75rem; font-weight:700; color:var(--color-text-heading); text-transform:uppercase; margin-right: 0.5rem;">Academic Stream:</span>
+          <button type="button" class="stream-filter-btn active" data-stream="All" style="font-family:'Courier Prime', monospace; font-size:0.72rem; font-weight:700; border:1px solid var(--color-border-dark); padding: 4px 10px; cursor:pointer; background:var(--color-accent-rust); color:var(--color-bg-base); transition: all 0.2s ease;">ALL (सभी)</button>
+          <button type="button" class="stream-filter-btn" data-stream="PCM" style="font-family:'Courier Prime', monospace; font-size:0.72rem; font-weight:700; border:1px solid var(--color-border-dark); padding: 4px 10px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); transition: all 0.2s ease;">PCM (भौतिकी/रसायन/गणित)</button>
+          <button type="button" class="stream-filter-btn" data-stream="PCB" style="font-family:'Courier Prime', monospace; font-size:0.72rem; font-weight:700; border:1px solid var(--color-border-dark); padding: 4px 10px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); transition: all 0.2s ease;">PCB (जीव विज्ञान)</button>
+          <button type="button" class="stream-filter-btn" data-stream="Commerce" style="font-family:'Courier Prime', monospace; font-size:0.72rem; font-weight:700; border:1px solid var(--color-border-dark); padding: 4px 10px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); transition: all 0.2s ease;">COMMERCE (वाणिज्य)</button>
+          <button type="button" class="stream-filter-btn" data-stream="Arts" style="font-family:'Courier Prime', monospace; font-size:0.72rem; font-weight:700; border:1px solid var(--color-border-dark); padding: 4px 10px; cursor:pointer; background:var(--color-bg-card); color:var(--color-text-body); transition: all 0.2s ease;">ARTS (कला/मानविकी)</button>
+        </div>
+
         <div style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; margin-bottom: 1.5rem; color: var(--color-accent-rust); font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
           <span>💡</span> <span>Click any career pathway card below to toggle a live Skills Gap analysis checklist!</span>
         </div>
@@ -595,76 +605,101 @@ export class ReportRenderer {
       {
         name: "Technology & AI Architecture",
         careers: [
-          { name: "Machine Learning Engineer", profile: "Investigative / Analytical", description: "Build models, train neural networks, and deploy automated predictive algorithms.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Full-Stack Product Builder", profile: "Realistic / Enterprising", description: "Construct client applications, handle database state, and scale user interfaces.", skills: ["spatial", "logical", "administrative"] },
-          { name: "Cybersecurity Infrastructure Lead", profile: "Conventional / Stability", description: "Audit network firewalls, monitor log files, and enforce system security protocols.", skills: ["logical", "numerical", "administrative"] },
-          { name: "Cloud Solutions Architect", profile: "Investigative / Systems", description: "Design server instances, plan network routing tables, and optimize load balancing.", skills: ["logical", "abstract", "administrative"] },
-          { name: "HMI Interface Developer", profile: "Artistic / Spatial", description: "Stylize interactive visual controls and calibrate tactile user responses.", skills: ["spatial", "abstract", "social"] },
-          { name: "DevOps Automation Lead", profile: "Realistic / Conventional", description: "Standardize pipeline deployment, build integration nodes, and compile environments.", skills: ["logical", "numerical", "mechanical"] },
-          { name: "Blockchain Ledger Auditor", profile: "Conventional / Quantitative", description: "Inspect smart contracts, confirm cryptographic balances, and audit state logs.", skills: ["numerical", "administrative", "logical"] },
-          { name: "Quantum Algorithm Analyst", profile: "Investigative / Theoretical", description: "Formulate quantum circuits, verify complex linear equations, and optimize gate arrays.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Bioinformatics Tool Dev", profile: "Investigative / Coding", description: "Develop processing tools for genomic reads, map structural coordinates, and verify algorithms.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Virtual Reality Creator", profile: "Artistic / Realistic", description: "Build 3D interactive spaces, render tactile assets, and align spatial coordinates.", skills: ["spatial", "abstract", "mechanical"] }
+          { name: "Machine Learning Engineer", profile: "Investigative / Analytical", description: "Build models, train neural networks, and deploy automated predictive algorithms.", skills: ["numerical", "logical", "abstract"], streams: ["PCM"] },
+          { name: "Full-Stack Product Builder", profile: "Realistic / Enterprising", description: "Construct client applications, handle database state, and scale user interfaces.", skills: ["spatial", "logical", "administrative"], streams: ["PCM"] },
+          { name: "Cybersecurity Infrastructure Lead", profile: "Conventional / Stability", description: "Audit network firewalls, monitor log files, and enforce system security protocols.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Cloud Solutions Architect", profile: "Investigative / Systems", description: "Design server instances, plan network routing tables, and optimize load balancing.", skills: ["logical", "abstract", "administrative"], streams: ["PCM"] },
+          { name: "HMI Interface Developer", profile: "Artistic / Spatial", description: "Stylize interactive visual controls and calibrate tactile user responses.", skills: ["spatial", "abstract", "social"], streams: ["PCM", "Arts"] },
+          { name: "DevOps Automation Lead", profile: "Realistic / Conventional", description: "Standardize pipeline deployment, build integration nodes, and compile environments.", skills: ["logical", "numerical", "mechanical"], streams: ["PCM"] },
+          { name: "Blockchain Ledger Auditor", profile: "Conventional / Quantitative", description: "Inspect smart contracts, confirm cryptographic balances, and audit state logs.", skills: ["numerical", "administrative", "logical"], streams: ["PCM", "Commerce"] },
+          { name: "Quantum Algorithm Analyst", profile: "Investigative / Theoretical", description: "Formulate quantum circuits, verify complex linear equations, and optimize gate arrays.", skills: ["numerical", "logical", "abstract"], streams: ["PCM"] },
+          { name: "Bioinformatics Tool Dev", profile: "Investigative / Coding", description: "Develop processing tools for genomic reads, map structural coordinates, and verify algorithms.", skills: ["numerical", "logical", "abstract"], streams: ["PCM", "PCB"] },
+          { name: "Virtual Reality Creator", profile: "Artistic / Realistic", description: "Build 3D interactive spaces, render tactile assets, and align spatial coordinates.", skills: ["spatial", "abstract", "mechanical"], streams: ["PCM", "Arts"] },
+          { name: "Mobile App Systems Architect", profile: "Realistic / Investigative", description: "Architect mobile database synchronizations, cross-platform frames, and device logs.", skills: ["spatial", "logical", "administrative"], streams: ["PCM"] },
+          { name: "Database Tuning Engineer", profile: "Conventional / Analytical", description: "Optimize database index queries, clear transactional logs, and structure backup clusters.", skills: ["numerical", "logical", "administrative"], streams: ["PCM"] },
+          { name: "Game Logic Developer", profile: "Artistic / Realistic", description: "Implement physics simulation math, align character controls, and write engine rules.", skills: ["logical", "abstract", "spatial"], streams: ["PCM", "Arts"] },
+          { name: "Site Reliability Engineer", profile: "Conventional / Stability", description: "Monitor service downtime alerts, patch pipeline scripts, and audit server health checks.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Cryptographic Systems Designer", profile: "Investigative / Theoretical", description: "Design cipher protocols, test hash algorithms, and audit secure handshake keys.", skills: ["numerical", "logical", "abstract"], streams: ["PCM"] }
         ]
       },
       {
         name: "Corporate Finance & Commerce",
         careers: [
-          { name: "Actuarial Risk Specialist", profile: "Conventional / Quantitative", description: "Evaluate statistical mortality logs, calculate insurance premiums, and audit risk portfolios.", skills: ["numerical", "administrative", "logical"] },
-          { name: "Quantitative Investment Analyst", profile: "Investigative / Financial", description: "Write math models to trade stocks, parse corporate logs, and calculate profit forecasts.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Corporate Compliance Lead", profile: "Conventional / Stability", description: "Review legal compliance codes, audit corporate balance sheets, and draft ledger procedures.", skills: ["administrative", "logical", "leadership"] },
-          { name: "Operations Systems Auditor", profile: "Conventional / Methodical", description: "Inspect operational pipelines, identify financial errors, and verify balance sheets.", skills: ["administrative", "numerical", "logical"] },
-          { name: "Business Development Lead", profile: "Enterprising / Autonomy", description: "Pitch corporate contracts, negotiate partnerships, and manage sales representatives.", skills: ["leadership", "social", "administrative"] },
-          { name: "Treasury Portfolio Auditor", profile: "Conventional / Wealth", description: "Monitor government bond yields, verify currency transactions, and manage liquid balances.", skills: ["numerical", "administrative", "logical"] },
-          { name: "FinTech Product Manager", profile: "Enterprising / Technology", description: "Align transaction databases, define user flows, and compile pricing structures.", skills: ["leadership", "logical", "social"] },
-          { name: "Forensic Account Inspector", profile: "Investigative / Audit", description: "Trace hidden business ledgers, identify accounting discrepancies, and document claims.", skills: ["numerical", "administrative", "logical"] },
-          { name: "Venture Capital Analyst", profile: "Enterprising / Research", description: "Investigate early-stage start-up models, compute valuation parameters, and write summaries.", skills: ["leadership", "numerical", "abstract"] },
-          { name: "Logistics Operations Architect", profile: "Conventional / Shipping", description: "Design supply routes, audit storage warehouses, and analyze tracking metrics.", skills: ["administrative", "logical", "numerical"] }
+          { name: "Actuarial Risk Specialist", profile: "Conventional / Quantitative", description: "Evaluate statistical mortality logs, calculate insurance premiums, and audit risk portfolios.", skills: ["numerical", "administrative", "logical"], streams: ["Commerce", "PCM"] },
+          { name: "Quantitative Investment Analyst", profile: "Investigative / Financial", description: "Write math models to trade stocks, parse corporate logs, and calculate profit forecasts.", skills: ["numerical", "logical", "abstract"], streams: ["Commerce", "PCM"] },
+          { name: "Corporate Compliance Lead", profile: "Conventional / Stability", description: "Review legal compliance codes, audit corporate balance sheets, and draft ledger procedures.", skills: ["administrative", "logical", "leadership"], streams: ["Commerce"] },
+          { name: "Operations Systems Auditor", profile: "Conventional / Methodical", description: "Inspect operational pipelines, identify financial errors, and verify balance sheets.", skills: ["administrative", "numerical", "logical"], streams: ["Commerce"] },
+          { name: "Business Development Lead", profile: "Enterprising / Autonomy", description: "Pitch corporate contracts, negotiate partnerships, and manage sales representatives.", skills: ["leadership", "social", "administrative"], streams: ["Commerce"] },
+          { name: "Treasury Portfolio Auditor", profile: "Conventional / Wealth", description: "Monitor government bond yields, verify currency transactions, and manage liquid balances.", skills: ["numerical", "administrative", "logical"], streams: ["Commerce"] },
+          { name: "FinTech Product Manager", profile: "Enterprising / Technology", description: "Align transaction databases, define user flows, and compile pricing structures.", skills: ["leadership", "logical", "social"], streams: ["Commerce", "PCM"] },
+          { name: "Forensic Account Inspector", profile: "Investigative / Audit", description: "Trace hidden business ledgers, identify accounting discrepancies, and document claims.", skills: ["numerical", "administrative", "logical"], streams: ["Commerce"] },
+          { name: "Venture Capital Analyst", profile: "Enterprising / Research", description: "Investigate early-stage start-up models, compute valuation parameters, and write summaries.", skills: ["leadership", "numerical", "abstract"], streams: ["Commerce"] },
+          { name: "Logistics Operations Architect", profile: "Conventional / Shipping", description: "Design supply routes, audit storage warehouses, and analyze tracking metrics.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce", "PCM"] },
+          { name: "Investment Banking Associate", profile: "Enterprising / Financial", description: "Structure company mergers, build underwriting pitchbooks, and value corporate capital.", skills: ["numerical", "leadership", "administrative"], streams: ["Commerce"] },
+          { name: "Corporate Tax Strategist", profile: "Conventional / Compliance", description: "Plan tax compliance options, audit multinational returns, and verify code deductions.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce"] },
+          { name: "Supply Chain Planner", profile: "Conventional / Analytical", description: "Audit vendor pricing catalogs, manage inventory safety bounds, and track freight schedules.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce"] },
+          { name: "Portfolio Risk Manager", profile: "Investigative / Quantitative", description: "Calculate asset value-at-risk, model stress-testing parameters, and set trade limits.", skills: ["numerical", "logical", "leadership"], streams: ["Commerce", "PCM"] },
+          { name: "Market Microstructure Researcher", profile: "Investigative / Analytical", description: "Analyze high-frequency order books, study bid-ask spreads, and write trade reports.", skills: ["numerical", "logical", "abstract"], streams: ["Commerce", "PCM"] }
         ]
       },
       {
         name: "Industrial & Mechatronics Engineering",
         careers: [
-          { name: "Robotics Sensor Fusion Developer", profile: "Realistic / Investigative", description: "Calibrate lidar coordinates, write motor control drivers, and align physical sensors.", skills: ["spatial", "numerical", "logical"] },
-          { name: "Industrial CAD Prototyper", profile: "Spatial / Methodical", description: "Draw physical gear structures in CAD, inspect spatial clearances, and generate blueprints.", skills: ["spatial", "administrative", "logical"] },
-          { name: "Grid Automation Analyst", profile: "Investigative / Stability", description: "Deploy electrical distribution logic, audit transformer logs, and manage switch gears.", skills: ["logical", "numerical", "administrative"] },
-          { name: "Embedded Systems Inspector", profile: "Realistic / Conventional", description: "Test printed circuit board traces, solder hardware relays, and debug firmware loops.", skills: ["logical", "spatial", "mechanical"] },
-          { name: "Acoustics Hardware Designer", profile: "Artistic / Spatial", description: "Optimize speaker chamber resonance, visualize audio wave reflections, and stylize casing.", skills: ["spatial", "abstract", "numerical"] },
-          { name: "Aerospace Avionics Tester", profile: "Realistic / Testing", description: "Inspect rocket telemetry channels, calibrate barometric sensors, and verify circuitry.", skills: ["logical", "numerical", "mechanical"] },
-          { name: "Automotive Telemetry Dev", profile: "Realistic / Electronics", description: "Trace engine speed data, write control loop programs, and align dashboard outputs.", skills: ["spatial", "numerical", "logical"] },
-          { name: "Smart Factory Auditor", profile: "Conventional / Automation", description: "Review mechanical conveyor lines, audit PLC programs, and verify safety bounds.", skills: ["administrative", "logical", "mechanical"] },
-          { name: "Optical Systems Designer", profile: "Investigative / Lasers", description: "Align mirror angles, calculate light refraction limits, and test fiber networks.", skills: ["spatial", "abstract", "numerical"] },
-          { name: "Renewable Grid Modeler", profile: "Investigative / Ecology", description: "Model wind velocity patterns, map solar farm coverage, and calculate battery capacity.", skills: ["logical", "numerical", "abstract"] }
+          { name: "Robotics Sensor Fusion Developer", profile: "Realistic / Investigative", description: "Calibrate lidar coordinates, write motor control drivers, and align physical sensors.", skills: ["spatial", "numerical", "logical"], streams: ["PCM"] },
+          { name: "Industrial CAD Prototyper", profile: "Spatial / Methodical", description: "Draw physical gear structures in CAD, inspect spatial clearances, and generate blueprints.", skills: ["spatial", "administrative", "logical"], streams: ["PCM"] },
+          { name: "Grid Automation Analyst", profile: "Investigative / Stability", description: "Deploy electrical distribution logic, audit transformer logs, and manage switch gears.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Embedded Systems Inspector", profile: "Realistic / Conventional", description: "Test printed circuit board traces, solder hardware relays, and debug firmware loops.", skills: ["logical", "spatial", "mechanical"], streams: ["PCM"] },
+          { name: "Acoustics Hardware Designer", profile: "Artistic / Spatial", description: "Optimize speaker chamber resonance, visualize audio wave reflections, and stylize casing.", skills: ["spatial", "abstract", "numerical"], streams: ["PCM", "Arts"] },
+          { name: "Aerospace Avionics Tester", profile: "Realistic / Testing", description: "Inspect rocket telemetry channels, calibrate barometric sensors, and verify circuitry.", skills: ["logical", "numerical", "mechanical"], streams: ["PCM"] },
+          { name: "Automotive Telemetry Dev", profile: "Realistic / Electronics", description: "Trace engine speed data, write control loop programs, and align dashboard outputs.", skills: ["spatial", "numerical", "logical"], streams: ["PCM"] },
+          { name: "Smart Factory Auditor", profile: "Conventional / Automation", description: "Review mechanical conveyor lines, audit PLC programs, and verify safety bounds.", skills: ["administrative", "logical", "mechanical"], streams: ["PCM"] },
+          { name: "Optical Systems Designer", profile: "Investigative / Lasers", description: "Align mirror angles, calculate light refraction limits, and test fiber networks.", skills: ["spatial", "abstract", "numerical"], streams: ["PCM"] },
+          { name: "Renewable Grid Modeler", profile: "Investigative / Ecology", description: "Model wind velocity patterns, map solar farm coverage, and calculate battery capacity.", skills: ["logical", "numerical", "abstract"], streams: ["PCM"] },
+          { name: "Drones Autopilot Programmer", profile: "Realistic / Analytical", description: "Calibrate gyroscope sensors, write flight correction logic, and test drone telemetry.", skills: ["logical", "spatial", "mechanical"], streams: ["PCM"] },
+          { name: "Thermal Management Specialist", profile: "Realistic / Theoretical", description: "Model heat dissipation vectors, test heatsink shapes, and check cooling loops.", skills: ["numerical", "logical", "abstract"], streams: ["PCM"] },
+          { name: "Additive Manufacturing Engineer", profile: "Spatial / Technical", description: "Optimize 3D print layer thickness, map laser toolpaths, and test structural strength.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM"] },
+          { name: "CNC Systems Programmer", profile: "Conventional / Realistic", description: "Write G-code coordinates, set cutting tool speeds, and audit mechanical lathe runs.", skills: ["mechanical", "spatial", "administrative"], streams: ["PCM"] },
+          { name: "Micro-Grid Controller", profile: "Conventional / Systems", description: "Monitor localized grid balance, manage battery storage relays, and dispatch generators.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] }
         ]
       },
       {
         name: "Healthcare & Biotech Sciences",
         careers: [
-          { name: "Bioinformatics Data Analyst", profile: "Investigative / Quantitative", description: "Parse genetic sequencing databases, compile DNA alignments, and compute statistics.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Clinical Trials Director", profile: "Social / Collaboration", description: "Coordinate patient intake interviews, check compliance codes, and manage research staff.", skills: ["social", "administrative", "leadership"] },
-          { name: "Genetic Sequencing Specialist", profile: "Investigative / Stability", description: "Process laboratory assays, align chromosome files, and check diagnostic markers.", skills: ["logical", "numerical", "administrative"] },
-          { name: "Hospital Systems Auditor", profile: "Conventional / Compliance", description: "Audit patient charts, review medical coding bills, and verify administrative compliance.", skills: ["administrative", "logical", "numerical"] },
-          { name: "Health Policy Consultant", profile: "Social / Enterprising", description: "Advise government agencies, write regulatory summaries, and present clinical reports.", skills: ["social", "leadership", "administrative"] },
-          { name: "Medical Device Integrator", profile: "Realistic / Biomedical", description: "Align hospital monitors, calibrate oxygen valves, and debug telemetry signals.", skills: ["spatial", "logical", "mechanical"] },
-          { name: "Pharmaceutical Compliance Lead", profile: "Conventional / Quality", description: "Review laboratory drug protocols, check temperature logs, and confirm FDA safety.", skills: ["administrative", "logical", "leadership"] },
-          { name: "Epidemiological Data Modeler", profile: "Investigative / Diseases", description: "Compute virus spread rates, map infection hotspots, and write statistical logs.", skills: ["numerical", "logical", "abstract"] },
-          { name: "Digital Health Analyst", profile: "Enterprising / Health", description: "Scale remote patient databases, review app telemetry, and design patient dashboards.", skills: ["leadership", "logical", "social"] },
-          { name: "Pathology Lab Systems Director", profile: "Conventional / Laboratory", description: "Manage automated slide scanners, verify pathology diagnostics, and audit lab data.", skills: ["administrative", "numerical", "logical"] }
+          { name: "Bioinformatics Data Analyst", profile: "Investigative / Quantitative", description: "Parse genetic sequencing databases, compile DNA alignments, and compute statistics.", skills: ["numerical", "logical", "abstract"], streams: ["PCB", "PCM"] },
+          { name: "Clinical Trials Director", profile: "Social / Collaboration", description: "Coordinate patient intake interviews, check compliance codes, and manage research staff.", skills: ["social", "administrative", "leadership"], streams: ["PCB"] },
+          { name: "Genetic Sequencing Specialist", profile: "Investigative / Stability", description: "Process laboratory assays, align chromosome files, and check diagnostic markers.", skills: ["logical", "numerical", "administrative"], streams: ["PCB"] },
+          { name: "Hospital Systems Auditor", profile: "Conventional / Compliance", description: "Audit patient charts, review medical coding bills, and verify administrative compliance.", skills: ["administrative", "logical", "numerical"], streams: ["PCB", "Commerce"] },
+          { name: "Health Policy Consultant", profile: "Social / Enterprising", description: "Advise government agencies, write regulatory summaries, and present clinical reports.", skills: ["social", "leadership", "administrative"], streams: ["PCB", "Arts"] },
+          { name: "Medical Device Integrator", profile: "Realistic / Biomedical", description: "Align hospital monitors, calibrate oxygen valves, and debug telemetry signals.", skills: ["spatial", "logical", "mechanical"], streams: ["PCB", "PCM"] },
+          { name: "Pharmaceutical Compliance Lead", profile: "Conventional / Quality", description: "Review laboratory drug protocols, check temperature logs, and confirm FDA safety.", skills: ["administrative", "logical", "leadership"], streams: ["PCB"] },
+          { name: "Epidemiological Data Modeler", profile: "Investigative / Diseases", description: "Compute virus spread rates, map infection hotspots, and write statistical logs.", skills: ["numerical", "logical", "abstract"], streams: ["PCB", "PCM"] },
+          { name: "Digital Health Analyst", profile: "Enterprising / Health", description: "Scale remote patient databases, review app telemetry, and design patient dashboards.", skills: ["leadership", "logical", "social"], streams: ["PCB"] },
+          { name: "Pathology Lab Systems Director", profile: "Conventional / Laboratory", description: "Manage automated slide scanners, verify pathology diagnostics, and audit lab data.", skills: ["administrative", "numerical", "logical"], streams: ["PCB"] },
+          { name: "Clinical Geneticist", profile: "Investigative / Medical", description: "Analyze chromosome karyotypes, identify hereditary disease mutations, and advise patients.", skills: ["logical", "social", "administrative"], streams: ["PCB"] },
+          { name: "Immunology Lab Researcher", profile: "Investigative / Analytical", description: "Test antibody binding counts, isolate cell cultures, and compile clinical assays.", skills: ["logical", "numerical", "abstract"], streams: ["PCB"] },
+          { name: "Neuro-Prosthetic Interface Dev", profile: "Realistic / Analytical", description: "Design brain-computer communication channels, translate nerve signal logs, and test sensors.", skills: ["spatial", "logical", "mechanical"], streams: ["PCB", "PCM"] },
+          { name: "Pharmacokinetics Analyst", profile: "Investigative / Chemical", description: "Model blood drug absorption curves, analyze clearance rates, and verify chemical doses.", skills: ["numerical", "logical", "abstract"], streams: ["PCB"] },
+          { name: "Molecular Diagnostics Specialist", profile: "Conventional / Laboratory", description: "Perform PCR amplification tests, verify chemical reaction indicators, and audit assay logs.", skills: ["logical", "administrative", "numerical"], streams: ["PCB"] }
         ]
       },
       {
         name: "Media, Systems & Design",
         careers: [
-          { name: "UI/UX Product Designer", profile: "Artistic / Spatial", description: "Stylize mobile screen blueprints, draw vector buttons, and map user flows.", skills: ["spatial", "social", "abstract"] },
-          { name: "Technical Systems Animator", profile: "Artistic / Mechanical", description: "Rig character bone structures, align animation keyframes, and render textures.", skills: ["spatial", "abstract", "mechanical"] },
-          { name: "AR Experience Architect", profile: "Artistic / Innovative", description: "Project digital graphics onto spatial camera coordinates and design audio soundscapes.", skills: ["spatial", "abstract", "logical"] },
-          { name: "Brand Systems Director", profile: "Enterprising / Autonomy", description: "Deploy marketing campaigns, align corporate colors, and lead designer groups.", skills: ["leadership", "social", "administrative"] },
-          { name: "Creative Studio Lead", profile: "Enterprising / Artistic", description: "Coordinate video production schedules, pitching concepts to clients, and styling scenes.", skills: ["social", "leadership", "spatial"] },
-          { name: "Information Graphic Designer", profile: "Artistic / Communication", description: "Summarize data metrics into visual diagrams, scale legends, and layout sheets.", skills: ["spatial", "social", "administrative"] },
-          { name: "Interactive Content Specialist", profile: "Artistic / Web", description: "Build web animations, integrate audio segments, and stylize layout templates.", skills: ["spatial", "abstract", "social"] },
-          { name: "Digital Typography Artist", profile: "Artistic / Layout", description: "Design font families, calibrate text line gaps, and layout vintage page borders.", skills: ["spatial", "spatial", "administrative"] },
-          { name: "Technical Documentation Editor", profile: "Conventional / Writing", description: "Review software code APIs, compile operations checklists, and format text manuals.", skills: ["administrative", "verbal", "logical"] },
-          { name: "Sound Engineering Specialist", profile: "Realistic / Audio", description: "Configure audio mixing desks, isolate frequency bands, and restore old recordings.", skills: ["mechanical", "abstract", "spatial"] }
+          { name: "UI/UX Product Designer", profile: "Artistic / Spatial", description: "Stylize mobile screen blueprints, draw vector buttons, and map user flows.", skills: ["spatial", "social", "abstract"], streams: ["Arts", "PCM"] },
+          { name: "Technical Systems Animator", profile: "Artistic / Mechanical", description: "Rig character bone structures, align animation keyframes, and render textures.", skills: ["spatial", "abstract", "mechanical"], streams: ["Arts", "PCM"] },
+          { name: "AR Experience Architect", profile: "Artistic / Innovative", description: "Project digital graphics onto spatial camera coordinates and design audio soundscapes.", skills: ["spatial", "abstract", "logical"], streams: ["Arts", "PCM"] },
+          { name: "Brand Systems Director", profile: "Enterprising / Autonomy", description: "Deploy marketing campaigns, align corporate colors, and lead designer groups.", skills: ["leadership", "social", "administrative"], streams: ["Arts", "Commerce"] },
+          { name: "Creative Studio Lead", profile: "Enterprising / Artistic", description: "Coordinate video production schedules, pitching concepts to clients, and styling scenes.", skills: ["social", "leadership", "spatial"], streams: ["Arts"] },
+          { name: "Information Graphic Designer", profile: "Artistic / Communication", description: "Summarize data metrics into visual diagrams, scale legends, and layout sheets.", skills: ["spatial", "social", "administrative"], streams: ["Arts"] },
+          { name: "Interactive Content Specialist", profile: "Artistic / Web", description: "Build web animations, integrate audio segments, and stylize layout templates.", skills: ["spatial", "abstract", "social"], streams: ["Arts"] },
+          { name: "Digital Typography Artist", profile: "Artistic / Layout", description: "Design font families, calibrate text line gaps, and layout vintage page borders.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
+          { name: "Technical Documentation Editor", profile: "Conventional / Writing", description: "Review software code APIs, compile operations checklists, and format text manuals.", skills: ["administrative", "verbal", "logical"], streams: ["Arts"] },
+          { name: "Sound Engineering Specialist", profile: "Realistic / Audio", description: "Configure audio mixing desks, isolate frequency bands, and restore old recordings.", skills: ["mechanical", "abstract", "spatial"], streams: ["Arts", "PCM"] },
+          { name: "Motion Graphics Modeler", profile: "Artistic / Visual", description: "Animate 3D titles, render logo morph keyframes, and adjust rendering nodes.", skills: ["spatial", "abstract", "spatial"], streams: ["Arts"] },
+          { name: "Instructional Systems Designer", profile: "Conventional / Educational", description: "Structure training module guides, write storyboard scenarios, and format quiz pools.", skills: ["administrative", "verbal", "social"], streams: ["Arts"] },
+          { name: "Editorial Product Layout Artist", profile: "Artistic / Layout", description: "Arrange print book grids, set gutter margins, and design cover layouts.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
+          { name: "Digital Colorist & Render Specialist", profile: "Artistic / Technical", description: "Grade video light curves, calibrate camera profiles, and balance render nodes.", skills: ["spatial", "abstract", "mechanical"], streams: ["Arts"] },
+          { name: "Audio Synthesizer Designer", profile: "Realistic / Creative", description: "Build software sound wave filters, script audio oscillator loops, and test MIDI maps.", skills: ["mechanical", "abstract", "logical"], streams: ["Arts", "PCM"] }
         ]
       }
     ];
@@ -723,7 +758,11 @@ export class ReportRenderer {
 
     if (!clusterTabs.length || !clusterContent) return;
 
+    let activeStream = "All";
+    let activeClusterIdx = 0;
+
     const selectCluster = (index) => {
+      activeClusterIdx = index;
       clusterTabs.forEach((tab, idx) => {
         if (idx === index) {
           tab.classList.add("active");
@@ -741,46 +780,73 @@ export class ReportRenderer {
       const clusterData = this.getDetailedClusterData()[index];
       if (!clusterData) return;
 
-      const careerRows = clusterData.careers.map(car => {
+      // Calculate suitability scores
+      let careerRows = clusterData.careers.map(car => {
         const calculated = this.calculateEuclideanSuitability(car.name, this.scores);
         return { ...car, score: calculated };
       });
+
+      // Filter by activeStream
+      if (activeStream !== "All") {
+        careerRows = careerRows.filter(car => car.streams && car.streams.includes(activeStream));
+      }
+
       careerRows.sort((a, b) => b.score - a.score);
+
+      const renderGrid = () => {
+        if (careerRows.length === 0) {
+          return `
+            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; padding: 2rem; text-align: center; border: 1.5px dashed var(--color-border); color: var(--color-text-body); opacity: 0.75; width: 100%;">
+              No career paths in this cluster match the selected stream filter.
+              <br>(इस क्लस्टर में कोई भी करियर पथ चयनित स्ट्रीम फ़िल्टर से मेल नहीं खाता है।)
+            </div>
+          `;
+        }
+
+        return `
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; width: 100%;">
+            ${careerRows.map((r, idx) => {
+              const isMatch = r.score >= 70 ? "High Compatibility" : "Moderate Compatibility";
+              const badgeColor = r.score >= 70 ? "var(--color-accent-rust)" : "var(--color-text-body)";
+              return `
+                <div class="vt-card vt-card-hover career-path-card" data-idx="${idx}" style="padding: 1.5rem; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid var(--color-border-dark);">
+                  <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
+                    <h5 style="font-size: 1.05rem; font-family: 'Playfair Display', serif; font-weight: 700; margin: 0; line-height: 1.2;">${r.name}</h5>
+                    <span style="font-family: 'Courier Prime', monospace; font-size: 1.15rem; font-weight: 700; color: var(--color-accent-rust);">${r.score}%</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                    <span style="font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: ${badgeColor}; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">
+                      ${isMatch}
+                    </span>
+                    <span style="font-size: 0.65rem; font-family: 'Courier Prime', monospace; border: 1px solid var(--color-border-dark); padding: 1px 6px; background: rgba(0,0,0,0.05); border-radius: 2px;">
+                      ${r.streams ? r.streams.join(", ") : ""}
+                    </span>
+                  </div>
+                  <p style="font-size: 0.85rem; line-height: 1.5; opacity: 0.85; margin-bottom: 1rem; font-style: italic;">
+                    ${r.description}
+                  </p>
+                  <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; border-top: 1px dashed var(--color-border); padding-top: 0.8rem; opacity: 0.9;">
+                    <strong>Ideal Profile:</strong> ${r.profile}
+                  </div>
+                  
+                  <div class="career-detail-popup hidden" id="popup-${index}-${idx}" style="margin-top: 1rem; background: var(--color-bg-base); padding: 0.8rem; border: 1px solid var(--color-border-dark);">
+                    <div style="font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.72rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.4rem;">
+                      Skills Gap Analysis Checklists
+                    </div>
+                    ${this.generateSkillsGapHTML(r.skills)}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      };
 
       clusterContent.innerHTML = `
         <h4 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-style: italic; margin-bottom: 1.5rem; border-bottom: 1.5px solid var(--color-border-dark); padding-bottom: 0.5rem;">
           ${clusterData.name} Options
         </h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-          ${careerRows.map((r, idx) => {
-            const isMatch = r.score >= 70 ? "High Compatibility" : "Moderate Compatibility";
-            const badgeColor = r.score >= 70 ? "var(--color-accent-rust)" : "var(--color-text-body)";
-            return `
-              <div class="vt-card vt-card-hover career-path-card" data-idx="${idx}" style="padding: 1.5rem; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid var(--color-border-dark);">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
-                  <h5 style="font-size: 1.05rem; font-family: 'Playfair Display', serif; font-weight: 700; margin: 0; line-height: 1.2;">${r.name}</h5>
-                  <span style="font-family: 'Courier Prime', monospace; font-size: 1.15rem; font-weight: 700; color: var(--color-accent-rust);">${r.score}%</span>
-                </div>
-                <div style="font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: ${badgeColor}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.8rem; font-weight: 700;">
-                  ${isMatch}
-                </div>
-                <p style="font-size: 0.85rem; line-height: 1.5; opacity: 0.85; margin-bottom: 1rem; font-style: italic;">
-                  ${r.description}
-                </p>
-                <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; border-top: 1px dashed var(--color-border); padding-top: 0.8rem; opacity: 0.9;">
-                  <strong>Ideal Profile:</strong> ${r.profile}
-                </div>
-                
-                <div class="career-detail-popup hidden" id="popup-${index}-${idx}" style="margin-top: 1rem; background: var(--color-bg-base); padding: 0.8rem; border: 1px solid var(--color-border-dark);">
-                  <div style="font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.72rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.4rem;">
-                    Skills Gap Analysis Checklists
-                  </div>
-                  ${this.generateSkillsGapHTML(r.skills)}
-                </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
+        ${renderGrid()}
       `;
 
       const cards = clusterContent.querySelectorAll(".career-path-card");
@@ -793,6 +859,23 @@ export class ReportRenderer {
         });
       });
     };
+
+    // Bind stream filter button clicks
+    const streamBtns = this.container.querySelectorAll(".stream-filter-btn");
+    streamBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        streamBtns.forEach(b => {
+          b.classList.remove("active");
+          b.style.background = "var(--color-bg-card)";
+          b.style.color = "var(--color-text-body)";
+        });
+        btn.classList.add("active");
+        btn.style.background = "var(--color-accent-rust)";
+        btn.style.color = "var(--color-bg-base)";
+        activeStream = btn.getAttribute("data-stream");
+        selectCluster(activeClusterIdx);
+      });
+    });
 
     clusterTabs.forEach((tab, idx) => {
       tab.addEventListener("click", () => selectCluster(idx));
@@ -1337,6 +1420,26 @@ export class ReportRenderer {
         interests: { realistic: 70, investigative: 75, artistic: 90, social: 55, enterprising: 70, conventional: 60 },
         skills: { administrative: 60, spatial: 95, leadership: 70, social: 60, mechanical: 75 }
       },
+      "Mobile App Systems Architect": {
+        interests: { realistic: 75, investigative: 85, artistic: 55, social: 45, enterprising: 70, conventional: 80 },
+        skills: { administrative: 80, spatial: 80, leadership: 70, social: 55, mechanical: 65 }
+      },
+      "Database Tuning Engineer": {
+        interests: { realistic: 50, investigative: 90, artistic: 30, social: 35, enterprising: 60, conventional: 95 },
+        skills: { administrative: 95, spatial: 60, leadership: 65, social: 45, mechanical: 60 }
+      },
+      "Game Logic Developer": {
+        interests: { realistic: 70, investigative: 80, artistic: 90, social: 40, enterprising: 65, conventional: 65 },
+        skills: { administrative: 60, spatial: 90, leadership: 65, social: 50, mechanical: 70 }
+      },
+      "Site Reliability Engineer": {
+        interests: { realistic: 65, investigative: 80, artistic: 35, social: 45, enterprising: 65, conventional: 90 },
+        skills: { administrative: 90, spatial: 65, leadership: 75, social: 50, mechanical: 70 }
+      },
+      "Cryptographic Systems Designer": {
+        interests: { realistic: 45, investigative: 98, artistic: 40, social: 30, enterprising: 55, conventional: 90 },
+        skills: { administrative: 85, spatial: 70, leadership: 70, social: 40, mechanical: 50 }
+      },
       // Finance
       "Actuarial Risk Specialist": {
         interests: { realistic: 30, investigative: 85, artistic: 40, social: 40, enterprising: 70, conventional: 95 },
@@ -1377,6 +1480,26 @@ export class ReportRenderer {
       "Logistics Operations Architect": {
         interests: { realistic: 65, investigative: 75, artistic: 40, social: 50, enterprising: 75, conventional: 90 },
         skills: { administrative: 90, spatial: 75, leadership: 75, social: 60, mechanical: 60 }
+      },
+      "Investment Banking Associate": {
+        interests: { realistic: 30, investigative: 75, artistic: 45, social: 60, enterprising: 98, conventional: 80 },
+        skills: { administrative: 85, spatial: 45, leadership: 95, social: 75, mechanical: 30 }
+      },
+      "Corporate Tax Strategist": {
+        interests: { realistic: 25, investigative: 80, artistic: 30, social: 45, enterprising: 75, conventional: 98 },
+        skills: { administrative: 98, spatial: 40, leadership: 75, social: 60, mechanical: 25 }
+      },
+      "Supply Chain Planner": {
+        interests: { realistic: 55, investigative: 75, artistic: 35, social: 55, enterprising: 75, conventional: 90 },
+        skills: { administrative: 90, spatial: 65, leadership: 70, social: 65, mechanical: 55 }
+      },
+      "Portfolio Risk Manager": {
+        interests: { realistic: 40, investigative: 90, artistic: 40, social: 45, enterprising: 85, conventional: 90 },
+        skills: { administrative: 90, spatial: 50, leadership: 85, social: 60, mechanical: 40 }
+      },
+      "Market Microstructure Researcher": {
+        interests: { realistic: 35, investigative: 95, artistic: 40, social: 40, enterprising: 75, conventional: 90 },
+        skills: { administrative: 85, spatial: 50, leadership: 70, social: 50, mechanical: 35 }
       },
       // Mechatronics
       "Robotics Sensor Fusion Developer": {
@@ -1419,6 +1542,26 @@ export class ReportRenderer {
         interests: { realistic: 70, investigative: 90, artistic: 50, social: 55, enterprising: 65, conventional: 80 },
         skills: { administrative: 80, spatial: 70, leadership: 70, social: 60, mechanical: 70 }
       },
+      "Drones Autopilot Programmer": {
+        interests: { realistic: 90, investigative: 85, artistic: 50, social: 45, enterprising: 60, conventional: 75 },
+        skills: { administrative: 70, spatial: 85, leadership: 65, social: 50, mechanical: 90 }
+      },
+      "Thermal Management Specialist": {
+        interests: { realistic: 85, investigative: 85, artistic: 40, social: 35, enterprising: 50, conventional: 80 },
+        skills: { administrative: 75, spatial: 75, leadership: 60, social: 40, mechanical: 85 }
+      },
+      "Additive Manufacturing Engineer": {
+        interests: { realistic: 90, investigative: 80, artistic: 65, social: 45, enterprising: 55, conventional: 75 },
+        skills: { administrative: 70, spatial: 90, leadership: 60, social: 45, mechanical: 90 }
+      },
+      "CNC Systems Programmer": {
+        interests: { realistic: 92, investigative: 70, artistic: 45, social: 40, enterprising: 50, conventional: 85 },
+        skills: { administrative: 80, spatial: 85, leadership: 60, social: 45, mechanical: 95 }
+      },
+      "Micro-Grid Controller": {
+        interests: { realistic: 80, investigative: 80, artistic: 40, social: 50, enterprising: 60, conventional: 90 },
+        skills: { administrative: 90, spatial: 70, leadership: 70, social: 55, mechanical: 80 }
+      },
       // Biotech
       "Bioinformatics Data Analyst": {
         interests: { realistic: 45, investigative: 95, artistic: 45, social: 60, enterprising: 50, conventional: 80 },
@@ -1460,6 +1603,26 @@ export class ReportRenderer {
         interests: { realistic: 50, investigative: 85, artistic: 35, social: 60, enterprising: 65, conventional: 95 },
         skills: { administrative: 95, spatial: 55, leadership: 75, social: 65, mechanical: 50 }
       },
+      "Clinical Geneticist": {
+        interests: { realistic: 35, investigative: 95, artistic: 40, social: 80, enterprising: 60, conventional: 85 },
+        skills: { administrative: 85, spatial: 55, leadership: 75, social: 80, mechanical: 35 }
+      },
+      "Immunology Lab Researcher": {
+        interests: { realistic: 45, investigative: 95, artistic: 40, social: 50, enterprising: 50, conventional: 85 },
+        skills: { administrative: 80, spatial: 55, leadership: 65, social: 60, mechanical: 45 }
+      },
+      "Neuro-Prosthetic Interface Dev": {
+        interests: { realistic: 85, investigative: 90, artistic: 50, social: 55, enterprising: 65, conventional: 75 },
+        skills: { administrative: 70, spatial: 85, leadership: 70, social: 60, mechanical: 85 }
+      },
+      "Pharmacokinetics Analyst": {
+        interests: { realistic: 40, investigative: 95, artistic: 40, social: 50, enterprising: 60, conventional: 85 },
+        skills: { administrative: 85, spatial: 55, leadership: 70, social: 55, mechanical: 40 }
+      },
+      "Molecular Diagnostics Specialist": {
+        interests: { realistic: 50, investigative: 90, artistic: 35, social: 55, enterprising: 55, conventional: 90 },
+        skills: { administrative: 90, spatial: 60, leadership: 65, social: 60, mechanical: 50 }
+      },
       // Design/Media
       "UI/UX Product Designer": {
         interests: { realistic: 35, investigative: 70, artistic: 95, social: 65, enterprising: 75, conventional: 50 },
@@ -1500,6 +1663,26 @@ export class ReportRenderer {
       "Sound Engineering Specialist": {
         interests: { realistic: 80, investigative: 75, artistic: 85, social: 45, enterprising: 60, conventional: 65 },
         skills: { administrative: 65, spatial: 85, leadership: 60, social: 50, mechanical: 80 }
+      },
+      "Motion Graphics Modeler": {
+        interests: { realistic: 60, investigative: 60, artistic: 95, social: 45, enterprising: 65, conventional: 70 },
+        skills: { administrative: 65, spatial: 95, leadership: 65, social: 50, mechanical: 60 }
+      },
+      "Instructional Systems Designer": {
+        interests: { realistic: 35, investigative: 70, artistic: 75, social: 80, enterprising: 70, conventional: 75 },
+        skills: { administrative: 80, spatial: 70, leadership: 75, social: 85, mechanical: 35 }
+      },
+      "Editorial Product Layout Artist": {
+        interests: { realistic: 40, investigative: 65, artistic: 90, social: 50, enterprising: 60, conventional: 90 },
+        skills: { administrative: 90, spatial: 90, leadership: 60, social: 55, mechanical: 40 }
+      },
+      "Digital Colorist & Render Specialist": {
+        interests: { realistic: 65, investigative: 75, artistic: 90, stroke: 40, enterprising: 55, conventional: 70 },
+        skills: { administrative: 60, spatial: 95, leadership: 60, social: 45, mechanical: 70 }
+      },
+      "Audio Synthesizer Designer": {
+        interests: { realistic: 75, investigative: 80, artistic: 85, social: 45, enterprising: 65, conventional: 70 },
+        skills: { administrative: 65, spatial: 90, leadership: 65, social: 50, mechanical: 80 }
       }
     };
 
