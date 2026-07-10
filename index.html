@@ -89,24 +89,42 @@
       
       <!-- 1. LANDING/HOMEPAGE VIEW -->
       <section id="landing-view" class="homepage-container fade-in-section">
-        <!-- Hero Section -->
-        <div class="hero-block" style="padding: 4rem 1rem; text-align: center; background: radial-gradient(circle, rgba(171,71,48,0.05) 0%, transparent 80%);">
-          <div class="hero-brand" style="margin-bottom: 1rem;">
-            <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem;">THE APPARATUS OF</span>
-            <h1 class="parallax-title" id="parallax-text-1" style="font-size: 4rem; font-family: 'Playfair Display', Georgia, serif; line-height: 1.1; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: -1px; text-shadow: 2px 2px 0px rgba(0,0,0,0.15); display: block;">URCAREERBUDDY</h1>
-            <p style="font-family: 'Courier Prime', monospace; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
-              BY HARSHIT MISHRA
-            </p>
-          </div>
-          <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.85;">
-            An advanced psychometric engine designed to guide student trajectories through scientific diagnostic metrics. Calibrating Core Aptitude, Behavioral Traits, Workplace Values, and Skill Matrix maps across 130 structural data points.
-          </p>
-          <button class="btn btn-primary" id="btn-enter-portal" style="font-size: 1.1rem; padding: 0.8rem 2.2rem; box-shadow: 4px 4px 0px var(--color-border-dark);">
-            Access Diagnostic Portal
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 8px; vertical-align: middle;">
-              <polyline points="9 18 15 12 9 6"></polyline>
+        <!-- Fullscreen Premium Hero Section -->
+        <div class="hero-block" style="position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 90vh; padding: 2rem 1rem;">
+          <!-- Inline Background Gears for Parallax/Depth -->
+          <div class="hero-bg-gears" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 0; opacity: 0.25;">
+            <svg class="vintage-gear-svg" id="hero-gear-1" viewBox="0 0 100 100" style="position: absolute; width: 180px; height: 180px; top: 10%; left: 5%; animation: spinClockwise 30s linear infinite;">
+              <circle cx="50" cy="50" r="8" fill="none" stroke="var(--color-border-dark)"></circle>
+              <circle cx="50" cy="50" r="25" fill="none" stroke="var(--color-border-dark)"></circle>
+              <line x1="50" y1="15" x2="50" y2="85" stroke="var(--color-border-dark)"></line>
+              <line x1="15" y1="50" x2="85" y2="50" stroke="var(--color-border-dark)"></line>
             </svg>
-          </button>
+            <svg class="vintage-gear-svg" id="hero-gear-2" viewBox="0 0 100 100" style="position: absolute; width: 260px; height: 260px; bottom: 10%; right: 5%; animation: spinCounterClockwise 45s linear infinite;">
+              <circle cx="50" cy="50" r="12" fill="none" stroke="var(--color-border-dark)"></circle>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-border-dark)"></circle>
+              <line x1="50" y1="5" x2="50" y2="95" stroke="var(--color-border-dark)"></line>
+              <line x1="5" y1="50" x2="95" y2="50" stroke="var(--color-border-dark)"></line>
+            </svg>
+          </div>
+
+          <div class="vt-card hero-central-card" style="position: relative; z-index: 1; max-width: 780px; text-align: center; background: var(--color-bg-card); padding: 3.5rem 2.5rem; border: 2px solid var(--color-border-dark); box-shadow: var(--shadow-flat); transition: all 0.3s ease;">
+            <div class="hero-brand" style="margin-bottom: 1.2rem;">
+              <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem;">THE APPARATUS OF</span>
+              <h1 class="parallax-title" id="parallax-text-1" style="font-size: 4rem; font-family: 'Playfair Display', Georgia, serif; line-height: 1.1; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: -1px; text-shadow: 2px 2px 0px rgba(0,0,0,0.1); display: block;">URCAREERBUDDY</h1>
+              <p style="font-family: 'Courier Prime', monospace; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
+                BY HARSHIT MISHRA
+              </p>
+            </div>
+            <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.85;">
+              An advanced psychometric engine designed to guide student trajectories through scientific diagnostic metrics. Calibrating Core Aptitude, Behavioral Traits, Workplace Values, and Skill Matrix maps across 130 structural data points.
+            </p>
+            <button class="btn btn-primary btn-hero-portal" id="btn-enter-portal" style="font-size: 1.1rem; padding: 0.8rem 2.5rem; box-shadow: 4px 4px 0px var(--color-border-dark); transition: all 0.2s ease;">
+              Access Diagnostic Portal
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 8px; vertical-align: middle;">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div class="ornate-line" aria-hidden="true"><div class="ornate-diamond"></div></div>

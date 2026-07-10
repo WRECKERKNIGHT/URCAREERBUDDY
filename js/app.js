@@ -162,23 +162,54 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize (Moved to the bottom of the DOMContentLoaded scope to prevent TDZ ReferenceErrors)
 
   // ==========================================
-  // 1. SCROLL PARALLAX & ROTATING WHEELS
+  // 1. SCROLL & MOUSE INTERACTIVE PARALLAX
   // ==========================================
   window.addEventListener("scroll", () => {
     const scrollVal = window.scrollY;
     
-    // Parallax hero text
+    // Scroll Parallax hero text (applied if mouse is not shifting the card)
     const title = document.getElementById("parallax-text-1");
     const sub = document.getElementById("parallax-text-2");
-    if (title) title.style.transform = `translate3d(0, ${scrollVal * 0.25}px, 0)`;
-    if (sub) sub.style.transform = `translate3d(0, ${scrollVal * 0.12}px, 0)`;
     
-    // Spinning gears
+    // Only apply scroll parallax if screen width is large and scroll is active
+    if (window.innerWidth > 768) {
+      if (title) title.style.transform = `translate3d(0, ${scrollVal * 0.18}px, 0)`;
+      if (sub) sub.style.transform = `translate3d(0, ${scrollVal * 0.08}px, 0)`;
+    }
+    
+    // Spinning background canvas gears
     const gear1 = document.getElementById("parallax-gear-1");
     const gear2 = document.getElementById("parallax-gear-2");
     if (gear1) gear1.style.transform = `rotate(${scrollVal * 0.08}deg)`;
     if (gear2) gear2.style.transform = `rotate(${-scrollVal * 0.05}deg)`;
   });
+
+  // Interactive mousemove parallax on the central hero card
+  const heroBlock = document.querySelector(".hero-block");
+  const heroCard = document.querySelector(".hero-central-card");
+  const heroGear1 = document.getElementById("hero-gear-1");
+  const heroGear2 = document.getElementById("hero-gear-2");
+
+  if (heroBlock && heroCard && window.innerWidth > 768) {
+    heroBlock.addEventListener("mousemove", (e) => {
+      const rect = heroBlock.getBoundingClientRect();
+      const x = e.clientX - rect.left - (rect.width / 2);
+      const y = e.clientY - rect.top - (rect.height / 2);
+      
+      // Shift card slightly
+      heroCard.style.transform = `translate3d(${x * 0.015}px, ${y * 0.015}px, 0) scale(1.005)`;
+      
+      // Shift background gears
+      if (heroGear1) heroGear1.style.transform = `translate3d(${x * -0.01}px, ${y * -0.01}px, 0) rotate(${x * 0.04}deg)`;
+      if (heroGear2) heroGear2.style.transform = `translate3d(${x * -0.005}px, ${y * -0.005}px, 0) rotate(${x * -0.02}deg)`;
+    });
+
+    heroBlock.addEventListener("mouseleave", () => {
+      heroCard.style.transform = "translate3d(0, 0, 0) scale(1)";
+      if (heroGear1) heroGear1.style.transform = "translate3d(0, 0, 0)";
+      if (heroGear2) heroGear2.style.transform = "translate3d(0, 0, 0)";
+    });
+  }
 
   // ==========================================
   // 2. THEME CONTROLS (LIGHT/DARK)
