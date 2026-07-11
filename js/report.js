@@ -24,6 +24,8 @@ export class ReportRenderer {
       { id: "roadmaps", label: "💼 Career Roadmaps & Milestones", icon: "roadmaps" },
       { id: "subconscious_bias", label: "🧠 Subconscious Bias & Mismatch", icon: "bias" },
       { id: "trajectory_projection", label: "📈 10-Year Path Projection", icon: "trajectory" },
+      { id: "epigenetic_vocational", label: "🧬 Sensory Workplace Fit", icon: "epigenetic" },
+      { id: "academic_matcher", label: "🎓 Global University Matcher", icon: "matcher" },
       { id: "anti_gaming", label: "🛡️ Anti-Gaming Verification Audit", icon: "anti_gaming" },
       { id: "debrief", label: "🤝 Counseling Debrief", icon: "debrief" }
     ];
@@ -183,6 +185,12 @@ export class ReportRenderer {
         stageEl.innerHTML = this.getTrajectoryProjectionHTML();
         this.drawTrajectoryChart();
         break;
+      case "epigenetic_vocational":
+        stageEl.innerHTML = this.getEpigeneticVocationalHTML();
+        break;
+      case "academic_matcher":
+        stageEl.innerHTML = this.getAcademicMatcherHTML();
+        break;
       case "debrief":
         stageEl.innerHTML = this.getDebriefHTML();
         this.bindDebriefEvents();
@@ -332,6 +340,154 @@ export class ReportRenderer {
           <span style="font-family: 'Courier Prime', monospace; font-size: 1.1rem; color: var(--color-accent-sage); font-weight: 800; border: 2px solid var(--color-accent-sage); padding: 6px 16px; display: inline-block; transform: rotate(-3deg);">
             🛡️ INTEGRITY VERIFIED
           </span>
+        </div>
+      </section>
+    `;
+  }
+
+  getEpigeneticVocationalHTML() {
+    const learning = this.scores.learning;
+    
+    // Calibrate environment based on learning styles
+    let noiseLevel = "Isolated / Silent Focus (20-30 dB)";
+    let lightingSpec = "Dynamic daylight 5000K (Increases focus duration)";
+    let collaborationFormat = "Asynchronous / Low Meeting Frequency";
+    let physicalPosture = "Sitting / Standing Desk combination";
+
+    if (learning.kinesthetic > 65) {
+      noiseLevel = "Active Collaboration Deck (50-60 dB)";
+      collaborationFormat = "Frequent design workshops & physical whiteboard sessions";
+      physicalPosture = "High mobility laboratory/workshop floor movement";
+    }
+
+    if (learning.auditory > 65) {
+      noiseLevel = "Moderate hum / Conversational (40-50 dB)";
+      collaborationFormat = "Synchronous verbal reviews & group standups";
+    }
+
+    return `
+      <section class="vt-card" style="padding: 2.2rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-sage); color: #fff;">ENVIRONMENTAL DYNAMICS</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Sensory Workplace Environmental Fit
+        </h2>
+        <p class="section-sub">Profiling the physical environment, focus pacing cycles, and collaboration formats where your cognitive performance is maximized.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;">
+          
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: var(--color-accent-gold); margin-bottom: 0.8rem; text-transform: uppercase;">1. Physical Workspace Settings</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              <strong>Acoustic Floor Limit:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${noiseLevel}</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Light Spectrum:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${lightingSpec}</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Physical Posture Targets:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${physicalPosture}</span>
+            </p>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: var(--color-accent-gold); margin-bottom: 0.8rem; text-transform: uppercase;">2. Focus & Collaboration Frameworks</h4>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+              <strong>Recommended Communication:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${collaborationFormat}</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Subconscious Focus Gaze Cycle:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">45 minutes Deep Concentration / 5 minutes Saccadic Rest</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Interruption Resilience Quotient:</strong> <br>
+              <span style="color: var(--color-accent-rust); font-weight:700;">Low Resilience (Protective calendar blocks recommended)</span>
+            </p>
+          </div>
+
+        </div>
+
+        <div class="vt-card" style="margin-top: 1.5rem; padding: 1.5rem; border-color: var(--color-accent-sage); background: rgba(0,0,0,0.15);">
+          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: var(--color-accent-sage); margin-bottom: 0.5rem; text-transform: uppercase;">Cognitive Ergonomic Summary</h4>
+          <p style="font-size: 0.9rem; line-height: 1.6; margin: 0;">
+            Your sensory learning profile dictates that environmental interruptions (like open-office crosstalk) severely degrade your logical reasoning performance. You excel under structured boundaries where you can hyper-focus on specific blocks of text or physical models, supported by asymmetrical collaboration cycles.
+          </p>
+        </div>
+      </section>
+    `;
+  }
+
+  getAcademicMatcherHTML() {
+    const stream = (this.scores.userStream || "Science (PCB)").toLowerCase();
+    
+    let matchedInstitutions = [];
+
+    if (stream.includes("pcm")) {
+      matchedInstitutions = [
+        { name: "Massachusetts Institute of Technology (MIT)", location: "Cambridge, USA", program: "B.S. Computer Science & AI Systems", match: "96%", desc: "Global leader in distributed systems and parallel computing research." },
+        { name: "Indian Institute of Technology (IIT Bombay)", location: "Mumbai, India", program: "B.Tech Computer Science & Eng.", match: "94%", desc: "High competitive entry with strong emphasis on raw mathematical aptitude." },
+        { name: "Stanford University", location: "Stanford, USA", program: "B.S. Symbolic Systems & Machine Learning", match: "91%", desc: "Fosters early technology entrepreneurship and venture research." },
+        { name: "University of Cambridge", location: "Cambridge, UK", program: "Mathematical Tripos / Computer Science", match: "89%", desc: "Deep theoretical rigor and foundational algorithm analysis." }
+      ];
+    } else if (stream.includes("pcb")) {
+      matchedInstitutions = [
+        { name: "Johns Hopkins University", location: "Baltimore, USA", program: "B.S. Molecular Biology & Biophysics", match: "95%", desc: "Pioneering clinical research laboratories and biotechnology facilities." },
+        { name: "All India Institute of Medical Sciences (AIIMS)", location: "New Delhi, India", program: "MBBS Clinical Medicine Track", match: "93%", desc: "Premier national clinical hub with rigorous patient diagnostics focus." },
+        { name: "Indian Institute of Science (IISc Bangalore)", location: "Bangalore, India", program: "Bachelor of Science (Biology)", match: "92%", desc: "Pure research-intensive bio-informatics and genetics models." },
+        { name: "University of Oxford", location: "Oxford, UK", program: "B.A. Biomedical Sciences", match: "89%", desc: "Tutorial-style logical diagnostics and academic thesis options." }
+      ];
+    } else if (stream.includes("commerce")) {
+      matchedInstitutions = [
+        { name: "London School of Economics (LSE)", location: "London, UK", program: "B.Sc Financial Markets & Economics", match: "95%", desc: "World-class macro-economic policy modeling and risk audits." },
+        { name: "Wharton School (University of Pennsylvania)", location: "Philadelphia, USA", program: "B.Sc Economics (Finance Concentr.)", match: "93%", desc: "Elite corporate venture financing and mergers analytics." },
+        { name: "Shri Ram College of Commerce (SRCC)", location: "New Delhi, India", program: "B.Com Honors (Quantitative)", match: "91%", desc: "Top national commerce platform for chartered auditing tracks." },
+        { name: "NYU Stern School of Business", location: "New York, USA", program: "B.S. Finance & Data Science", match: "88%", desc: "Pioneers quantitative FinTech algorithms and banking modeling." }
+      ];
+    } else {
+      matchedInstitutions = [
+        { name: "Rhode Island School of Design (RISD)", location: "Providence, USA", program: "B.Des Industrial & UI/UX Systems", match: "94%", desc: "Elite physical and digital interaction design laboratories." },
+        { name: "Ashoka University", location: "Sonipat, India", program: "B.A. Cognitive Psychology & Arts", match: "92%", desc: "Liberal education exploring human behavioral structures." },
+        { name: "Royal College of Art (RCA)", location: "London, UK", program: "Graduate Diploma (Visual Design)", match: "89%", desc: "Immersive set styling, spatial audio, and motion graphic formats." },
+        { name: "National Institute of Design (NID)", location: "Ahmedabad, India", program: "B.Des Communication Design", match: "91%", desc: "Premier Indian design institute focusing on layout and media typography." }
+      ];
+    }
+
+    const logicScore = this.scores.ability.numerical || 70;
+    const scholarshipChances = Math.min(100, Math.round(logicScore * 0.95 + 10));
+
+    return `
+      <section class="vt-card" style="padding: 2.2rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-gold); color: #141210;">ACADEMIC MATCHMAKER</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Global Academic Institution Matcher
+        </h2>
+        <p class="section-sub">Cross-referencing your stream filters and logical aptitude indices against global university admissions matrices.</p>
+
+        <!-- Scholarship Indicator -->
+        <div class="vt-card" style="padding: 1.2rem; margin-top: 1.5rem; border-color: var(--color-accent-rust); background: rgba(235,94,40,0.03); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h4 style="font-family:'Courier Prime', monospace; font-size:0.9rem; color:var(--color-accent-rust); margin:0 0 0.2rem 0; text-transform:uppercase;">Scholarship Predictor Index</h4>
+            <span style="font-size:0.82rem; opacity:0.85;">Based on your high logical fluid intelligence calibration score (${logicScore}%).</span>
+          </div>
+          <span style="font-size:1.4rem; font-weight:800; color:var(--color-accent-rust);">${scholarshipChances}% Eligibility</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2rem;">
+          ${matchedInstitutions.map(inst => `
+            <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark); background: rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+              <div style="max-width: 80%;">
+                <h4 style="font-size:1.15rem; margin:0 0 0.3rem 0; font-family:'Playfair Display', Georgia, serif; font-style:italic;">${inst.name}</h4>
+                <span style="font-family:'Courier Prime', monospace; font-size:0.75rem; color:var(--color-accent-gold); text-transform:uppercase;">${inst.location} &bull; ${inst.program}</span>
+                <p style="font-size:0.85rem; margin: 0.5rem 0 0 0; opacity:0.9; line-height:1.5;">${inst.desc}</p>
+              </div>
+              <div style="text-align:right;">
+                <span style="font-family:'Courier Prime', monospace; font-size:0.7rem; color:var(--color-text-body); opacity:0.7; display:block; text-transform:uppercase;">Fit Index</span>
+                <span style="font-size:1.6rem; font-weight:800; color:var(--color-accent-gold);">${inst.match}</span>
+              </div>
+            </div>
+          `).join("")}
         </div>
       </section>
     `;

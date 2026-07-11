@@ -622,6 +622,14 @@
           </div>
         </div>
 
+        <!-- Real-Time Calibration ECG Waveform -->
+        <div style="position: relative; height: 60px; margin: 1.2rem 0; border: 1.5px solid var(--color-border-dark); background: rgba(0,0,0,0.2); overflow: hidden;">
+          <canvas id="calibrator-ECG-canvas" width="600" height="60" style="position: absolute; left:0; top:0; width:100%; height:100%; display:block; pointer-events:none;"></canvas>
+          <div style="position: absolute; right: 10px; top: 10px; font-family:'Courier Prime', monospace; font-size:0.65rem; color:var(--color-accent-gold); opacity:0.85; pointer-events:none; text-shadow: 0 0 4px rgba(255,223,109,0.3);" id="ecg-status-text">
+            SYSTEM TELEMETRY: WAVE CALIBRATION IDLE
+          </div>
+        </div>
+
         <!-- Current Question Container -->
         <div class="question-container" id="question-box-wrapper">
           <!-- Populated dynamically via JavaScript with typewriter print animations -->

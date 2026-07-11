@@ -922,6 +922,93 @@ document.addEventListener("DOMContentLoaded", () => {
     reveals.forEach(el => observer.observe(el));
   }
 
+  let ecgExcitement = 0;
+  let ecgPhase = 0;
+
+  function triggerECGPulse() {
+    ecgExcitement = 20;
+    const statusText = document.getElementById("ecg-status-text");
+    if (statusText) {
+      statusText.innerText = "SYSTEM TELEMETRY: CALIBRATING RESPONSE SPECTRUM...";
+      statusText.style.color = "var(--color-accent-rust)";
+      setTimeout(() => {
+        if (ecgExcitement < 5 && statusText) {
+          statusText.innerText = "SYSTEM TELEMETRY: WAVE CALIBRATION IDLE";
+          statusText.style.color = "var(--color-accent-gold)";
+        }
+      }, 1500);
+    }
+  }
+
+  function initECGWave() {
+    const canvas = document.getElementById("calibrator-ECG-canvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    function resizeCanvas() {
+      if (canvas.parentElement) {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+      }
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function draw() {
+      const assessmentView = document.getElementById("assessment-view");
+      if (assessmentView && !assessmentView.classList.contains("hidden")) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.strokeStyle = "rgba(235, 94, 40, 0.55)";
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+
+        const h = canvas.height;
+        const w = canvas.width;
+        const midY = h / 2;
+
+        for (let x = 0; x < w; x++) {
+          let wave = Math.sin(x * 0.025 + ecgPhase) * 2;
+          
+          if (ecgExcitement > 0) {
+            const distanceToCenter = Math.abs(x - (w / 2));
+            const envelope = Math.max(0, 1 - distanceToCenter / (w / 2.5));
+            wave += Math.sin(x * 0.16 - ecgPhase * 2.2) * ecgExcitement * envelope * 1.6;
+            wave += Math.cos(x * 0.32 + ecgPhase) * (ecgExcitement * 0.45) * envelope;
+          }
+
+          const y = midY + wave;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+
+        ctx.stroke();
+
+        if (ecgExcitement > 0) {
+          ecgExcitement -= 0.22;
+          if (ecgExcitement < 0) ecgExcitement = 0;
+        }
+
+        ecgPhase += 0.045 + (ecgExcitement * 0.012);
+      }
+      requestAnimationFrame(draw);
+    }
+    
+    const qBox = document.getElementById("question-box-wrapper");
+    if (qBox) {
+      qBox.addEventListener("click", (e) => {
+        const btn = e.target.closest(".choice-option-btn");
+        if (btn) {
+          triggerECGPulse();
+        }
+      });
+    }
+
+    draw();
+  }
+
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
   initTheme();
   const savedLang = localStorage.getItem("career_guidance_lang") || "en";
@@ -931,4 +1018,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initSimulator();
   initHeroParticles();
   initScrollReveal();
+  initECGWave();
 });
