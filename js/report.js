@@ -26,6 +26,7 @@ export class ReportRenderer {
       { id: "trajectory_projection", label: "📈 10-Year Path Projection", icon: "trajectory" },
       { id: "epigenetic_vocational", label: "🧬 Sensory Workplace Fit", icon: "epigenetic" },
       { id: "academic_matcher", label: "🎓 Global University Matcher", icon: "matcher" },
+      { id: "enneagram", label: "🏺 Enneagram Typology", icon: "enneagram" },
       { id: "anti_gaming", label: "🛡️ Anti-Gaming Verification Audit", icon: "anti_gaming" },
       { id: "debrief", label: "🤝 Counseling Debrief", icon: "debrief" }
     ];
@@ -192,6 +193,9 @@ export class ReportRenderer {
         break;
       case "academic_matcher":
         stageEl.innerHTML = this.getAcademicMatcherHTML();
+        break;
+      case "enneagram":
+        stageEl.innerHTML = this.getEnneagramHTML();
         break;
       case "debrief":
         stageEl.innerHTML = this.getDebriefHTML();
@@ -490,6 +494,105 @@ export class ReportRenderer {
               </div>
             </div>
           `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  getEnneagramHTML() {
+    const mbti = this.scores.mbtiCode || "INTJ";
+    let enneagramType = "Type 5";
+    let enneagramTitle = "The Investigator";
+    let enneagramFear = "Being useless, helpless, or incapable.";
+    let enneagramDesire = "To be capable, competent, and knowledgeable.";
+    let enneagramGrowth = "Type 8 (The Challenger) - moves toward active confidence, assertion, and physical leadership.";
+    let enneagramStress = "Type 7 (The Enthusiast) - moves toward scattered hyperactive distractions and avoidance.";
+    let enneagramDesc = "Investigators are alert, insightful, and curious. They are able to concentrate and focus on developing complex ideas and skills. Independent, innovative, and inventive, they can also become preoccupied with their thoughts and imaginary constructs. They value intellectual capability and competence above all else.";
+
+    if (mbti === "ENTJ" || mbti === "ESTJ") {
+      enneagramType = "Type 8";
+      enneagramTitle = "The Challenger";
+      enneagramFear = "Being controlled or harmed by others.";
+      enneagramDesire = "To protect themselves and determine their own path.";
+      enneagramGrowth = "Type 2 (The Helper) - moves toward empathy, warmth, soft support, and collaborative guidance.";
+      enneagramStress = "Type 5 (The Investigator) - moves toward intellectual withdrawal, cold analysis, and isolation.";
+      enneagramDesc = "Challengers are self-confident, strong, and assertive. Protective, resourceful, straight-talking, and decisive, they can also be ego-centric and domineering. They feel they must control their environment, easily taking lead of corporate teams and logistics grids.";
+    } else if (mbti === "ENFJ" || mbti === "ENFP" || mbti === "ENTP" || mbti === "ESFP") {
+      enneagramType = "Type 7";
+      enneagramTitle = "The Enthusiast";
+      enneagramFear = "Being deprived or trapped in emotional pain.";
+      enneagramDesire = "To be satisfied, content, and have their active needs fulfilled.";
+      enneagramGrowth = "Type 5 (The Investigator) - moves toward deep focus, grounding, systems analysis, and quiet stability.";
+      enneagramStress = "Type 1 (The Reformer) - moves toward rigid perfectionism, heavy self-criticism, and scheduling frustration.";
+      enneagramDesc = "Enthusiasts are extroverted, optimistic, versatile, and spontaneous. Playful, high-spirited, and practical, they can also misapply their talents, becoming over-extended, scattered, and undisciplined. They constantly seek new and exciting horizons.";
+    } else if (mbti === "INFJ" || mbti === "INFP" || mbti === "ISFP") {
+      enneagramType = "Type 4";
+      enneagramTitle = "The Individualist";
+      enneagramFear = "Having no unique identity or personal significance.";
+      enneagramDesire = "To find themselves and their unique significance (to create a distinct personal brand).";
+      enneagramGrowth = "Type 1 (The Reformer) - moves toward objective self-discipline, structured work ethics, and execution.";
+      enneagramStress = "Type 2 (The Helper) - moves toward over-involvement, codependency, and seeking approval from peers.";
+      enneagramDesc = "Individualists are self-aware, sensitive, and reserved. They are honest, warm, and highly expressive, but can also be moody and self-conscious. They hold back from others due to feeling vulnerable and different, seeking deep aesthetic alignment in their work.";
+    } else if (mbti === "ISFJ" || mbti === "ISTJ" || mbti === "ESFJ") {
+      enneagramType = "Type 6";
+      enneagramTitle = "The Loyalist";
+      enneagramFear = "Being without trusted support, stability, or systematic guidance.";
+      enneagramDesire = "To have security, safety, and trusted organizational support.";
+      enneagramGrowth = "Type 9 (The Peacemaker) - moves toward calm acceptance, mental quietude, and trust in the natural flow.";
+      enneagramStress = "Type 3 (The Achiever) - moves toward competitive workaholism, image-consciousness, and stress pacing.";
+      enneagramDesc = "Loyalists are reliable, hard-working, organization-oriented, and trustworthy. Excellent at troubleshooting systems, they foresee operational problems and foster cooperation, but can also become defensive, evasive, and highly anxious under stress.";
+    }
+
+    return `
+      <section class="vt-card" style="padding: 2.2rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-rust); color: #fff;">ENNEAGRAM TYPOLOGY</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Enneagram Typology & Core Motivator
+        </h2>
+        <p class="section-sub">Profiling your dominant subconscious motivator type, core fears, and paths of integration/disintegration.</p>
+
+        <!-- Centered Circle Graphic and Main Info -->
+        <div style="display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; align-items: center; justify-content: center;">
+          
+          <!-- Ornate Enneagram Indicator Seal -->
+          <div style="position: relative; width: 140px; height: 140px; border: 1.5px double var(--color-accent-gold); border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(0,0,0,0.15); box-shadow: 0 0 15px rgba(255,223,109,0.15); flex-shrink: 0;">
+            <span style="font-family:'Courier Prime', monospace; font-size: 0.65rem; color: var(--color-text-body); opacity: 0.8; text-transform: uppercase;">Dominant</span>
+            <span style="font-size: 1.8rem; font-weight: 800; color: var(--color-accent-gold);">${enneagramType.split(" ")[1]}</span>
+            <span style="font-family:'Courier Prime', monospace; font-size: 0.65rem; color: var(--color-accent-rust); text-transform: uppercase; font-weight:700;">VECTOR</span>
+          </div>
+
+          <div style="max-width: 420px;">
+            <h3 style="font-family:'Playfair Display', serif; font-size: 1.6rem; font-style:italic; margin: 0 0 0.5rem 0;">${enneagramType}: ${enneagramTitle}</h3>
+            <p style="font-size: 0.9rem; line-height: 1.6; margin: 0; opacity: 0.95;">${enneagramDesc}</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;">
+          
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark); background: rgba(0,0,0,0.1);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; color: var(--color-accent-gold); margin-bottom: 0.8rem; text-transform: uppercase;">Subconscious Drives</h4>
+            <p style="font-size: 0.88rem; line-height: 1.6;">
+              <strong>Core Subconscious Fear:</strong> <br>
+              <span style="color: var(--color-accent-rust); font-weight:700;">${enneagramFear}</span>
+            </p>
+            <p style="font-size: 0.88rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Core Subconscious Desire:</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${enneagramDesire}</span>
+            </p>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark); background: rgba(0,0,0,0.1);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; color: var(--color-accent-gold); margin-bottom: 0.8rem; text-transform: uppercase;">Subconscious Trajectories</h4>
+            <p style="font-size: 0.88rem; line-height: 1.6;">
+              <strong>Path of Integration (Growth):</strong> <br>
+              <span style="color: var(--color-text-heading); font-weight:700;">${enneagramGrowth}</span>
+            </p>
+            <p style="font-size: 0.88rem; line-height: 1.6; margin-top: 1rem;">
+              <strong>Path of Disintegration (Stress):</strong> <br>
+              <span style="color: var(--color-accent-rust); font-weight:700;">${enneagramStress}</span>
+            </p>
+          </div>
+
         </div>
       </section>
     `;
@@ -937,14 +1040,72 @@ export class ReportRenderer {
     `;
   }
 
+  getMBTIIdentityInfo(mbtiCode, identitySuffix) {
+    const code = mbtiCode.toUpperCase();
+    const map = {
+      INTJ: { role: "Architect", group: "Analysts Group", desc: "Strategic thinkers with a plan for everything, driven by rational competence." },
+      INTP: { role: "Logician", group: "Analysts Group", desc: "Innovative inventors with an unquenchable thirst for logical frameworks." },
+      ENTJ: { role: "Commander", group: "Analysts Group", desc: "Bold, imaginative and strong-willed organizers, always formulating a path." },
+      ENTP: { role: "Debater", group: "Analysts Group", desc: "Smart and curious thinkers who cannot resist exploring system concepts." },
+      INFJ: { role: "Advocate", group: "Diplomats Group", desc: "Quiet and mystical, yet very inspiring and tireless visionaries." },
+      INFP: { role: "Mediator", group: "Diplomats Group", desc: "Poetic, kind and altruistic people, always eager to support a worthy cause." },
+      ENFJ: { role: "Protagonist", group: "Diplomats Group", desc: "Charismatic and inspiring leaders, able to guide and connect with crowds." },
+      ENFP: { role: "Campaigner", group: "Diplomats Group", desc: "Enthusiastic, creative and sociable free spirits, who can always find a creative angle." },
+      ISTJ: { role: "Logistician", group: "Sentinels Group", desc: "Practical and fact-minded individuals, whose reliability cannot be questioned." },
+      ISFJ: { role: "Defender", group: "Sentinels Group", desc: "Very dedicated and warm protectors, always ready to defend systematic safety." },
+      ESTJ: { role: "Executive", group: "Sentinels Group", desc: "Excellent administrators, unsurpassed at managing processes or teams." },
+      ESFJ: { role: "Consul", group: "Sentinels Group", desc: "Extraordinarily caring, social and popular citizens, always eager to collaborate." },
+      ISTP: { role: "Virtuoso", group: "Explorers Group", desc: "Bold and practical experimenters, masters of all kinds of physical tools." },
+      ISFP: { role: "Adventurer", group: "Explorers Group", desc: "Flexible and charming creators, always ready to explore and experience new aesthetics." },
+      ESTP: { role: "Entrepreneur", group: "Explorers Group", desc: "Smart, energetic and perceptive people, who truly enjoy living in the active flow." },
+      ESFP: { role: "Entertainer", group: "Explorers Group", desc: "Spontaneous, energetic and enthusiastic people – life is never boring around them." }
+    };
+    
+    const info = map[code] || { role: "Explorer", group: "Explorers Group", desc: "Versatile and highly adaptive individual." };
+    
+    let strategy = "Confident Individualism";
+    if (mbtiCode.startsWith("E")) {
+      strategy = identitySuffix === "-A" ? "People Mastery" : "Social Striving";
+    } else {
+      strategy = identitySuffix === "-A" ? "Confident Individualism" : "Constant Improvement";
+    }
+    
+    return { ...info, strategy };
+  }
+
   getPersonalityHTML() {
     const m = this.scores.mbti;
     const details = this.generateMBTIInterpretations();
 
+    const stressVal = this.scores.ability.stress || 50;
+    const identitySuffix = stressVal < 45 ? "-A" : "-T";
+    const fullCode = this.scores.mbtiCode + identitySuffix;
+    const identityInfo = this.getMBTIIdentityInfo(this.scores.mbtiCode, identitySuffix);
+
     return `
       <section class="vt-card">
-        <h3>Stage 1: Personality Diagnostics (MBTI Model)</h3>
-        <p class="section-sub">Percentile distribution mapping your cognitive focus, data filters, decision methods, and scheduling style.</p>
+        <div class="archetype-badge" style="background-color: var(--color-accent-rust); color: #fff;">PERSONALITY DYNAMICS</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Stage 1: Personality Typology
+        </h2>
+        <p class="section-sub">Profiling cognitive preferences, data filters, decision methods, and scheduling styles.</p>
+
+        <!-- 16Personalities Style Identity Header -->
+        <div class="vt-card" style="padding: 1.8rem; margin: 1.5rem 0 2rem; border-color: var(--color-accent-rust); background: rgba(235,94,40,0.02); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+          <div style="max-width: 70%;">
+            <span style="font-family: 'Courier Prime', monospace; font-size: 0.8rem; color: var(--color-accent-rust); text-transform: uppercase; font-weight: 700; letter-spacing: 2px;">
+              ROLE ARCHETYPE &bull; ${identityInfo.group} &bull; ${identitySuffix === "-A" ? "Assertive" : "Turbulent"}
+            </span>
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; margin: 0.3rem 0; color: var(--color-text-heading);">
+              The ${identityInfo.role} (${fullCode})
+            </h3>
+            <p style="font-size: 0.9rem; opacity: 0.85; margin: 0; line-height: 1.5;">${identityInfo.desc}</p>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; color: var(--color-text-body); opacity: 0.7; text-transform: uppercase; display: block;">Core Strategy</span>
+            <span style="font-size: 1.25rem; font-weight: 800; color: var(--color-accent-gold); white-space: nowrap;">${identityInfo.strategy}</span>
+          </div>
+        </div>
         
         <!-- Gauges & Typology side-by-side grid -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; margin-bottom: 2rem;">
@@ -956,7 +1117,7 @@ export class ReportRenderer {
             ${this.generateBiDirectionalGauge("Thinking", m.thinking, "Feeling", m.feeling, "⚖️", "🟦")}
             ${this.generateBiDirectionalGauge("Judging", m.judging, "Perceiving", m.perceiving, "📅", "🟩")}
             <div style="text-align: center; margin-top: 1.5rem; font-family: 'Courier Prime', monospace; font-size: 1.1rem; font-weight: 700; color: var(--color-accent-rust);">
-              CALCULATED CODE: ${this.scores.mbtiCode}
+              CALCULATED CODE: ${fullCode}
             </div>
           </div>
 
@@ -1653,6 +1814,39 @@ export class ReportRenderer {
     `;
   }
 
+  getCareerMarketMetadata(careerName) {
+    const name = careerName.toLowerCase();
+    
+    let zone = "Job Zone 4: High Preparation (Bachelor's Degree)";
+    let salary = "$95,000 / ₹12.5 LPA";
+    let outlook = "Steady Expansion (+6.2% YoY)";
+    let aiResilience = "70% (Medium)";
+
+    if (name.includes("machine learning") || name.includes("quantum") || name.includes("bioinformatics") || name.includes("biophysics") || name.includes("genetic") || name.includes("immunology") || name.includes("pathology") || name.includes("epidemiological")) {
+      zone = "Job Zone 5: Extensive Preparation (Master's / Ph.D.)";
+      salary = "$135,000 / ₹18.0 LPA";
+      outlook = "Hyper Growth (+18.4% YoY)";
+      aiResilience = "92% (Exceptional)";
+    } else if (name.includes("full-stack") || name.includes("blockchain") || name.includes("devops") || name.includes("cybersecurity") || name.includes("actuarial") || name.includes("forensic") || name.includes("investment banking") || name.includes("powertrain") || name.includes("aerospace")) {
+      zone = "Job Zone 4: High Preparation (Bachelor's Degree)";
+      salary = "$115,000 / ₹14.5 LPA";
+      outlook = "Rapid Growth (+11.8% YoY)";
+      aiResilience = "84% (High)";
+    } else if (name.includes("cad") || name.includes("cnc") || name.includes("haptic") || name.includes("textile") || name.includes("cartography") || name.includes("layout")) {
+      zone = "Job Zone 3: Medium Preparation (Associate / Vocational)";
+      salary = "$70,000 / ₹8.5 LPA";
+      outlook = "Moderate Growth (+4.5% YoY)";
+      aiResilience = "42% (Medium Risk)";
+    } else if (name.includes("prompt") || name.includes("generative") || name.includes("narrative")) {
+      zone = "Job Zone 3: Medium Preparation (Associate / Vocational)";
+      salary = "$88,000 / ₹10.5 LPA";
+      outlook = "Volatile Growth (+22.0% YoY)";
+      aiResilience = "65% (Medium)";
+    }
+
+    return { zone, salary, outlook, aiResilience };
+  }
+
   bindClustersEvents() {
     const clusterTabs = this.container.querySelectorAll(".cluster-tab-btn");
     const clusterContent = this.container.querySelector("#active-cluster-content");
@@ -1681,13 +1875,11 @@ export class ReportRenderer {
       const clusterData = this.getDetailedClusterData()[index];
       if (!clusterData) return;
 
-      // Calculate suitability scores
       let careerRows = clusterData.careers.map(car => {
         const calculated = this.calculateEuclideanSuitability(car.name, this.scores);
         return { ...car, score: calculated };
       });
 
-      // Filter by activeStream
       if (activeStream !== "All") {
         careerRows = careerRows.filter(car => car.streams && car.streams.includes(activeStream));
       }
@@ -1709,6 +1901,7 @@ export class ReportRenderer {
             ${careerRows.map((r, idx) => {
               const isMatch = r.score >= 70 ? "High Compatibility" : "Moderate Compatibility";
               const badgeColor = r.score >= 70 ? "var(--color-accent-rust)" : "var(--color-text-body)";
+              const meta = this.getCareerMarketMetadata(r.name);
               return `
                 <div class="vt-card vt-card-hover career-path-card" data-idx="${idx}" style="padding: 1.5rem; cursor: pointer; transition: all 0.2s ease; border: 1.5px solid var(--color-border-dark);">
                   <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.8rem;">
@@ -1730,7 +1923,27 @@ export class ReportRenderer {
                     <strong>Ideal Profile:</strong> ${r.profile}
                   </div>
                   
-                  <div class="career-detail-popup hidden" id="popup-${index}-${idx}" style="margin-top: 1rem; background: var(--color-bg-base); padding: 0.8rem; border: 1px solid var(--color-border-dark);">
+                  <div class="career-detail-popup hidden" id="popup-${index}-${idx}" style="margin-top: 1rem; background: var(--color-bg-base); padding: 1.2rem; border: 1.5px solid var(--color-border-dark);">
+                    <!-- Market Outlook Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; font-family: 'Courier Prime', monospace; font-size: 0.72rem; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.8rem;">
+                      <div>
+                        <strong>O*NET Job Zone:</strong><br>
+                        <span style="color: var(--color-text-heading); font-weight:700;">${meta.zone}</span>
+                      </div>
+                      <div>
+                        <strong>Median Salary Target:</strong><br>
+                        <span style="color: var(--color-accent-gold); font-weight:700;">${meta.salary}</span>
+                      </div>
+                      <div>
+                        <strong>Market Outlook:</strong><br>
+                        <span style="color: var(--color-text-heading); font-weight:700;">${meta.outlook}</span>
+                      </div>
+                      <div>
+                        <strong>AI Automation Resilience:</strong><br>
+                        <span style="color: var(--color-accent-rust); font-weight:700;">${meta.aiResilience}</span>
+                      </div>
+                    </div>
+                    
                     <div style="font-weight: 700; font-family: 'Courier Prime', monospace; font-size: 0.72rem; text-transform: uppercase; color: var(--color-accent-rust); margin-bottom: 0.4rem;">
                       Skills Gap Analysis Checklists
                     </div>
