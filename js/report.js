@@ -134,7 +134,9 @@ export class ReportRenderer {
     const stageEl = this.container.querySelector("#report-output-stage");
     if (!stageEl) return;
 
-    stageEl.className = "report-output-stage fade-in-section";
+    stageEl.classList.remove("tab-slide-3d");
+    void stageEl.offsetWidth; // trigger reflow
+    stageEl.className = "report-output-stage tab-slide-3d";
     
     switch (this.currentTab) {
       case "summary":

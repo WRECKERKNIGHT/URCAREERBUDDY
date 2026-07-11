@@ -284,9 +284,131 @@ document.addEventListener("DOMContentLoaded", () => {
     streamSelectionContainer.classList.add("hidden");
   });
 
+  function triggerQuantumLoader(callback) {
+    const overlay = document.getElementById("quantum-loader-overlay");
+    const target = document.getElementById("loader-flyin-text");
+    const fillIndicator = document.getElementById("loader-bar-fill-indicator");
+    const statusText = document.getElementById("loader-status-text");
+    const canvas = document.getElementById("loader-stars-canvas");
+    
+    if (!overlay || !target || !fillIndicator || !statusText || !canvas) {
+      callback();
+      return;
+    }
+    
+    overlay.classList.remove("hidden");
+    fillIndicator.style.width = "0%";
+    statusText.innerText = "INITIALIZING ENGINE MATRICES...";
+    
+    const text = "MADE BY HARSHIT MISHRA";
+    target.innerHTML = "";
+    [...text].forEach((char, index) => {
+      const span = document.createElement("span");
+      if (char === " ") {
+        span.className = "fly-letter-space";
+      } else {
+        span.className = "fly-letter";
+        span.innerText = char;
+        
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 400 + Math.random() * 300;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        span.style.setProperty("--tx", `${Math.round(tx)}px`);
+        span.style.setProperty("--ty", `${Math.round(ty)}px`);
+        span.style.setProperty("--delay", `${index * 0.045}s`);
+      }
+      target.appendChild(span);
+    });
+    
+    const ctx = canvas.getContext("2d");
+    let animationId;
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    
+    const stars = [];
+    const numStars = 85;
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: Math.random() * canvas.width - canvas.width / 2,
+        y: Math.random() * canvas.height - canvas.height / 2,
+        z: Math.random() * canvas.width,
+        color: i % 2 === 0 ? "rgba(255, 223, 109, " + (0.35 + Math.random() * 0.6) + ")" : "rgba(235, 94, 40, " + (0.35 + Math.random() * 0.6) + ")"
+      });
+    }
+    
+    function drawStars() {
+      ctx.fillStyle = "rgba(11, 14, 20, 0.28)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      
+      stars.forEach(star => {
+        star.z -= 6.5;
+        if (star.z <= 0) {
+          star.z = canvas.width;
+          star.x = Math.random() * canvas.width - cx;
+          star.y = Math.random() * canvas.height - cy;
+        }
+        
+        const k = 140 / star.z;
+        const px = star.x * k + cx;
+        const py = star.y * k + cy;
+        const size = (1 - star.z / canvas.width) * 3.5 + 0.5;
+        
+        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fillStyle = star.color;
+          ctx.fill();
+        }
+      });
+      animationId = requestAnimationFrame(drawStars);
+    }
+    drawStars();
+    
+    let progress = 0;
+    const intervalTime = 30;
+    const totalDuration = 3000;
+    const increment = (100 / (totalDuration / intervalTime));
+    
+    const progressTimer = setInterval(() => {
+      progress += increment;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(progressTimer);
+      }
+      fillIndicator.style.width = `${progress}%`;
+    }, intervalTime);
+    
+    setTimeout(() => { statusText.innerText = "CALIBRATING COGNITIVE VECTOR SPACE..."; }, 650);
+    setTimeout(() => { statusText.innerText = "ALIGNING TRAIT NEURAL MESH..."; }, 1300);
+    setTimeout(() => { statusText.innerText = "CALIBRATING RIASEC SYSTEM METRICS..."; }, 2000);
+    setTimeout(() => { statusText.innerText = "TRAVERSAL SECURE. SYNCING INTAKE..."; }, 2700);
+    
+    setTimeout(() => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resizeCanvas);
+      overlay.classList.add("hidden");
+      callback();
+    }, 3200);
+  }
+
   btnEnterPortal.addEventListener("click", () => {
-    landingView.classList.add("hidden");
-    onboardingView.classList.remove("hidden");
+    triggerQuantumLoader(() => {
+      landingView.classList.add("hidden");
+      onboardingView.classList.remove("hidden");
+      onboardingView.classList.add("tab-slide-3d");
+      setTimeout(() => {
+        onboardingView.classList.remove("tab-slide-3d");
+      }, 600);
+    });
   });
 
   academicGradeSelect.addEventListener("change", () => {
@@ -351,6 +473,11 @@ document.addEventListener("DOMContentLoaded", () => {
     assessmentView.classList.remove("hidden");
     reportView.classList.add("hidden");
     
+    assessmentView.classList.add("tab-slide-3d");
+    setTimeout(() => {
+      assessmentView.classList.remove("tab-slide-3d");
+    }, 600);
+    
     renderCurrentQuestion();
   }
 
@@ -380,6 +507,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeChapter = categoryIndex[q.category] !== undefined ? categoryIndex[q.category] : 0;
     
     updateChapterBulbs(activeChapter);
+
+    questionBoxWrapper.classList.remove("question-transition-active");
+    void questionBoxWrapper.offsetWidth; // trigger reflow
+    questionBoxWrapper.classList.add("question-transition-active");
 
     // Initializing structure for typewriter reveal
     questionBoxWrapper.innerHTML = `
@@ -616,6 +747,11 @@ document.addEventListener("DOMContentLoaded", () => {
     onboardingView.classList.add("hidden");
     assessmentView.classList.add("hidden");
     reportView.classList.remove("hidden");
+    
+    reportView.classList.add("tab-slide-3d");
+    setTimeout(() => {
+      reportView.classList.remove("tab-slide-3d");
+    }, 600);
 
     const appContainer = document.querySelector(".app-container");
     if (appContainer) appContainer.classList.add("layout-expanded");

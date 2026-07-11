@@ -147,14 +147,14 @@
           <!-- Central Title and Text Block (Borderless plaque layout) -->
           <div class="apparatus-outer-wrapper">
             <div class="apparatus-inner-container">
-              <div class="hero-brand" style="margin-bottom: 1.5rem;">
-                <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.5rem;">THE APPARATUS OF</span>
-                <h1 class="parallax-title" id="parallax-text-1" style="font-size: clamp(2rem, 5.2vw, 4.5rem); font-family: 'Playfair Display', Georgia, serif; line-height: 1.05; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; display: block;">URCAREERBUDDY</h1>
-                <p style="font-family: 'Courier Prime', monospace; font-size: 1.05rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--color-text-body); opacity: 0.95; margin-top: 0.5rem;">
+              <div class="hero-brand" style="margin-bottom: 1.2rem;">
+                <span style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent-rust); font-weight: 700; display: block; margin-bottom: 0.3rem;">THE APPARATUS OF</span>
+                <h1 class="parallax-title" id="parallax-text-1" style="font-size: clamp(2.5rem, 6.8vw, 5.8rem); font-family: 'Playfair Display', Georgia, serif; line-height: 1.05; margin-bottom: 0.3rem; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; display: block; text-shadow: 0 0 15px rgba(255,223,109,0.15);">URCAREERBUDDY</h1>
+                <p style="font-family: 'Courier Prime', monospace; font-size: 1.25rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; color: var(--color-accent-gold); opacity: 0.95; margin-top: 0.5rem; text-shadow: 0 0 8px rgba(255,223,109,0.3);">
                   BY HARSHIT MISHRA
                 </p>
                 <!-- Katana Divider Stand SVG -->
-                <div style="margin: 1.5rem auto 1rem; text-align: center;">
+                <div style="margin: 1.2rem auto 0.8rem; text-align: center;">
                   <svg class="katana-divider-svg" width="300" height="40" viewBox="0 0 300 40" style="display: inline-block;">
                     <!-- Ornate Stand Base -->
                     <path d="M 30 35 L 270 35" stroke="#eb5e28" stroke-width="2.5" stroke-linecap="round"/>
@@ -177,8 +177,8 @@
                 </div>
               </div>
               
-              <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 680px; margin: 1.5rem auto 2.5rem; font-size: 1.15rem; line-height: 1.7; opacity: 0.95;">
-                An advanced 130-point psychometric engine designed to calibrate aptitudes, personality, and values to map your career trajectory.
+              <p class="hero-tagline parallax-title" id="parallax-text-2" style="max-width: 620px; margin: 1.2rem auto 2.2rem; font-size: 1.05rem; line-height: 1.6; opacity: 0.9;">
+                A scientific 130-point calibration engine mapping your aptitudes and traits.
               </p>
               
               <button class="btn btn-indicator-glow" id="btn-enter-portal">
@@ -681,6 +681,26 @@
       </div>
       <div class="modal-footer" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--color-border);">
         <button type="button" class="btn btn-primary" id="btn-agree-disclaimer" style="width: 100%;">I Acknowledge & Consent to the Assessment Parameters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quantum Loading Screen Overlay -->
+  <div id="quantum-loader-overlay" class="hidden">
+    <div class="loader-bg-noise"></div>
+    <canvas id="loader-stars-canvas"></canvas>
+    
+    <div class="loader-content-wrapper">
+      <div class="loader-apparatus-circle"></div>
+      
+      <!-- Characters Fly-in Target -->
+      <div id="loader-flyin-text"></div>
+      
+      <div class="loader-progress-info">
+        <div class="loader-bar">
+          <div class="loader-bar-fill" id="loader-bar-fill-indicator"></div>
+        </div>
+        <div class="loader-status" id="loader-status-text">INITIALIZING ENGINE MATRICES...</div>
       </div>
     </div>
   </div>

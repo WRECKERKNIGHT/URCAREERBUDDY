@@ -1641,6 +1641,200 @@
   transform: translateY(0);
 }
 
+/* Quantum Loading Screen Overlay */
+#quantum-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0b0e14;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+#quantum-loader-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-bg-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(var(--color-accent-rust) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+#loader-stars-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: block;
+}
+.loader-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 2rem;
+}
+.loader-apparatus-circle {
+  width: 130px;
+  height: 130px;
+  border: 1.5px dashed var(--color-accent-gold);
+  border-radius: 50%;
+  margin: 0 auto 2.5rem;
+  position: relative;
+  animation: loaderRotate 15s linear infinite;
+  box-shadow: 0 0 20px rgba(255, 223, 109, 0.12);
+}
+.loader-apparatus-circle::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 1px solid var(--color-accent-rust);
+  border-radius: 50%;
+  border-style: double;
+  animation: loaderRotateReverse 6s linear infinite;
+}
+@keyframes loaderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes loaderRotateReverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+#loader-flyin-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--color-accent-gold);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.2rem;
+  text-shadow: 0 0 8px rgba(255, 223, 109, 0.35);
+}
+.fly-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translate(var(--tx), var(--ty)) scale(3.5) rotate(160deg);
+  animation: assembleLetter 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation-delay: var(--delay);
+}
+.fly-letter-space {
+  width: 12px;
+}
+@keyframes assembleLetter {
+  0% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(3.5) rotate(160deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+}
+.loader-progress-info {
+  max-width: 300px;
+  margin: 0 auto;
+}
+.loader-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.03);
+  border: 1.5px solid var(--color-border-dark);
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  position: relative;
+}
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-accent-rust);
+  box-shadow: 0 0 6px var(--color-accent-rust);
+  transition: width 0.1s linear;
+}
+.loader-status {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--color-text-body);
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+/* 3D Tab Slide-in Reveal */
+@keyframes tab3DReveal {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) rotateY(-8deg) translateZ(-80px) scale(0.96);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0deg) translateZ(0) scale(1);
+    filter: blur(0);
+  }
+}
+.tab-slide-3d {
+  animation: tab3DReveal 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Glitched translate on Question transitions */
+@keyframes questionGlitchedIn {
+  0% {
+    opacity: 0;
+    transform: translateX(25px) skewX(-3deg);
+    filter: brightness(1.6);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0);
+    filter: brightness(1);
+  }
+}
+.question-transition-active {
+  animation: questionGlitchedIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Category Pill Shine effect */
+.category-pill {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  text-shadow: 0 0 6px rgba(235,94,40,0.3);
+}
+.category-pill::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,223,109,0.15), transparent);
+  transform: rotate(45deg);
+  animation: pillShine 4.5s linear infinite;
+}
+@keyframes pillShine {
+  0% { transform: translate(-100%, -100%) rotate(45deg); }
+  100% { transform: translate(100%, 100%) rotate(45deg); }
+}
+
 /* High-fidelity PDF & Printer Formatting overrides */
 @media print {
   body {
