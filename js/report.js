@@ -31,8 +31,21 @@ export class ReportRenderer {
     this.container = containerEl;
 
     this.container.innerHTML = `
+      <!-- Top Action bar for report downloads -->
+      <div class="report-toolbar no-print" style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; border: 1.5px solid var(--color-border-dark); margin-bottom: 1.5rem; background: rgba(20,18,16,0.35); backdrop-filter: blur(4px); width: 100%; box-sizing: border-box; flex-wrap: wrap; gap: 1rem;">
+        <span style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; font-weight: 700; color: var(--color-accent-gold); letter-spacing: 1px;">DOSSIER CABINET CONTROL CONSOLE</span>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <button type="button" class="btn btn-secondary" id="btn-save-pdf" style="font-size: 0.85rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+            🖨️ Save as PDF
+          </button>
+          <button type="button" class="btn btn-primary" id="btn-download-json" style="font-size: 0.85rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px; background-color: var(--color-accent-rust) !important; border-color: var(--color-accent-rust) !important; cursor: pointer;">
+            📥 Download JSON Dossier
+          </button>
+        </div>
+      </div>
+
       <!-- Left: Sidebar Drawer Deck -->
-      <nav class="report-sidebar-nav" id="report-sidebar-nav" aria-label="Cabinet Index Drawers"></nav>
+      <nav class="report-sidebar-nav no-print" id="report-sidebar-nav" aria-label="Cabinet Index Drawers"></nav>
       
       <!-- Right: Active Output Stage -->
       <div class="report-output-stage" id="report-output-stage"></div>
@@ -40,6 +53,51 @@ export class ReportRenderer {
 
     this.renderSidebar();
     this.renderContent();
+    this.bindToolbarEvents();
+  }
+
+  bindToolbarEvents() {
+    const btnPdf = this.container.querySelector("#btn-save-pdf");
+    const btnJson = this.container.querySelector("#btn-download-json");
+
+    if (btnPdf) {
+      btnPdf.addEventListener("click", () => {
+        window.print();
+      });
+    }
+
+    if (btnJson) {
+      btnJson.addEventListener("click", () => {
+        const payload = {
+          subject: this.scores.userName || "Student",
+          grade: this.scores.userGrade || "N/A",
+          track: this.scores.userTrack || "N/A",
+          stream: this.scores.userStream || "N/A",
+          archetype: {
+            title: this.archetype.title,
+            description: this.archetype.description,
+            topCareers: this.archetype.careers
+          },
+          scores: {
+            personality: this.scores.personality,
+            ability: this.scores.ability,
+            interests: this.scores.interests,
+            learning: this.scores.learning,
+            skills: this.scores.skills,
+            consistency: this.scores.consistency
+          },
+          generatedAt: new Date().toISOString()
+        };
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `UrCareerBuddy_Dossier_${payload.subject.replace(/\s+/g, '_')}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+      });
+    }
   }
 
   renderSidebar() {
