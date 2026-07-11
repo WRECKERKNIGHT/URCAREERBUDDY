@@ -888,20 +888,23 @@
     border-radius: 0px;
     padding: 1.1rem 1.4rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     color: var(--color-text-heading);
+    position: relative;
   }
 
   .choice-option-btn:hover {
-    border-color: var(--color-accent-rust);
-    background-color: var(--color-bg-base);
+    border-color: var(--color-accent-gold);
+    background-color: rgba(255, 223, 109, 0.03);
+    transform: translateX(6px);
+    box-shadow: -4px 0 0 var(--color-accent-gold), 0 0 10px rgba(255, 223, 109, 0.1);
   }
 
   .choice-option-btn.selected {
     border: 2px solid var(--color-accent-rust);
-    box-shadow: var(--shadow-flat);
-    outline: 1px dashed var(--color-accent-rust);
-    outline-offset: -5px;
+    background-color: rgba(235, 94, 40, 0.05);
+    box-shadow: -4px 0 0 var(--color-accent-rust), 0 0 15px rgba(235, 94, 40, 0.2);
+    transform: translateX(8px);
   }
 
   .action-footer {
