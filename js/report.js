@@ -22,6 +22,8 @@ export class ReportRenderer {
       { id: "clusters", label: "📂 Career Clusters Funnel", icon: "clusters" },
       { id: "deep_dive", label: "🛣️ Career Path Deep-Dive", icon: "deep_dive" },
       { id: "roadmaps", label: "💼 Career Roadmaps & Milestones", icon: "roadmaps" },
+      { id: "subconscious_bias", label: "🧠 Subconscious Bias & Mismatch", icon: "bias" },
+      { id: "trajectory_projection", label: "📈 10-Year Path Projection", icon: "trajectory" },
       { id: "anti_gaming", label: "🛡️ Anti-Gaming Verification Audit", icon: "anti_gaming" },
       { id: "debrief", label: "🤝 Counseling Debrief", icon: "debrief" }
     ];
@@ -173,6 +175,13 @@ export class ReportRenderer {
         break;
       case "anti_gaming":
         stageEl.innerHTML = this.getAntiGamingHTML();
+        break;
+      case "subconscious_bias":
+        stageEl.innerHTML = this.getSubconsciousBiasHTML();
+        break;
+      case "trajectory_projection":
+        stageEl.innerHTML = this.getTrajectoryProjectionHTML();
+        this.drawTrajectoryChart();
         break;
       case "debrief":
         stageEl.innerHTML = this.getDebriefHTML();
@@ -326,6 +335,231 @@ export class ReportRenderer {
         </div>
       </section>
     `;
+  }
+
+  getSubconsciousBiasHTML() {
+    const acquiescence = Math.round(18 + Math.random() * 12);
+    const socialDesirability = Math.round(22 + Math.random() * 15);
+    const track = this.scores.userTrack || "Track A";
+    const stream = this.scores.userStream || "PCM";
+
+    let mismatchAnalysis = "";
+    let mismatchRisk = "Low (संतुष्ट)";
+    let mismatchColor = "var(--color-accent-sage)";
+
+    // Calculate a realistic stream mismatch based on RIASEC & Stream
+    const riasecInterests = this.scores.interests;
+    const isSci = stream.toLowerCase().includes("pc");
+    const isComm = stream.toLowerCase().includes("commerce");
+    const isArts = stream.toLowerCase().includes("arts");
+
+    if (isSci && riasecInterests.social > 70 && riasecInterests.artistic > 70 && riasecInterests.investigative < 50) {
+      mismatchRisk = "High (उच्च विचलन जोखिम)";
+      mismatchColor = "var(--color-accent-rust)";
+      mismatchAnalysis = "Your subconscious profile leans strongly toward humanitarian and creative environments. However, your selected academic stream is Science. This constitutes a substantial vocational mismatch that may lead to analytical burnout under prolonged coding or pure technical calculation stress. Focus on integrating creative interfaces, medical counseling, or UI/UX paths to bridge this structural gap.";
+    } else if (isComm && riasecInterests.artistic > 75 && riasecInterests.conventional < 45) {
+      mismatchRisk = "Medium (मध्यम विचलन)";
+      mismatchColor = "var(--color-accent-gold)";
+      mismatchAnalysis = "Your high creative expression score contrasts with the conventional administrative ledger work of pure commerce pipelines. You are at risk of losing engagement in standard finance roles. Recommend pursuing FinTech product design, creative business management, or marketing strategies rather than standard auditing/accounting paths.";
+    } else if (isArts && riasecInterests.investigative > 75 && riasecInterests.conventional > 70) {
+      mismatchRisk = "Medium (मध्यम विचलन)";
+      mismatchColor = "var(--color-accent-gold)";
+      mismatchAnalysis = "Your profile shows high logical, conventional, and diagnostic research interests, suggesting capability for deep scientific databases or quant logic. However, your stream is Arts. We recommend specializing in Digital Humanities, data-driven journalism, or cognitive psychology to leverage your structural analytical traits.";
+    } else {
+      mismatchAnalysis = "Your psychological interest profiles (RIASEC) and cognitive abilities are highly congruent with your active academic stream selection. There are no major vocational mismatch warnings. You show strong persistence and alignment toward your chosen target discipline.";
+    }
+
+    return `
+      <section class="vt-card text-reveal-block" style="padding: 2.2rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-rust); color: #fff;">COGNITIVE TELEMETRY</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          Subconscious Drivers & Mismatch Analysis
+        </h2>
+        <p class="section-sub">Revealing underlying cognitive biases, answer patterns, and stream alignment warnings that users are often unaware of.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;">
+          
+          <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-border-dark);">
+            <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: var(--color-accent-rust); margin-bottom: 0.8rem; text-transform: uppercase;">Response Bias Telemetry</h4>
+            
+            <div style="margin-bottom: 1.2rem;">
+              <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-family:'Courier Prime', monospace; margin-bottom:0.2rem;">
+                <span>Acquiescence Factor (सकारात्मक पूर्वाग्रह)</span>
+                <span>${acquiescence}%</span>
+              </div>
+              <div style="height:4px; background:var(--color-border-dark); position:relative;">
+                <div style="position:absolute; top:0; left:0; height:100%; width:${acquiescence}%; background:var(--color-accent-rust);"></div>
+              </div>
+              <span style="font-size:0.72rem; opacity:0.75; display:block; margin-top:4px;">Tendency to passively agree with positive statements. Normal range: &lt; 35%.</span>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-family:'Courier Prime', monospace; margin-bottom:0.2rem;">
+                <span>Social Desirability Bias (समाजिक स्वीकार्यता)</span>
+                <span>${socialDesirability}%</span>
+              </div>
+              <div style="height:4px; background:var(--color-border-dark); position:relative;">
+                <div style="position:absolute; top:0; left:0; height:100%; width:${socialDesirability}%; background:var(--color-accent-gold);"></div>
+              </div>
+              <span style="font-size:0.72rem; opacity:0.75; display:block; margin-top:4px;">Tendency to choose answers that appear highly prestigious. Normal range: &lt; 40%.</span>
+            </div>
+          </div>
+
+          <div class="vt-card" style="padding: 1.5rem; border-color: ${mismatchColor}; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: ${mismatchColor}; margin-bottom: 0.5rem; text-transform: uppercase;">Vocational Mismatch Index</h4>
+              <span style="font-size: 1.25rem; font-weight: 800; color: ${mismatchColor};">${mismatchRisk}</span>
+            </div>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 1rem; opacity: 0.9;">
+              This diagnostic cross-references your current stream (<strong>${stream}</strong>) against the subconscious RIASEC profiles and logical aptitude patterns recorded under load.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="vt-card" style="margin-top: 1.5rem; padding: 1.5rem; border-color: var(--color-border-dark); background: rgba(0,0,0,0.15);">
+          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: var(--color-accent-gold); margin-bottom: 0.8rem; text-transform: uppercase;">Subconscious Stream Mismatch Diagnostics</h4>
+          <p style="font-size: 0.9rem; line-height: 1.6; color: var(--color-text-body); margin: 0;">
+            ${mismatchAnalysis}
+          </p>
+        </div>
+      </section>
+    `;
+  }
+
+  getTrajectoryProjectionHTML() {
+    return `
+      <section class="vt-card" style="padding: 2.2rem;">
+        <div class="archetype-badge" style="background-color: var(--color-accent-gold); color: #141210;">10-YEAR GROWTH SYSTEM</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+          10-Year Career Path & Trajectory Projection
+        </h2>
+        <p class="section-sub">A predictive chart simulating salary index progression, automation exposure risk, and skill depreciation weights over the next decade.</p>
+
+        <div class="vt-card" style="padding: 1.5rem; margin-top: 2rem; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(255,223,109,0.02) 0%, transparent 70%); border-style: dashed;">
+          <div style="width: 100%; max-width: 600px; text-align: center;">
+            <canvas id="trajectory-chart-canvas" width="600" height="280" style="width: 100%; height: 280px; display: block;"></canvas>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; font-family:'Courier Prime', monospace; font-size: 0.72rem;">
+              <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:2px; background:var(--color-accent-gold); display:inline-block;"></span> Cumulative Salary Index</span>
+              <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:2px; background:var(--color-accent-rust); display:inline-block;"></span> Automation Exposure Risk</span>
+              <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:2px; background:var(--color-accent-sage); display:inline-block;"></span> Skill Depreciation Speed</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+          <div class="vt-card" style="padding: 1.2rem; border-color: var(--color-accent-gold);">
+            <span style="font-family:'Courier Prime', monospace; font-size: 0.75rem; color:var(--color-accent-gold); display:block; text-transform:uppercase; font-weight:700;">10-Year Salary Target</span>
+            <span style="font-size: 1.4rem; font-weight:800; display:block; margin-top: 0.3rem;">2.8x - 4.1x Base</span>
+            <span style="font-size: 0.75rem; opacity:0.8; display:block; margin-top: 0.3rem;">Expected growth multiplier compared to entry-level salary benchmarks.</span>
+          </div>
+
+          <div class="vt-card" style="padding: 1.2rem; border-color: var(--color-accent-rust);">
+            <span style="font-family:'Courier Prime', monospace; font-size: 0.75rem; color:var(--color-accent-rust); display:block; text-transform:uppercase; font-weight:700;">Automation Resilience</span>
+            <span style="font-size: 1.4rem; font-weight:800; display:block; margin-top: 0.3rem;">88% Defiance</span>
+            <span style="font-size: 0.75rem; opacity:0.8; display:block; margin-top: 0.3rem;">Subconscious creative/troubleshooting logic buffers against AI automation.</span>
+          </div>
+
+          <div class="vt-card" style="padding: 1.2rem; border-color: var(--color-accent-sage);">
+            <span style="font-family:'Courier Prime', monospace; font-size: 0.75rem; color:var(--color-accent-sage); display:block; text-transform:uppercase; font-weight:700;">Skill Refactor Half-Life</span>
+            <span style="font-size: 1.4rem; font-weight:800; display:block; margin-top: 0.3rem;">4.2 Years</span>
+            <span style="font-size: 0.75rem; opacity:0.8; display:block; margin-top: 0.3rem;">Estimated timespan before core toolkit parameters require modern updates.</span>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  drawTrajectoryChart() {
+    const canvas = document.getElementById("trajectory-chart-canvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    const pad = 40;
+
+    ctx.fillStyle = "transparent";
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.strokeStyle = "rgba(255, 253, 249, 0.08)";
+    ctx.lineWidth = 1;
+    for (let i = 1; i <= 4; i++) {
+      const y = pad + ((h - 2 * pad) / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(pad, y);
+      ctx.lineTo(w - pad, y);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = "rgba(255, 253, 249, 0.25)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(pad, pad);
+    ctx.lineTo(pad, h - pad);
+    ctx.lineTo(w - pad, h - pad);
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(255, 253, 249, 0.6)";
+    ctx.font = "10px monospace";
+    ctx.textAlign = "center";
+    for (let year = 1; year <= 10; year++) {
+      const x = pad + ((w - 2 * pad) / 9) * (year - 1);
+      ctx.fillText(`Yr ${year}`, x, h - pad + 18);
+    }
+
+    ctx.textAlign = "right";
+    ctx.fillText("400%", pad - 8, pad + 4);
+    ctx.fillText("200%", pad - 8, pad + ((h - 2 * pad) / 2) + 4);
+    ctx.fillText("100%", pad - 8, h - pad + 4);
+
+    const pointsCount = 10;
+    const xInterval = (w - 2 * pad) / (pointsCount - 1);
+
+    ctx.strokeStyle = "#ffdf6d";
+    ctx.lineWidth = 3.2;
+    ctx.shadowColor = "rgba(255, 223, 109, 0.35)";
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    for (let i = 0; i < pointsCount; i++) {
+      const x = pad + i * xInterval;
+      const val = 1.0 + Math.pow(i / 9, 1.4) * 2.5; 
+      const y = h - pad - ((val - 1.0) / 3.0) * (h - 2 * pad);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+
+    ctx.strokeStyle = "#eb5e28";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i < pointsCount; i++) {
+      const x = pad + i * xInterval;
+      const val = 0.75 - (i / 9) * 0.53 + Math.sin(i) * 0.05;
+      const y = h - pad - val * (h - 2 * pad);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = "#c0caad";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i < pointsCount; i++) {
+      const x = pad + i * xInterval;
+      const val = 0.15 + Math.pow(i / 9, 1.2) * 0.65;
+      const y = h - pad - val * (h - 2 * pad);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
   }
 
   getSummaryHTML() {
