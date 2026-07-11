@@ -1423,7 +1423,18 @@ export class ReportRenderer {
           { name: "Robotic Process Automation Designer", profile: "Conventional / Workflow", description: "Design screen scraping scripts and automate repetitive administrative API pipelines.", skills: ["administrative", "logical", "numerical"], streams: ["PCM", "Commerce"] },
           { name: "Digital Twin Simulation Architect", profile: "Spatial / Systems", description: "Map high-fidelity mechanical and structural assets in real-time physical simulation engines.", skills: ["spatial", "logical", "mechanical"], streams: ["PCM"] },
           { name: "Autonomous Vehicle Navigation Developer", profile: "Investigative / Electronics", description: "Program GPS pathfinding routines, route navigation nodes, and filter obstacle feeds.", skills: ["logical", "spatial", "mechanical"], streams: ["PCM"] },
-          { name: "Spatial Computing Interaction Designer", profile: "Artistic / UI", description: "Design immersive gesture commands and head-mounted display interfaces.", skills: ["spatial", "abstract", "social"], streams: ["PCM", "Arts"] }
+          { name: "Spatial Computing Interaction Designer", profile: "Artistic / UI", description: "Design immersive gesture commands and head-mounted display interfaces.", skills: ["spatial", "abstract", "social"], streams: ["PCM", "Arts"] },
+          // Extra 10 Underrated/Specialized Careers:
+          { name: "Prompt Tuning Engineer", profile: "Artistic / Technical", description: "Calibrate context tokens and temperature settings for large language model runtimes.", skills: ["abstract", "verbal", "logical"], streams: ["PCM", "Arts"] },
+          { name: "Neuromorphic Chip Systems Developer", profile: "Realistic / Engineering", description: "Design hardware circuits imitating brain synapse functions to run neural nets locally.", skills: ["mechanical", "logical", "spatial"], streams: ["PCM"] },
+          { name: "Remote Sensing Analytics Architect", profile: "Investigative / Geography", description: "Analyze satellite radar images and coordinate topography maps to trace environmental shifts.", skills: ["spatial", "logical", "numerical"], streams: ["PCM"] },
+          { name: "Computational Linguistics Model Specialist", profile: "Investigative / Semantic", description: "Model syntax token rules and design translation matrix software.", skills: ["abstract", "verbal", "logical"], streams: ["PCM", "Arts"] },
+          { name: "Site Reliability Architect", profile: "Conventional / Security", description: "Audit server connection networks, configure cloud mirrors, and design disaster recovery keys.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Ethical AI Policy Auditor", profile: "Conventional / Philosophy", description: "Evaluate machine model output sets for bias factors and check policy logs.", skills: ["administrative", "verbal", "logical"], streams: ["PCM", "Arts"] },
+          { name: "Haptic UX Engineer", profile: "Realistic / Sensory", description: "Calibrate tactile screen vibration profiles and motor torque relays for controllers.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM", "Arts"] },
+          { name: "Grid Network Virtualization Engineer", profile: "Conventional / Systems", description: "Manage virtual machines and route server bandwidth pools dynamically.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Spacecraft Command Interface Programmer", profile: "Realistic / Space", description: "Design telemetry screens and error indicators for orbital space control panels.", skills: ["spatial", "logical", "mechanical"], streams: ["PCM"] },
+          { name: "Web3 Decentralized Storage Designer", profile: "Investigative / Ledger", description: "Design cryptographic file shards and optimize storage consensus pipelines.", skills: ["numerical", "logical", "abstract"], streams: ["PCM"] }
         ]
       },
       {
@@ -1453,7 +1464,18 @@ export class ReportRenderer {
           { name: "E-Commerce Logistics Coordinator", profile: "Conventional / Coordination", description: "Track real-time distribution hub stats, dispatch shipping updates, and monitor errors.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce"] },
           { name: "Tax Compliance Advisory Inspector", profile: "Conventional / Legal", description: "Draft regulatory audit forms and check multi-jurisdictional withholding rates.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce"] },
           { name: "Retail Market Intelligence Lead", profile: "Enterprising / Marketing", description: "Analyze geographic spending metrics and build consumer purchase prediction dashboards.", skills: ["numerical", "leadership", "social"], streams: ["Commerce"] },
-          { name: "Behavioral Finance Consultant", profile: "Investigative / Cognitive", description: "Examine behavioral cognitive biases impacting retail investor portfolio strategies.", skills: ["social", "logical", "abstract"], streams: ["Commerce", "Arts"] }
+          { name: "Behavioral Finance Consultant", profile: "Investigative / Cognitive", description: "Examine behavioral cognitive biases impacting retail investor portfolio strategies.", skills: ["social", "logical", "abstract"], streams: ["Commerce", "Arts"] },
+          // Extra 10 Underrated/Specialized Careers:
+          { name: "Sustainable ESG Portfolios Auditor", profile: "Conventional / Compliance", description: "Review corporate carbon emission files and certify environmental tax audits.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce"] },
+          { name: "Algorithmic Market Arbitrage Auditor", profile: "Investigative / Quantitative", description: "Inspect high-speed trading logs to verify fair executions and rule compliance.", skills: ["numerical", "logical", "administrative"], streams: ["Commerce", "PCM"] },
+          { name: "Micro-Insurance Actuarial Analyst", profile: "Conventional / Development", description: "Model risk indices for low-income agricultural crop insurance programs.", skills: ["numerical", "administrative", "logical"], streams: ["Commerce"] },
+          { name: "Real Estate Capital Flow Planner", profile: "Enterprising / Logistics", description: "Audit multi-national land investment registries and model construction yield tables.", skills: ["numerical", "administrative", "leadership"], streams: ["Commerce"] },
+          { name: "Carbon Credit Exchange Arbitrageur", profile: "Enterprising / Trading", description: "Trade offset allowances across global carbon market ledgers.", skills: ["numerical", "leadership", "abstract"], streams: ["Commerce"] },
+          { name: "Intellectual Property Valuation Analyst", profile: "Conventional / Legal", description: "Evaluate royalty models and write licensing worth audit reports.", skills: ["administrative", "logical", "verbal"], streams: ["Commerce"] },
+          { name: "Crisis Liquidity Consultant", profile: "Enterprising / Advisor", description: "Advise distressed corporate structures on asset liquidation schedules.", skills: ["leadership", "numerical", "verbal"], streams: ["Commerce"] },
+          { name: "Venture Debt Structurer", profile: "Enterprising / Financial", description: "Design collateral loan agreements and warrants portfolios for high-growth firms.", fill: ["numerical", "leadership", "administrative"], streams: ["Commerce"] },
+          { name: "Behavioral Purchase Flow Modeler", profile: "Investigative / Retail", description: "Examine consumer click-to-buy ratios and model shopping transaction states.", fill: ["numerical", "logical", "social"], streams: ["Commerce", "Arts"] },
+          { name: "Supply Chain Resiliency Specialist", profile: "Conventional / Systems", description: "Audit supplier dependency networks and draft alternative routing logistics.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce", "PCM"] }
         ]
       },
       {
@@ -1483,7 +1505,18 @@ export class ReportRenderer {
           { name: "CNC Toolpath Precision Modeler", profile: "Spatial / Mechanical", description: "Optimize machine cuts, map lathe offsets, and design mechanical fixtures.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM"] },
           { name: "Bionic Limb Control Loop Calibrator", profile: "Realistic / Cybernetics", description: "Calibrate micro-servo motor timings to match biological nerve sensor signals.", skills: ["spatial", "logical", "mechanical"], streams: ["PCM", "PCB"] },
           { name: "Industrial Robot Safety Auditor", profile: "Conventional / Compliance", description: "Run failure mode audits on optical safety cages and verify emergency breaks.", skills: ["administrative", "logical", "mechanical"], streams: ["PCM"] },
-          { name: "Precision Casting Process Designer", profile: "Realistic / Metals", description: "Model molten alloy flow vectors and design cooling templates for engine blocks.", skills: ["mechanical", "spatial", "numerical"], streams: ["PCM"] }
+          { name: "Precision Casting Process Designer", profile: "Realistic / Metals", description: "Model molten alloy flow vectors and design cooling templates for engine blocks.", skills: ["mechanical", "spatial", "numerical"], streams: ["PCM"] },
+          // Extra 10 Underrated/Specialized Careers:
+          { name: "Submersible Mechatronics Pilot", profile: "Realistic / Deep Sea", description: "Navigate remote subsea robots, calibrate pressure indicators, and inspect pipeline welds.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM"] },
+          { name: "Micro-Electromechanical Systems (MEMS) Designer", profile: "Investigative / Microscale", description: "Model microscopically small mechanical sensors for consumer smartphones.", skills: ["spatial", "logical", "numerical"], streams: ["PCM"] },
+          { name: "High-Voltage Grid Relational Auditor", profile: "Conventional / Safety", description: "Inspect large transformer isolation chambers and calibrate arc discharge switches.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
+          { name: "Pneumatic Logistics Tube Architect", profile: "Realistic / Flow", description: "Design fast tube routing pathways and monitor air pressure valves in hospital systems.", skills: ["mechanical", "spatial", "logical"], streams: ["PCM"] },
+          { name: "Autonomous Drone Swarm Coordinator", profile: "Realistic / Programming", description: "Program coordination rules for groups of mapping drones and calibrate telemetry logs.", skills: ["logical", "spatial", "mechanical"], streams: ["PCM"] },
+          { name: "Precision Laser Welder Programmer", profile: "Realistic / Precision", description: "Program coordinate laser tools to stitch sheet metal for electric vehicle chassis.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM"] },
+          { name: "Bionic Exoskeleton Joint Calibrator", profile: "Realistic / Assistive", description: "Calibrate robotic knee joints to offset mechanical strain for logistics workers.", skills: ["spatial", "logical", "mechanical"], streams: ["PCM"] },
+          { name: "Acoustic Noise Control Engineer", profile: "Investigative / Sound", description: "Design spatial acoustic dampening shields for industrial pump chambers.", stroke: ["spatial", "abstract", "numerical"], streams: ["PCM"] },
+          { name: "Additive Dental Prototyper", profile: "Realistic / Medical", description: "Operate high-resolution resin 3D printers and audit fit clearances.", skills: ["spatial", "mechanical", "administrative"], streams: ["PCM", "PCB"] },
+          { name: "Industrial Vibration Diagnostics Specialist", profile: "Conventional / Auditing", description: "Analyze generator bearing noise signatures to prevent mechanical breakdown.", skills: ["mechanical", "spatial", "logical"], streams: ["PCM"] }
         ]
       },
       {
@@ -1513,7 +1546,18 @@ export class ReportRenderer {
           { name: "Neuro-Imaging Data Parser", profile: "Investigative / Imagery", description: "Filter noise artifacts in functional MRI scans and map active brain vectors.", skills: ["spatial", "logical", "abstract"], streams: ["PCB", "PCM"] },
           { name: "Molecular Modeling Simulation Chemist", profile: "Investigative / Theoretical", description: "Simulate ligand binding energies and compile molecular physics logs.", skills: ["numerical", "logical", "abstract"], streams: ["PCB", "PCM"] },
           { name: "Cancer Immunotherapy Lab Tech", profile: "Realistic / Biology", description: "Culture CAR-T cells, isolate cell membranes, and run quality control assays.", skills: ["logical", "numerical", "mechanical"], streams: ["PCB"] },
-          { name: "Pharmaceutical Patent Examiner", profile: "Conventional / Research", description: "Review patent drug claims, verify molecule structures, and check legal files.", skills: ["administrative", "logical", "verbal"], streams: ["PCB"] }
+          { name: "Pharmaceutical Patent Examiner", profile: "Conventional / Research", description: "Review patent drug claims, verify molecule structures, and check legal files.", skills: ["administrative", "logical", "verbal"], streams: ["PCB"] },
+          // Extra 10 Underrated/Specialized Careers:
+          { name: "Cryopreservation Protocol Specialist", profile: "Investigative / Preservation", description: "Optimize cooling metrics to freeze cell samples safely for long-term clinical stores.", skills: ["logical", "numerical", "abstract"], streams: ["PCB"] },
+          { name: "Synthetic Genome Assembly Designer", profile: "Investigative / BioDesign", description: "Design customized bacterial DNA codes to manufacture sustainable enzymes.", skills: ["logical", "abstract", "numerical"], streams: ["PCB"] },
+          { name: "Tissue Engineering Lab Technologist", profile: "Realistic / Cell Culture", description: "Align cellular scaffolding constructs to grow vascular tissue panels.", skills: ["spatial", "mechanical", "logical"], streams: ["PCB"] },
+          { name: "Space Medicine Rehabilitation Specialist", profile: "Social / Astronautical", description: "Design zero-gravity muscle recovery courses and track astronaut cardiovascular logs.", skills: ["social", "logical", "administrative"], streams: ["PCB"] },
+          { name: "Clinical Assay Telemetry Auditor", profile: "Conventional / Quality", description: "Verify electronic log files generated by high-throughput cell analyzers.", skills: ["logical", "administrative", "numerical"], streams: ["PCB", "PCM"] },
+          { name: "Microbiome Formulation Consultant", profile: "Investigative / Wellness", description: "Analyze patient gut colony ratios and formulate specialized dietary recommendations.", skills: ["logical", "social", "administrative"], streams: ["PCB"] },
+          { name: "Radiopharmacy Dosage Inspector", profile: "Conventional / Chemistry", description: "Audit diagnostic isotope decay times and calculate precise patient dosages.", skills: ["numerical", "administrative", "logical"], streams: ["PCB"] },
+          { name: "Genetic Genealogy Analyst", profile: "Investigative / Lineage", description: "Trace chromosome segments to resolve family origin histories.", skills: ["logical", "abstract", "administrative"], streams: ["PCB", "Arts"] },
+          { name: "Geriatric Cognitive Ergonomics Consultant", profile: "Social / Assistive", description: "Design visual memory prompts to support senior patients in care facilities.", skills: ["social", "spatial", "administrative"], streams: ["PCB", "Arts"] },
+          { name: "Epidemiological Wastewater Surveyor", profile: "Conventional / Analytics", description: "Trace virus concentrations in municipal water pipelines and report city warning alerts.", skills: ["logical", "administrative", "numerical"], streams: ["PCB"] }
         ]
       },
       {
@@ -1543,7 +1587,18 @@ export class ReportRenderer {
           { name: "Technical VFX Simulation Artist", profile: "Artistic / Physics", description: "Animate dust, smoke, fire, and liquid physics inside animation packages.", skills: ["spatial", "abstract", "logical"], streams: ["Arts", "PCM"] },
           { name: "Print Cartography Layout Specialist", profile: "Artistic / Geography", description: "Layout topographic maps, format coordinates, and style map legends.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
           { name: "Educational Game Mechanic Architect", profile: "Artistic / Educational", description: "Model interactive quizzes, configure points systems, and design reward screens.", skills: ["logical", "abstract", "social"], streams: ["Arts"] },
-          { name: "Interactive Museum Display Programmer", profile: "Realistic / Media", description: "Program tactile wall displays, connect distance sensors, and sync projector loops.", skills: ["mechanical", "spatial", "logical"], streams: ["Arts", "PCM"] }
+          { name: "Interactive Museum Display Programmer", profile: "Realistic / Media", description: "Program tactile wall displays, connect distance sensors, and sync projector loops.", skills: ["mechanical", "spatial", "logical"], streams: ["Arts", "PCM"] },
+          // Extra 10 Underrated/Specialized Careers:
+          { name: "Ambisonic Sound Field Designer", profile: "Artistic / Audio Spatial", description: "Record and capture multi-directional ambient noise fields to build realistic spatial sound libraries.", skills: ["spatial", "abstract", "mechanical"], streams: ["Arts", "PCM"] },
+          { name: "Spatial Interface Usability Auditor", profile: "Conventional / Interaction", description: "Track real-world user gestures and compile layout compliance checklists.", skills: ["administrative", "social", "logical"], streams: ["Arts"] },
+          { name: "Generative Prompt Canvas Curator", profile: "Artistic / Presentation", description: "Review and edit synthetic imagery catalogs to style promotional layouts.", skills: ["spatial", "abstract", "administrative"], streams: ["Arts"] },
+          { name: "Interactive Narrative Branch Writer", profile: "Artistic / Writer", description: "Draft branching choice storylines and character dialogue vectors for games.", skills: ["abstract", "verbal", "social"], streams: ["Arts"] },
+          { name: "Projection Mapping Stage Designer", profile: "Artistic / Spatial", description: "Calibrate projector coordinates to wrap digital light displays onto architectural building faces.", skills: ["spatial", "abstract", "logical"], streams: ["Arts", "PCM"] },
+          { name: "Digital Textile Pattern Modeler", profile: "Artistic / Fashion", description: "Design complex seamless fabrics textures in vector packages and map layout guides.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
+          { name: "Font Usability & Kerning Inspector", profile: "Conventional / Layout", description: "Audit letter spacing margins and verify character display alignment on screens.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
+          { name: "VFX Liquid Simulation Specialist", profile: "Artistic / Technical Physics", description: "Animate realistic fluid waves and foam drops using high-performance physics loops.", skills: ["spatial", "abstract", "logical"], streams: ["Arts", "PCM"] },
+          { name: "Historical Map Cartographer", profile: "Artistic / History", description: "Restore geographic old layout maps and trace original borders.", skills: ["spatial", "spatial", "administrative"], streams: ["Arts"] },
+          { name: "Educational Simulation Game Architect", profile: "Artistic / Technical", description: "Build interactive models of historical events and design coordinate loops.", skills: ["logical", "abstract", "social"], streams: ["Arts", "PCM"] }
         ]
       }
     ];

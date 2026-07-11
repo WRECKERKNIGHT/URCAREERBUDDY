@@ -893,7 +893,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     requestAnimationFrame(updateParticles);
 
-    // Interactive Central Astrolabe Speed-up on CTA Hover
+    // Interactive Central Astrolabe Speed-up on CTA Hover + Magnet Title Parallax
     const centralAstrolabe = document.querySelector(".hero-compass-svg");
     const ctaBtn = document.getElementById("btn-enter-portal");
     if (ctaBtn && centralAstrolabe) {
@@ -902,6 +902,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       ctaBtn.addEventListener("mouseleave", () => {
         centralAstrolabe.style.animationDuration = "80s";
+      });
+    }
+
+    const text1 = document.getElementById("parallax-text-1");
+    const text2 = document.getElementById("parallax-text-2");
+    if (heroBlock && text1 && text2) {
+      heroBlock.addEventListener("mousemove", (e) => {
+        const rect = heroBlock.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        text1.style.transform = `translate(${x * 0.04}px, ${y * 0.04}px)`;
+        text2.style.transform = `translate(${x * -0.02}px, ${y * -0.02}px)`;
+      });
+      heroBlock.addEventListener("mouseleave", () => {
+        text1.style.transform = "translate(0, 0)";
+        text2.style.transform = "translate(0, 0)";
+        text1.style.transition = "transform 0.5s ease-out";
+        text2.style.transition = "transform 0.5s ease-out";
+      });
+      heroBlock.addEventListener("mouseenter", () => {
+        text1.style.transition = "none";
+        text2.style.transition = "none";
       });
     }
   }

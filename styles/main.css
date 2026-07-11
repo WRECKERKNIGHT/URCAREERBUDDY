@@ -385,22 +385,25 @@
   /* Vintage Double Border Cards */
   .vt-card {
     background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border-dark);
+    border: 1.5px solid var(--color-border-dark);
     outline: 3px double var(--color-border-dark);
     outline-offset: -8px;
     padding: 2.8rem;
     box-shadow: var(--shadow-flat);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
     margin-bottom: 2rem;
     position: relative;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .vt-card-hover {
     cursor: pointer;
   }
   .vt-card-hover:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--shadow-flat-hover);
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 223, 109, 0.18);
+    border-color: var(--color-accent-gold);
   }
 
   .career-path-card {
