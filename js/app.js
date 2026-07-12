@@ -3,6 +3,12 @@ import { questions } from './questions.js';
 import { AssessmentEngine } from './engine.js';
 import { calculateArchetype } from './archetypes.js';
 import { ReportRenderer } from './report.js';
+import { initGamification } from './gamification.js';
+import { initEncyclopedia } from './career-encyclopedia.js';
+import { fetchLMIForCareer } from './lmi.js';
+import { initEducationToolkit } from './education.js';
+import { initWhatIfSandbox } from './whatif.js';
+import { initExperientialBoard } from './experiential.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Views
@@ -1394,6 +1400,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollReveal();
   initECGWave();
   initHero3DScene();
+  // Initialize feature MVPs (placeholders for full features)
+  try { initGamification('#landing-view'); } catch (e) { console.warn(e); }
+  try { initEncyclopedia('#report-output-stage'); } catch (e) { console.warn(e); }
+  try { initEducationToolkit('#report-output-stage'); } catch (e) { console.warn(e); }
+  try { initWhatIfSandbox('#report-output-stage'); } catch (e) { console.warn(e); }
+  try { initExperientialBoard('#report-output-stage'); } catch (e) { console.warn(e); }
 });
 
     requestAnimationFrame(animate);
