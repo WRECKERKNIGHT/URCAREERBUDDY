@@ -89,10 +89,10 @@
     display: flex;
     flex-direction: column;
     transition: background-color 0.4s ease, color 0.4s ease;
-    
-    /* Press print layout details with amber backlit glow */
-    background-image: radial-gradient(circle at center, rgba(235, 94, 40, 0.18) 0%, rgba(20, 18, 16, 0.95) 60%, #0c0b0a 100%), var(--paper-texture);
-    background-size: auto, 24px 24px;
+
+    /* Subtle, less-distracting background texture */
+    background-image: linear-gradient(180deg, rgba(0,0,0,0.04) 0%, transparent 60%), var(--paper-texture);
+    background-size: auto, 18px 18px;
     background-attachment: fixed;
   }
 
@@ -147,15 +147,15 @@
 
 @layer layout {
   .app-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     width: 100%;
-    padding: 0 1.5rem 2rem 1.5rem;
+    padding: 0 1rem 2rem 1rem;
     flex: 1;
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
   .app-container.layout-expanded {
     max-width: 1440px !important;
@@ -163,10 +163,9 @@
 
   header {
     margin-top: 0;
-    padding-top: 1.5rem;
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 3px double var(--color-border-dark);
+    padding: 1rem 0;
+    margin-bottom: 1.6rem;
+    border-bottom: 1px solid var(--color-border-dark);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -385,16 +384,13 @@
   /* Vintage Double Border Cards */
   .vt-card {
     background-color: var(--color-bg-card);
-    border: 1.5px solid var(--color-border-dark);
-    outline: 3px double var(--color-border-dark);
-    outline-offset: -8px;
-    padding: 2.8rem;
-    box-shadow: var(--shadow-flat);
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease;
-    margin-bottom: 2rem;
+    border: 1px solid var(--color-border-dark);
+    padding: 1.6rem;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.2s ease;
+    margin-bottom: 1.4rem;
     position: relative;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
   }
 
   .vt-card-hover {
@@ -423,10 +419,10 @@
 
   .hero-block {
     text-align: center;
-    max-width: 950px;
+    max-width: 980px;
     margin: 0 auto;
-    padding: 6rem 1rem;
-    min-height: 80vh;
+    padding: 4rem 1rem;
+    min-height: 72vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -525,17 +521,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--color-border-dark);
-    border-radius: 0px; /* Sharp retro border */
-    padding: 0.9rem 2.2rem;
+    border: 1.5px solid var(--color-border-dark);
+    border-radius: 6px;
+    padding: 0.7rem 1.6rem;
     font-family: 'Courier Prime', monospace;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     cursor: pointer;
     background-color: var(--color-bg-card);
-    box-shadow: var(--shadow-button);
-    transition: all 0.15s ease-out;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.22);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
     color: var(--color-text-heading);
   }
 
@@ -552,8 +548,9 @@
 
   .btn-primary {
     border-color: var(--color-accent-rust);
-    color: var(--color-accent-rust);
-    background: var(--color-bg-card);
+    color: #ffffff;
+    background: var(--color-accent-rust);
+    box-shadow: 0 8px 18px rgba(171,71,48,0.14);
   }
 
   .btn-secondary {
@@ -1390,6 +1387,26 @@
     box-shadow: none;
   }
 
+  /* Dashboard fit visuals adjustments */
+  #fit-matrix-canvas > div { margin-bottom: 6px; }
+  #career-match-list > div { padding: 8px; border-radius: 6px; background: rgba(0,0,0,0.02); }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    width: 120px;
+    margin: 0 8px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-accent-rust);
+    border: 2px solid var(--color-bg-card);
+    box-shadow: 0 4px 10px rgba(171,71,48,0.18);
+  }
+
   /* Scientific Foundations Deck */
   .scientific-foundations-section {
     margin: 3.5rem 0;
@@ -1521,15 +1538,16 @@
 /* Viewport Corners Double Border Frame */
 .viewport-corners-frame {
   position: fixed;
-  top: 14px;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
   border: 1px solid var(--color-border-dark);
-  outline: 2px double var(--color-border-dark);
-  outline-offset: 3px;
+  outline: 1px solid rgba(0,0,0,0.08);
+  outline-offset: 2px;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 1;
+  opacity: 0.45;
 }
 .viewport-corners-frame::before {
   content: '';

@@ -229,21 +229,23 @@ document.addEventListener("DOMContentLoaded", () => {
       root.classList.add("theme-light");
       body.classList.remove("theme-dark");
       body.classList.add("theme-light");
-      themeSwitchSlider.innerText = "☀️";
+      if (themeSwitchSlider) themeSwitchSlider.innerText = "☀️";
     } else {
       root.classList.remove("theme-light");
       root.classList.add("theme-dark");
       body.classList.remove("theme-light");
       body.classList.add("theme-dark");
-      themeSwitchSlider.innerText = "🌙";
+      if (themeSwitchSlider) themeSwitchSlider.innerText = "🌙";
     }
     localStorage.setItem("career_guidance_theme", theme);
   }
 
-  btnThemeToggle.addEventListener("click", () => {
-    const isDark = document.body.classList.contains("theme-dark");
-    applyTheme(isDark ? "light" : "dark");
-  });
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener("click", () => {
+      const isDark = document.body.classList.contains("theme-dark");
+      applyTheme(isDark ? "light" : "dark");
+    });
+  }
 
   // ==========================================
   // 3. STATE RESET & NAVIGATION (HOME RE-ACCESS)
@@ -267,10 +269,10 @@ document.addEventListener("DOMContentLoaded", () => {
     reportView.classList.add("hidden");
   }
 
-  logo.addEventListener("click", resetToHome);
-  navLinkHome.addEventListener("click", resetToHome);
-  
-  navLinkReset.addEventListener("click", () => {
+  if (logo) logo.addEventListener("click", resetToHome);
+  if (navLinkHome) navLinkHome.addEventListener("click", resetToHome);
+
+  if (navLinkReset) navLinkReset.addEventListener("click", () => {
     engine.reset();
     engine.clearLocalStorage();
     

@@ -143,6 +143,10 @@ export class ReportRenderer {
       case "summary":
         stageEl.innerHTML = this.getSummaryHTML();
         break;
+      case "dashboard":
+        stageEl.innerHTML = this.getDashboardHTML();
+        this.bindDashboardEvents();
+        break;
       case "cognitive_analytics":
         stageEl.innerHTML = this.getCognitiveAnalyticsHTML();
         break;
@@ -218,6 +222,164 @@ export class ReportRenderer {
   // ==========================================
   // TAB HTML GENERATORS
   // ==========================================
+
+  getDashboardHTML() {
+    const topCareers = this.archetype && this.archetype.careers ? this.archetype.careers : {};
+    return `
+      <section class="vt-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
+          <div>
+            <h2 style="margin:0;">Interactive Fit Matrix</h2>
+            <p style="margin:0.4rem 0 0; opacity:0.9;">Visualize why you match recommended careers and tweak priorities.</p>
+          </div>
+          <div style="display:flex; gap:0.6rem; align-items:center;">
+            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Aptitude</label>
+            <input id="filter-aptitude" type="range" min="0" max="100" value="60">
+            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Interests</label>
+            <input id="filter-interests" type="range" min="0" max="100" value="60">
+            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Personality</label>
+            <input id="filter-personality" type="range" min="0" max="100" value="60">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 360px; gap:1rem; margin-top:1rem; align-items:start;">
+          <div id="fit-matrix-canvas" style="min-height:320px; background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent); border:1px dashed var(--color-border-dark); padding:1rem; border-radius:6px;"></div>
+
+          <div style="display:flex; flex-direction:column; gap:0.8rem;">
+            <div class="vt-card" style="padding:1rem;">
+              <h4 style="margin:0 0 0.6rem 0;">Top Career Matches</h4>
+              <div id="career-match-list" style="display:flex; flex-direction:column; gap:0.6rem;"></div>
+            </div>
+
+            <div class="vt-card" style="padding:1rem;">
+              <h4 style="margin:0 0 0.6rem 0;">Venn Overview</h4>
+              <div id="venn-overview" style="width:100%; height:160px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // Compute match score for archetype careers using user's numeric scores
+  calculateCareerMatches() {
+    const user = this.scores;
+    if (!user) return [];
+
+    const mapSkillKey = (name) => {
+      const key = name.toLowerCase();
+      if (key.includes('spatial') || key.includes('3d') || key.includes('cad')) return 'spatial';
+      if (key.includes('lead') || key.includes('management')) return 'leadership';
+      if (key.includes('social') || key.includes('people') || key.includes('communication')) return 'social';
+      if (key.includes('admin') || key.includes('compliance') || key.includes('administrative')) return 'administrative';
+      if (key.includes('mechan') || key.includes('hardware') || key.includes('robot')) return 'mechanical';
+      return null;
+    };
+
+    const careers = [];
+    const careersObj = (this.archetype && this.archetype.careers) || {};
+    Object.keys(careersObj).forEach(k => {
+      const item = careersObj[k];
+      // gather required skill keys
+      const requiredKeys = (item.skills || []).map(s => mapSkillKey(s.name)).filter(Boolean);
+      // compute skill match
+      let skillScore = 0;
+      if (requiredKeys.length === 0) skillScore = 60;
+      else {
+        const vals = requiredKeys.map(rk => (user.skills && user.skills[rk]) || 50);
+        skillScore = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+      }
+
+      // interest proxy: average of interests
+      const interestsVals = Object.values(user.interests || {}).slice(0,6);
+      const interestScore = Math.round(interestsVals.reduce((a,b)=>a+b,0)/interestsVals.length || 50);
+
+      // aptitude proxy: average of ability
+      const abilityVals = Object.values(user.ability || {}).slice(0,4);
+      const abilityScore = Math.round(abilityVals.reduce((a,b)=>a+b,0)/abilityVals.length || 50);
+
+      // final match (simple weighted sum)
+      const match = Math.round((skillScore * 0.45) + (interestScore * 0.35) + (abilityScore * 0.20));
+
+      careers.push({ id: k, title: item.primary ? item.primary.title : item.title || k, description: item.primary ? item.primary.description : '', match, skillScore, interestScore, abilityScore, raw: item });
+    });
+
+    careers.sort((a,b)=>b.match - a.match);
+    return careers;
+  }
+
+  bindDashboardEvents() {
+    const apt = this.container.querySelector('#filter-aptitude');
+    const ints = this.container.querySelector('#filter-interests');
+    const pers = this.container.querySelector('#filter-personality');
+    const canvas = this.container.querySelector('#fit-matrix-canvas');
+    const list = this.container.querySelector('#career-match-list');
+    const venn = this.container.querySelector('#venn-overview');
+
+    const renderAll = () => {
+      const careers = this.calculateCareerMatches();
+      // apply sliders as thresholds (simple boost)
+      const aBoost = apt ? parseInt(apt.value)/100 : 0.6;
+      const iBoost = ints ? parseInt(ints.value)/100 : 0.6;
+      const pBoost = pers ? parseInt(pers.value)/100 : 0.6;
+
+      const adjusted = careers.map(c => {
+        const adjustedScore = Math.round(c.match * (0.6 + aBoost*0.2 + iBoost*0.15 + pBoost*0.05));
+        return {...c, adjustedScore};
+      }).sort((x,y)=>y.adjustedScore - x.adjustedScore);
+
+      // render list
+      if (list) {
+        list.innerHTML = adjusted.map(c => `
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.6rem;">
+            <div style="flex:1;">
+              <div style="font-weight:800;">${c.title}</div>
+              <div style="font-size:0.85rem; opacity:0.85;">${c.description || ''}</div>
+            </div>
+            <div style="width:64px; text-align:center; font-weight:800; color:var(--color-accent-rust);">${c.adjustedScore}%</div>
+          </div>
+        `).join('');
+      }
+
+      // render simple fit-matrix as bars
+      if (canvas) {
+        canvas.innerHTML = adjusted.map(c => `
+          <div style="display:flex; align-items:center; gap:0.6rem; padding:8px 0; border-bottom:1px dashed rgba(0,0,0,0.04);">
+            <div style="width:160px; font-weight:700;">${c.title}</div>
+            <div style="flex:1; background: linear-gradient(90deg, rgba(235,94,40,0.18) 0%, rgba(255,223,109,0.12) 100%); height:14px; border-radius:6px; overflow:hidden;">
+              <div style="width:${c.adjustedScore}%; height:100%; background:linear-gradient(90deg, var(--color-accent-rust), var(--color-accent-gold));"></div>
+            </div>
+            <div style="width:48px; text-align:right; font-weight:800;">${c.adjustedScore}%</div>
+          </div>
+        `).join('');
+      }
+
+      // render venn approximate
+      if (venn) {
+        const interestsAvg = Math.round(Object.values(this.scores.interests || {}).reduce((a,b)=>a+b,0)/6 || 50);
+        const abilityAvg = Math.round(Object.values(this.scores.ability || {}).reduce((a,b)=>a+b,0)/4 || 50);
+        const personalityAvg = Math.round((this.scores.mbti ? (this.scores.mbti.extravert || 50) : 50));
+
+        venn.innerHTML = `
+          <svg viewBox="0 0 200 120" style="width:100%; height:100%;">
+            <circle cx="70" cy="60" r="40" fill="rgba(235,94,40,0.12)" stroke="rgba(235,94,40,0.6)" />
+            <circle cx="120" cy="60" r="40" fill="rgba(255,223,109,0.10)" stroke="rgba(255,223,109,0.55)" />
+            <circle cx="95" cy="30" r="36" fill="rgba(123,162,199,0.08)" stroke="rgba(123,162,199,0.4)" />
+            <text x="50" y="105" font-family="'Courier Prime', monospace" font-size="10" fill="var(--color-text-body)">Interests: ${interestsAvg}%</text>
+            <text x="115" y="105" font-family="'Courier Prime', monospace" font-size="10" fill="var(--color-text-body)">Ability: ${abilityAvg}%</text>
+            <text x="80" y="18" font-family="'Courier Prime', monospace" font-size="10" fill="var(--color-text-body)">Personality: ${personalityAvg}%</text>
+          </svg>
+        `;
+      }
+    };
+
+    if (apt) apt.addEventListener('input', renderAll);
+    if (ints) ints.addEventListener('input', renderAll);
+    if (pers) pers.addEventListener('input', renderAll);
+
+    // initial render
+    renderAll();
+  }
 
   getRoadmapsHTML() {
     const stream = (this.scores.userStream || "Science (PCM)").toLowerCase();
