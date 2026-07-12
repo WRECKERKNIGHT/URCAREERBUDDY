@@ -1399,13 +1399,18 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroParticles();
   initScrollReveal();
   initECGWave();
-  initHero3DScene();
+  // Only initialize heavy 3D hero on sufficiently large viewports to save mobile CPU
+  if (window.innerWidth >= 680) {
+    initHero3DScene();
+  }
   // Initialize feature MVPs (placeholders for full features)
   try { initGamification('#landing-view'); } catch (e) { console.warn(e); }
   try { initEncyclopedia('#report-output-stage'); } catch (e) { console.warn(e); }
   try { initEducationToolkit('#report-output-stage'); } catch (e) { console.warn(e); }
   try { initWhatIfSandbox('#report-output-stage'); } catch (e) { console.warn(e); }
   try { initExperientialBoard('#report-output-stage'); } catch (e) { console.warn(e); }
+  // feedback widget
+  try { import('./feedback.js').then(m => m.initFeedback()).catch(e => console.warn('Feedback widget failed to load', e)); } catch (e) { console.warn('Feedback widget failed to load', e); }
 });
 
     requestAnimationFrame(animate);

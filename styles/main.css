@@ -430,6 +430,14 @@
     position: relative;
   }
 
+  /* Responsive hero optimizations */
+  @media (max-width: 680px) {
+    #hero-3d-astrolabe-container { display: none !important; }
+    .hero-block { min-height: 50vh; padding: 2rem 1rem; }
+    .apparatus-inner-container { padding: 1.2rem 1rem; }
+    .parallax-graphics-container { display: none; }
+  }
+
   /* Parallax floating scroll titles */
   .parallax-title {
     transform: translate3d(0, 0, 0);
