@@ -196,16 +196,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const x = e.clientX - rect.left - (rect.width / 2);
       const y = e.clientY - rect.top - (rect.height / 2);
       
-      // Shift card slightly
-      heroCard.style.transform = `translate3d(${x * 0.015}px, ${y * 0.015}px, 0) scale(1.005)`;
+      const tiltX = (y / (rect.height / 2)) * -12;
+      const tiltY = (x / (rect.width / 2)) * 12;
       
-      // Shift background gears
+      heroCard.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translate3d(${x * 0.02}px, ${y * 0.02}px, 20px) scale(1.015)`;
+      
       if (heroGear1) heroGear1.style.transform = `translate3d(${x * -0.01}px, ${y * -0.01}px, 0) rotate(${x * 0.04}deg)`;
       if (heroGear2) heroGear2.style.transform = `translate3d(${x * -0.005}px, ${y * -0.005}px, 0) rotate(${x * -0.02}deg)`;
     });
 
     heroBlock.addEventListener("mouseleave", () => {
-      heroCard.style.transform = "translate3d(0, 0, 0) scale(1)";
+      heroCard.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0) scale(1)";
       if (heroGear1) heroGear1.style.transform = "translate3d(0, 0, 0)";
       if (heroGear2) heroGear2.style.transform = "translate3d(0, 0, 0)";
     });
@@ -1168,6 +1169,162 @@ document.addEventListener("DOMContentLoaded", () => {
     draw();
   }
 
+  function initHero3DScene() {
+    const container = document.getElementById("hero-3d-astrolabe-container");
+    if (!container || typeof THREE === "undefined") return;
+
+    const width = container.clientWidth || window.innerWidth;
+    const height = container.clientHeight || window.innerHeight;
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.z = 7.5;
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
+
+    // 1. Central Core Sphere (glowing wireframe)
+    const coreGeo = new THREE.IcosahedronGeometry(1.6, 2);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0xffdf6d,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.3
+    });
+    const core = new THREE.Mesh(coreGeo, coreMat);
+    mainGroup.add(core);
+
+    // 2. Outer revolving orbit rings
+    const rings = [];
+    const ringColors = [0xeb5e28, 0xffdf6d, 0xeb5e28];
+    const ringRadii = [2.5, 3.2, 3.8];
+    const ringWidths = [0.03, 0.02, 0.015];
+
+    ringRadii.forEach((radius, i) => {
+      const ringGeo = new THREE.RingGeometry(radius, radius + ringWidths[i], 64);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: ringColors[i],
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.7
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      
+      ring.rotation.x = Math.random() * Math.PI;
+      ring.rotation.y = Math.random() * Math.PI;
+      
+      mainGroup.add(ring);
+      rings.push({
+        mesh: ring,
+        speedX: (Math.random() - 0.5) * 0.006,
+        speedY: (0.004 + Math.random() * 0.006)
+      });
+    });
+
+    // 3. Ambient Starfield Particles
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 150;
+    const starPos = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+
+    const c1 = new THREE.Color(0xffdf6d);
+    const c2 = new THREE.Color(0xeb5e28);
+
+    for (let i = 0; i < starCount; i++) {
+      const r = 4.5 + Math.random() * 3.5;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2.0 * Math.random() - 1.0);
+
+      starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i * 3 + 2] = r * Math.cos(phi);
+
+      const mixedColor = c1.clone().lerp(c2, Math.random());
+      starColors[i * 3] = mixedColor.r;
+      starColors[i * 3 + 1] = mixedColor.g;
+      starColors[i * 3 + 2] = mixedColor.b;
+    }
+
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute("color", new THREE.BufferAttribute(starColors, 3));
+
+    const pCanvas = document.createElement("canvas");
+    pCanvas.width = 16;
+    pCanvas.height = 16;
+    const pCtx = pCanvas.getContext("2d");
+    const grad = pCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
+    grad.addColorStop(0, "rgba(255,255,255,1)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    pCtx.fillStyle = grad;
+    pCtx.fillRect(0, 0, 16, 16);
+    const particleTexture = new THREE.CanvasTexture(pCanvas);
+
+    const starMat = new THREE.PointsMaterial({
+      size: 0.16,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+      map: particleTexture,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    const starParticles = new THREE.Points(starGeo, starMat);
+    mainGroup.add(starParticles);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+      
+      targetRotationY = mouseX * 0.5;
+      targetRotationX = mouseY * 0.5;
+    });
+
+    function onResize() {
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", onResize);
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      core.rotation.y += 0.0025;
+      core.rotation.x += 0.0012;
+
+      rings.forEach(ringObj => {
+        ringObj.mesh.rotation.x += ringObj.speedX;
+        ringObj.mesh.rotation.y += ringObj.speedY;
+      });
+
+      starParticles.rotation.y -= 0.0006;
+
+      mainGroup.rotation.y += (targetRotationY - mainGroup.rotation.y) * 0.045;
+      mainGroup.rotation.x += (targetRotationX - mainGroup.rotation.x) * 0.045;
+
+      const scrollY = window.scrollY;
+      camera.position.z = 7.5 + (scrollY * 0.003);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
+
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
   initTheme();
   const savedLang = localStorage.getItem("career_guidance_lang") || "en";
@@ -1178,4 +1335,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroParticles();
   initScrollReveal();
   initECGWave();
+  initHero3DScene();
 });
