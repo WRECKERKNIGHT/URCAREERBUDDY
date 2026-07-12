@@ -1302,6 +1302,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     window.addEventListener("resize", onResize);
 
+    // Try to dynamically load OrbitControls and a small GLTF model for a richer hero.
+    // If loading fails, fall back to the procedural astrolabe above.
+    (async () => {
+      try {
+        const [{ OrbitControls }, { GLTFLoader }] = await Promise.all([
+          import('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js'),
+          import('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js')
+        ]);
+
+        // Create controls attached to the camera and renderer element
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.07;
+        controls.enableZoom = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.4;
+
+        // Load a small GLTF model (fallback to an online sample). Keep it lightweight.
+        const loader = new GLTFLoader();
+        const modelUrl = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf';
+
+        loader.load(modelUrl, (gltf) => {
+          try {
+            // Remove heavy procedural pieces to replace with model
+            mainGroup.clear();
+          } catch (e) {
+            // older three.js versions may not have Group.clear(); remove children manually
+            while (mainGroup.children.length) mainGroup.remove(mainGroup.children[0]);
+          }
+
+          const model = gltf.scene || gltf.scenes[0];
+          model.scale.setScalar(2.2);
+          model.position.set(0, -0.6, 0);
+          model.rotation.y = Math.PI * 0.12;
+          mainGroup.add(model);
+
+          // subtle point light for nicer shading
+          const pLight = new THREE.PointLight(0xffdf6d, 0.7, 12);
+          pLight.position.set(2, 3, 6);
+          scene.add(pLight);
+
+          // keep controls updating
+          (function updateControls() {
+            controls.update();
+            requestAnimationFrame(updateControls);
+          })();
+        }, undefined, (err) => {
+          // model failed to load; keep procedural astrolabe
+          console.warn('Hero GLTF failed to load, using procedural astrolabe', err);
+        });
+      } catch (err) {
+        // dynamic import failed (CSP or network); ignore and continue
+        console.warn('Optional hero controls/model not available', err);
+      }
+    })();
+
     function animate() {
       requestAnimationFrame(animate);
 
