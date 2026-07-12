@@ -387,7 +387,7 @@
     border: 1px solid var(--color-border-dark);
     padding: 1.6rem;
     border-radius: 8px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.2s ease;
     margin-bottom: 1.4rem;
     position: relative;
@@ -397,8 +397,8 @@
     cursor: pointer;
   }
   .vt-card-hover:hover {
-    transform: translateY(-8px) scale(1.015);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 223, 109, 0.18);
+    transform: translateY(-8px) scale(1.012);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34), 0 0 12px rgba(255, 223, 109, 0.12);
     border-color: var(--color-accent-gold);
   }
 
@@ -647,9 +647,9 @@
     left: 2rem;
     right: 2rem;
     height: 2px;
-    border-top: 2px dashed var(--color-border-dark);
-    z-index: 1;
-    transform: translateY(-50%);
+    stroke: var(--color-accent-gold) !important;
+    opacity: 0.28 !important;
+    filter: none;
   }
 
   .chapter-bulb {
@@ -1844,10 +1844,23 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,223,109,0.15), transparent);
-  transform: rotate(45deg);
-  animation: pillShine 4.5s linear infinite;
+    stroke: var(--color-accent-gold) !important;
+    opacity: 0.28 !important;
+    filter: none;
 }
+
+  /* Respect user motion preferences and reduce constant background animation for performance */
+  @media (prefers-reduced-motion: reduce) {
+    .gear-top-right, .gear-bottom-left, .hero-compass-svg, .loader-apparatus-circle, .chapter-bulb.completed::after {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition: none !important;
+    }
+    .parallax-graphics-container, .parallax-title, .hero-particles-container {
+      will-change: auto !important;
+      animation: none !important;
+    }
+  }
 @keyframes pillShine {
   0% { transform: translate(-100%, -100%) rotate(45deg); }
   100% { transform: translate(100%, 100%) rotate(45deg); }

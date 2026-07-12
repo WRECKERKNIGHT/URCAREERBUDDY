@@ -948,7 +948,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("hero-particles-container");
     if (!container) return;
 
-    const maxParticles = 24;
+    const maxParticles = 12;
     const particles = [];
     let mouseX = null;
     let mouseY = null;
@@ -1325,6 +1325,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     animate();
+  }
+
+  // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
+  initTheme();
+  const savedLang = localStorage.getItem("career_guidance_lang") || "en";
+  setLanguage(savedLang);
+  checkAndResumeState();
+  initDisclaimerModal();
+  initSimulator();
+  initHeroParticles();
+  initScrollReveal();
+  initECGWave();
+  initHero3DScene();
+});
+
+    requestAnimationFrame(animate);
   }
 
   // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
