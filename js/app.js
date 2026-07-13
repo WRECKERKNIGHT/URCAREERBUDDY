@@ -1983,8 +1983,8 @@ function initRedesignFeatures() {
     const slides = stagesTrack.querySelectorAll(".stage-slide-card");
     
     const getScrollDistance = () => {
-      // 4 steps of horizontal translation, each matching the mask width of 65vw
-      return window.innerWidth * 0.65 * 4;
+      // scrollWidth of track minus the 70vw visible window area
+      return stagesTrack.scrollWidth - (window.innerWidth * 0.7);
     };
     
     gsap.to(stagesTrack, {
@@ -1996,11 +1996,11 @@ function initRedesignFeatures() {
         end: () => `+=${getScrollDistance()}`,
         pin: true,
         pinSpacing: true,
-        scrub: 1.2,
+        scrub: 1,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         snap: {
-          snapTo: 1 / 4,
+          snapTo: 1 / (slides.length - 1),
           duration: { min: 0.15, max: 0.4 },
           delay: 0.08,
           ease: "power1.inOut"

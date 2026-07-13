@@ -3704,7 +3704,7 @@ header {
 
 /* Left Fixed Title Column */
 .stages-intro-column {
-  width: 35vw;
+  width: 30vw;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -3758,7 +3758,7 @@ header {
 
 /* Right Viewport Mask Column */
 .stages-viewport-mask {
-  width: 65vw;
+  width: 70vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -3781,7 +3781,7 @@ header {
 
 /* Card slide containers (Take exactly the mask column space) */
 .stage-slide-card-container {
-  width: 65vw;
+  width: 70vw;
   height: 100vh;
   display: flex;
   justify-content: center;
