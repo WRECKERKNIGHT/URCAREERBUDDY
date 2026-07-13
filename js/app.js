@@ -1982,22 +1982,22 @@ function initRedesignFeatures() {
   function initStagesPinner() {
     const slides = stagesTrack.querySelectorAll(".stage-slide-card");
     
+    const getScrollDistance = () => {
+      const val = stagesTrack.scrollWidth - window.innerWidth + 280;
+      return Math.max(val, 100);
+    };
+    
     gsap.to(stagesTrack, {
-      x: () => {
-        const val = stagesTrack.scrollWidth - window.innerWidth + 250;
-        return -Math.max(val, 100);
-      },
+      x: () => -getScrollDistance(),
       ease: "none",
       scrollTrigger: {
         trigger: ".stages-pin-outer-container",
         start: "top top",
-        end: () => {
-          const val = stagesTrack.scrollWidth - window.innerWidth + 250;
-          return `+=${Math.max(val, 100) + 400}`;
-        },
+        end: () => `+=${getScrollDistance()}`,
         pin: "#stages-pin-wrapper",
         pinSpacing: true,
         scrub: 1.2,
+        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress;
