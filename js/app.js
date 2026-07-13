@@ -2001,6 +2001,13 @@ function initRedesignFeatures() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress;
+          
+          // Update scrollbar progress bar width
+          const scrollbarFill = document.getElementById("stages-scrollbar-fill-indicator");
+          if (scrollbarFill) {
+            scrollbarFill.style.width = (progress * 100) + "%";
+          }
+          
           // Calculate which slide card is active (nearest to viewport center)
           const activeIndex = Math.min(
             Math.floor(progress * (slides.length + 1)),

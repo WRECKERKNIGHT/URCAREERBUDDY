@@ -3814,10 +3814,126 @@ header {
 }
 
 .stage-slide-card.active {
-  border-color: var(--color-accent-gold);
-  background: rgba(55, 50, 42, 0.95);
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  transform: translateY(-8px) scale(1.03) !important;
+}
+
+/* Celestial background overlays */
+.stages-celestial-bg-left, .stages-celestial-bg-right {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stages-celestial-bg-left {
+  left: -120px;
+  top: 5%;
+  width: 500px;
+  height: 500px;
+  opacity: 0.14;
+  animation: rotateGear 140s linear infinite;
+}
+
+.stages-celestial-bg-right {
+  right: -120px;
+  bottom: 5%;
+  width: 500px;
+  height: 500px;
+  opacity: 0.1;
+  animation: rotateGearCounter 100s linear infinite;
+}
+
+@keyframes rotateGear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateGearCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* 3D Metallic Bevel Cards */
+.stage-slide-card {
+  position: relative;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  background-size: cover;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: visible !important;
+}
+
+.stage-gold-card {
+  border: 4.5px solid transparent !important;
+  background-image: 
+    linear-gradient(to bottom, #1e1b17, #0f0d0b), 
+    linear-gradient(135deg, #ffe082 0%, #b58d3d 40%, #ffffff 70%, #b58d3d 100%) !important;
+}
+
+.stage-copper-card {
+  border: 4.5px solid transparent !important;
+  background-image: 
+    linear-gradient(to bottom, #231a17, #110d0b), 
+    linear-gradient(135deg, #ffab91 0%, #d84315 40%, #ffffff 70%, #d84315 100%) !important;
+}
+
+.stage-silver-card {
+  border: 4.5px solid transparent !important;
+  background-image: 
+    linear-gradient(to bottom, #1b1c1e, #0d0e0f), 
+    linear-gradient(135deg, #cfd8dc 0%, #78909c 40%, #ffffff 70%, #78909c 100%) !important;
+}
+
+/* Active glows matching metal types */
+.stage-slide-card.active.stage-gold-card {
+  box-shadow: 
+    0 25px 55px rgba(0, 0, 0, 0.65), 
+    0 0 35px rgba(255, 215, 0, 0.22) !important;
+}
+
+.stage-slide-card.active.stage-copper-card {
+  box-shadow: 
+    0 25px 55px rgba(0, 0, 0, 0.65), 
+    0 0 35px rgba(235, 94, 40, 0.22) !important;
+}
+
+.stage-slide-card.active.stage-silver-card {
+  box-shadow: 
+    0 25px 55px rgba(0, 0, 0, 0.65), 
+    0 0 35px rgba(207, 216, 220, 0.25) !important;
+}
+
+/* Override left card borders and make it matching gold */
+.stages-intro-card {
+  position: relative;
+  z-index: 5;
+  background: linear-gradient(135deg, rgba(28, 26, 22, 0.85), rgba(20, 18, 16, 0.95)) !important;
+  border: 1px solid rgba(255, 223, 109, 0.15) !important;
+  border-left: 5px solid var(--color-accent-gold) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Horizontal Scrollbar Track */
+.stages-scrollbar-track {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 4px;
+  background: rgba(255, 223, 109, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.stages-scrollbar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent-rust), var(--color-accent-gold));
+  border-radius: 2px;
+  transition: width 0.1s ease-out;
 }
 
 

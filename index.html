@@ -261,6 +261,28 @@
         <!-- SECTION 2: PORTAL INTAKE SEQUENCE STAGES (GSAP SCROLL PINNED) -->
         <div class="stages-pin-outer-container">
           <div class="stages-pin-wrapper" id="stages-pin-wrapper">
+            <!-- Celestial Astrolabe Overlay Graphics -->
+            <div class="stages-celestial-bg-left">
+              <svg viewBox="0 0 200 200" fill="none" stroke="rgba(255, 223, 109, 0.09)" stroke-width="0.3">
+                <circle cx="100" cy="100" r="90" stroke-dasharray="2 4" />
+                <circle cx="100" cy="100" r="70" />
+                <circle cx="100" cy="100" r="50" stroke-dasharray="1 1" />
+                <line x1="10" y1="100" x2="190" y2="100" />
+                <line x1="100" y1="10" x2="100" y2="190" />
+                <line x1="36.36" y1="36.36" x2="163.64" y2="163.64" />
+                <line x1="36.36" y1="163.64" x2="163.64" y2="36.36" />
+              </svg>
+            </div>
+            <div class="stages-celestial-bg-right">
+              <svg viewBox="0 0 200 200" fill="none" stroke="rgba(255, 223, 109, 0.06)" stroke-width="0.3">
+                <circle cx="100" cy="100" r="90" />
+                <circle cx="100" cy="100" r="75" stroke-dasharray="3 3" />
+                <circle cx="100" cy="100" r="40" />
+                <line x1="0" y1="100" x2="200" y2="100" />
+                <line x1="100" y1="0" x2="100" y2="200" />
+              </svg>
+            </div>
+
             <div class="stages-horizontal-track-container">
               <div class="stages-intro-card">
                 <span class="stage-status-tag">SEQUENCE CALIBRATION</span>
@@ -270,61 +292,66 @@
               </div>
               
               <div class="stages-horizontal-scroll-track" id="stages-horizontal-scroll-track">
-                <!-- Stage 1 -->
-                <div class="stage-slide-card stage-completed active" data-stage-idx="1">
+                <!-- Stage 1: Personality (Gold Bevel) -->
+                <div class="stage-slide-card stage-gold-card stage-completed active" data-stage-idx="1">
                   <div class="slide-card-header-row">
                     <div class="slide-card-num">01</div>
-                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="var(--color-accent-gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="#ffe082" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                   </div>
                   <h4>Personality Assessment</h4>
                   <p>Profiling communication styles, cognitive biases, risk tolerance thresholds, and interpersonal team coefficients via combined MBTI and Big Five models.</p>
                   <div class="slide-card-visual"><div class="pulsing-radar-dots"></div></div>
                 </div>
                 
-                <!-- Stage 2 -->
-                <div class="stage-slide-card" data-stage-idx="2">
+                <!-- Stage 2: Cognitive (Copper Bevel) -->
+                <div class="stage-slide-card stage-copper-card" data-stage-idx="2">
                   <div class="slide-card-header-row">
                     <div class="slide-card-num">02</div>
-                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="var(--color-accent-rust)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="#ffab91" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M16 11c0 2.2-.8 4.2-2.1 5.7L15 22h-6l1.1-5.3C8.8 15.2 8 13.2 8 11c0-4.4 3.6-8 8-8s8 3.6 8 8z" /><circle cx="14" cy="9" r="2" /><path d="M14 6v1M14 11v1M11 9h1M16 9h1" /></svg>
                   </div>
                   <h4>Cognitive Aptitude</h4>
                   <p>Calibrating spatial coordinates, logic sequences, semantic decoding velocities, and performance matrices under strict time limits.</p>
                   <div class="slide-card-visual"><div style="font-family:monospace; font-size:0.7rem; color:var(--color-accent-gold); letter-spacing:1px; border:1px dashed var(--color-border-dark); padding:0.5rem 1rem; width:fit-content; margin:0 auto;">[APTITUDE_INDEX: CALIBRATING]</div></div>
                 </div>
 
-                <!-- Stage 3 -->
-                <div class="stage-slide-card" data-stage-idx="3">
+                <!-- Stage 3: Holland (Silver Bevel) -->
+                <div class="stage-slide-card stage-silver-card" data-stage-idx="3">
                   <div class="slide-card-header-row">
                     <div class="slide-card-num">03</div>
-                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="var(--color-accent-gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="#cfd8dc" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2" /><rect x="9" y="9" width="6" height="6" /><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" /></svg>
                   </div>
                   <h4>Holland RIASEC</h4>
                   <p>Plotting coordinates across 6 fields: Realistic, Investigative, Artistic, Social, Enterprising, and Conventional categories to align interests.</p>
                   <div class="slide-card-visual" style="display:flex; gap:0.4rem; justify-content:center;"><span style="font-size:0.7rem; font-weight:700; padding:2px 6px; background:rgba(235,94,40,0.15); border:1px solid var(--color-accent-rust); color:var(--color-accent-rust);">R</span><span style="font-size:0.7rem; font-weight:700; padding:2px 6px; background:rgba(255,223,109,0.15); border:1px solid var(--color-accent-gold); color:var(--color-accent-gold);">I</span><span style="font-size:0.7rem; font-weight:700; padding:2px 6px; background:rgba(235,94,40,0.15); border:1px solid var(--color-accent-rust); color:var(--color-accent-rust);">A</span></div>
                 </div>
 
-                <!-- Stage 4 -->
-                <div class="stage-slide-card" data-stage-idx="4">
+                <!-- Stage 4: Learning Channels (Copper Bevel) -->
+                <div class="stage-slide-card stage-copper-card" data-stage-idx="4">
                   <div class="slide-card-header-row">
                     <div class="slide-card-num">04</div>
-                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="var(--color-accent-rust)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="#ffab91" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                   </div>
                   <h4>Learning Channels</h4>
                   <p>Isolating visual grids, auditory arguments, reading/text prompts, and active kinesthetic lab profiles to align optimal training methodologies.</p>
                   <div class="slide-card-visual"><div style="font-family:monospace; font-size:0.7rem; color:var(--color-accent-rust); text-shadow:0 0 4px rgba(235,94,40,0.4)">VARK_INDEX_FLOW: SECURE</div></div>
                 </div>
 
-                <!-- Stage 5 -->
-                <div class="stage-slide-card" data-stage-idx="5">
+                <!-- Stage 5: Specialized Skills (Gold Bevel) -->
+                <div class="stage-slide-card stage-gold-card" data-stage-idx="5">
                   <div class="slide-card-header-row">
                     <div class="slide-card-num">05</div>
-                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="var(--color-accent-gold)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <svg class="stage-card-icon" viewBox="0 0 24 24" width="36" height="36" stroke="#ffe082" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                   </div>
                   <h4>Specialized Skills</h4>
                   <p>Synthesizing computational, organizational, creative, and physical capabilities to trace gaps against global market careers.</p>
                   <div class="slide-card-visual"><div style="width:12px; height:12px; border-radius:50%; background:var(--color-accent-gold); box-shadow:0 0 10px var(--color-accent-gold); animation: nodePulsate 1s infinite; margin:0 auto;"></div></div>
                 </div>
               </div>
+            </div>
+
+            <!-- Scrollbar Progress Indicator -->
+            <div class="stages-scrollbar-track">
+              <div class="stages-scrollbar-fill" id="stages-scrollbar-fill-indicator"></div>
             </div>
           </div>
         </div>
