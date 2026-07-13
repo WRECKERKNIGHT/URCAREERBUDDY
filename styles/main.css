@@ -3676,7 +3676,7 @@ header {
   margin-right: -50vw;
   height: 100vh;
   overflow: hidden;
-  background: var(--color-bg-base);
+  background: radial-gradient(circle at center, rgba(235, 94, 40, 0.05) 0%, rgba(20, 18, 16, 1) 100%);
   display: flex;
   align-items: center;
 }
@@ -3737,13 +3737,30 @@ header {
   width: 340px;
   height: 400px;
   padding: 2.5rem;
-  background: rgba(28, 26, 22, 0.5);
-  border: 1.5px solid rgba(255, 223, 109, 0.07);
+  background: rgba(45, 42, 38, 0.6);
+  border: 1.5px solid rgba(255, 223, 109, 0.16);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.slide-card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.stage-card-icon {
+  filter: drop-shadow(0 0 4px rgba(255, 223, 109, 0.15));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.stage-slide-card:hover .stage-card-icon {
+  transform: rotate(5deg) scale(1.12);
+  filter: drop-shadow(0 0 10px rgba(255, 223, 109, 0.45));
 }
 
 .stage-slide-card h4 {
@@ -3779,7 +3796,7 @@ header {
 
 .stage-slide-card.active {
   border-color: var(--color-accent-gold);
-  background: rgba(28, 26, 22, 0.8);
+  background: rgba(55, 50, 42, 0.95);
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
 }

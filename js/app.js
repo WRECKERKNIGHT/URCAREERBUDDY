@@ -1982,22 +1982,32 @@ function initRedesignFeatures() {
   // --- Horizontal stages timeline scroll lock (GSAP pinning) ---
   const stagesTrack = document.getElementById("stages-horizontal-scroll-track");
   const stagesWrapper = document.getElementById("stages-pin-wrapper");
-  if (stagesTrack && stagesWrapper && typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-    const slides = stagesTrack.querySelectorAll(".stage-slide-card");
-    const introCard = stagesWrapper.querySelector(".stages-intro-card");
+  
+  function initStagesPinner() {
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+      setTimeout(initStagesPinner, 100);
+      return;
+    }
     
-    // Calculate scroll value based on track scroll width
-    const scrollVal = stagesTrack.scrollWidth - window.innerWidth + 200;
+    gsap.registerPlugin(ScrollTrigger);
+    
+    const slides = stagesTrack.querySelectorAll(".stage-slide-card");
     
     gsap.to(stagesTrack, {
-      x: () => -scrollVal,
+      x: () => {
+        const val = stagesTrack.scrollWidth - window.innerWidth + 250;
+        return -Math.max(val, 100);
+      },
       ease: "none",
       scrollTrigger: {
         trigger: stagesWrapper,
         start: "top top",
-        end: () => `+=${scrollVal + 400}`,
+        end: () => {
+          const val = stagesTrack.scrollWidth - window.innerWidth + 250;
+          return `+=${Math.max(val, 100) + 400}`;
+        },
         pin: true,
-        scrub: 1,
+        scrub: 1.2,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -2011,7 +2021,6 @@ function initRedesignFeatures() {
             if (idx === activeIndex) {
               if (!slide.classList.contains("active")) {
                 slide.classList.add("active");
-                // Play a brief UI chime
                 playUIBlip(750, 0.05);
               }
               slide.classList.add("stage-completed");
@@ -2027,6 +2036,15 @@ function initRedesignFeatures() {
         }
       }
     });
+
+    // Force recalculate offsets after initial layout resolves
+    window.addEventListener("load", () => {
+      ScrollTrigger.refresh();
+    });
+  }
+
+  if (stagesTrack && stagesWrapper) {
+    initStagesPinner();
   }
 
   // Bind click sound indicators to all buttons and cards
