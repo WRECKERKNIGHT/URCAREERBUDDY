@@ -3749,6 +3749,8 @@ header {
   display: flex;
   gap: 3.5rem;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .stage-slide-card {
@@ -3907,11 +3909,11 @@ header {
 /* Override left card borders and make it matching gold */
 .stages-intro-card {
   position: relative;
-  z-index: 5;
-  background: linear-gradient(135deg, rgba(28, 26, 22, 0.85), rgba(20, 18, 16, 0.95)) !important;
+  z-index: 12 !important;
+  background: #141210 !important;
   border: 1px solid rgba(255, 223, 109, 0.15) !important;
   border-left: 5px solid var(--color-accent-gold) !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  box-shadow: 15px 0 35px rgba(0, 0, 0, 0.95) !important;
 }
 
 /* Horizontal Scrollbar Track */
