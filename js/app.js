@@ -9,6 +9,10 @@ import { fetchLMIForCareer } from './lmi.js';
 import { initEducationToolkit } from './education.js';
 import { initWhatIfSandbox } from './whatif.js';
 import { initExperientialBoard } from './experiential.js';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Views
@@ -1468,14 +1472,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //  GSAP MOTION ENGINE - Scroll-driven animations & micro-FX
 // ============================================================
 function initGSAPMotionEngine() {
-  // Wait until GSAP CDN is loaded
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    setTimeout(initGSAPMotionEngine, 100);
-    return;
-  }
-
-  gsap.registerPlugin(ScrollTrigger);
-
   // --- Hero floating stat orbs entrance ---
   gsap.from('.hero-stat-float', {
     duration: 1.2,
@@ -1984,13 +1980,6 @@ function initRedesignFeatures() {
   const stagesWrapper = document.getElementById("stages-pin-wrapper");
   
   function initStagesPinner() {
-    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
-      setTimeout(initStagesPinner, 100);
-      return;
-    }
-    
-    gsap.registerPlugin(ScrollTrigger);
-    
     const slides = stagesTrack.querySelectorAll(".stage-slide-card");
     
     gsap.to(stagesTrack, {
