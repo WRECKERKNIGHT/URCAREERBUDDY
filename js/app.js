@@ -1991,10 +1991,10 @@ function initRedesignFeatures() {
       x: () => -getScrollDistance(),
       ease: "none",
       scrollTrigger: {
-        trigger: ".stages-pin-outer-container",
+        trigger: stagesWrapper,
         start: "top top",
         end: () => `+=${getScrollDistance()}`,
-        pin: "#stages-pin-wrapper",
+        pin: true,
         pinSpacing: true,
         scrub: 1.2,
         anticipatePin: 1,
