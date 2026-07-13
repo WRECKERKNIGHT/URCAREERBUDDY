@@ -1442,10 +1442,19 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroParticles();
   initScrollReveal();
   initECGWave();
+  
   // Only initialize heavy 3D hero on sufficiently large viewports to save mobile CPU
   if (window.innerWidth >= 680) {
     initHero3DScene();
   }
+  
+  initGSAPMotionEngine();
+  initScrollProgressBar();
+  initMagneticButtons();
+  initMouseTrail();
+  initCounterAnimations();
+  initRedesignFeatures();
+
   // Initialize feature MVPs (placeholders for full features)
   try { initGamification('#landing-view'); } catch (e) { console.warn(e); }
   try { initEncyclopedia('#report-output-stage'); } catch (e) { console.warn(e); }
@@ -1454,29 +1463,6 @@ document.addEventListener("DOMContentLoaded", () => {
   try { initExperientialBoard('#report-output-stage'); } catch (e) { console.warn(e); }
   // feedback widget
   try { import('./feedback.js').then(m => m.initFeedback()).catch(e => console.warn('Feedback widget failed to load', e)); } catch (e) { console.warn('Feedback widget failed to load', e); }
-});
-
-    requestAnimationFrame(animate);
-  }
-
-  // Initialize at the end to prevent Temporal Dead Zone ReferenceErrors on const declarations
-  initTheme();
-  const savedLang = localStorage.getItem("career_guidance_lang") || "en";
-  setLanguage(savedLang);
-  checkAndResumeState();
-  initDisclaimerModal();
-  initSimulator();
-  initHeroParticles();
-  initScrollReveal();
-  initECGWave();
-  initHero3DScene();
-  initGSAPMotionEngine();
-  initScrollProgressBar();
-  initMagneticButtons();
-  initMouseTrail();
-  initCounterAnimations();
-  initRedesignFeatures();
-});
 
 // ============================================================
 //  GSAP MOTION ENGINE - Scroll-driven animations & micro-FX
@@ -2156,5 +2142,6 @@ function init3DTiltCards() {
     });
   });
 }
+});
 
 
