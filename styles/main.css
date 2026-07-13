@@ -3684,6 +3684,12 @@ header {
 /* ============================================================
    GSAP HORIZONTAL STAGES PINNER STYLES
    ============================================================ */
+.stages-pin-outer-container {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
 .stages-pin-wrapper {
   position: relative;
   width: 100%;

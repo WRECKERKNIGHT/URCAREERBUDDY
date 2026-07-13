@@ -1989,13 +1989,14 @@ function initRedesignFeatures() {
       },
       ease: "none",
       scrollTrigger: {
-        trigger: stagesWrapper,
+        trigger: ".stages-pin-outer-container",
         start: "top top",
         end: () => {
           const val = stagesTrack.scrollWidth - window.innerWidth + 250;
           return `+=${Math.max(val, 100) + 400}`;
         },
-        pin: true,
+        pin: "#stages-pin-wrapper",
+        pinSpacing: true,
         scrub: 1.2,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
