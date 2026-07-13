@@ -187,11 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sub) sub.style.transform = `translate3d(0, ${scrollVal * 0.08}px, 0)`;
     }
     
-    // Spinning background canvas gears
-    const gear1 = document.getElementById("parallax-gear-1");
-    const gear2 = document.getElementById("parallax-gear-2");
-    if (gear1) gear1.style.transform = `rotate(${scrollVal * 0.08}deg)`;
-    if (gear2) gear2.style.transform = `rotate(${-scrollVal * 0.05}deg)`;
+    // Spinning background canvas HUDs
+    const hud1 = document.getElementById("parallax-hud-1");
+    const hud2 = document.getElementById("parallax-hud-2");
+    if (hud1) hud1.style.transform = `rotate(${scrollVal * 0.08}deg)`;
+    if (hud2) hud2.style.transform = `rotate(${-scrollVal * 0.05}deg)`;
   });
 
   // Interactive mousemove parallax on the central hero card

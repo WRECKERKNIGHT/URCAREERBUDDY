@@ -8,7 +8,7 @@
   <!-- Preconnecting to Google Fonts for performance optimization -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Space+Grotesk:wght@300..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   
   <!-- Primary Styling -->
   <link rel="stylesheet" href="./styles/main.css">
@@ -23,29 +23,19 @@
 
   <!-- Parallax Scrolling Canvas Background Graphics -->
   <div class="parallax-graphics-container" aria-hidden="true">
-    <!-- Top Right Gear -->
-    <svg class="vintage-gear-svg gear-top-right" id="parallax-gear-1" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="10" stroke-dasharray="2 1"></circle>
-      <circle cx="50" cy="50" r="30"></circle>
-      <circle cx="50" cy="50" r="35" stroke-dasharray="5 3"></circle>
-      <!-- Spokes -->
-      <line x1="50" y1="20" x2="50" y2="80"></line>
-      <line x1="20" y1="50" x2="80" y2="50"></line>
-      <line x1="28.78" y1="28.78" x2="71.22" y2="71.22"></line>
-      <line x1="28.78" y1="71.22" x2="71.22" y2="28.78"></line>
+    <!-- Top Right HUD telemetry ring -->
+    <svg class="hud-ring-svg hud-top-right" id="parallax-hud-1" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" stroke="var(--color-accent-sage)" stroke-width="0.7" stroke-dasharray="6 3" fill="none"></circle>
+      <circle cx="50" cy="50" r="35" stroke="var(--color-accent-gold)" stroke-width="0.5" stroke-dasharray="1 5" fill="none"></circle>
+      <circle cx="50" cy="50" r="25" stroke="var(--color-accent-rust)" stroke-width="0.3" fill="none"></circle>
+      <path d="M50 5 L50 15 M50 85 L50 95 M5 50 L15 50 M85 50 L95 50" stroke="var(--color-accent-sage)" stroke-width="0.8"></path>
     </svg>
-
-    <!-- Bottom Left Gear -->
-    <svg class="vintage-gear-svg gear-bottom-left" id="parallax-gear-2" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="15" stroke-dasharray="1 2"></circle>
-      <circle cx="50" cy="50" r="28"></circle>
-      <circle cx="50" cy="50" r="38"></circle>
-      <circle cx="50" cy="50" r="42" stroke-dasharray="4 2"></circle>
-      <!-- Spokes -->
-      <line x1="50" y1="8" x2="50" y2="92"></line>
-      <line x1="8" y1="50" x2="92" y2="50"></line>
-      <line x1="20.5" y1="20.5" x2="79.5" y2="79.5"></line>
-      <line x1="20.5" y1="79.5" x2="79.5" y2="20.5"></line>
+    
+    <!-- Bottom Left HUD telemetry ring -->
+    <svg class="hud-ring-svg hud-bottom-left" id="parallax-hud-2" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="42" stroke="var(--color-accent-rust)" stroke-width="0.6" stroke-dasharray="3 3" fill="none"></circle>
+      <circle cx="50" cy="50" r="30" stroke="var(--color-accent-gold)" stroke-width="0.4" stroke-dasharray="10 2 2 2" fill="none"></circle>
+      <circle cx="50" cy="50" r="18" stroke="var(--color-accent-sage)" stroke-width="0.3" fill="none"></circle>
     </svg>
   </div>
   
