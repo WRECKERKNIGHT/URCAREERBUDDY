@@ -541,16 +541,16 @@
 
         <!-- SECTION 6: SYSTEM MANIFEST & ENGINEERING LOG -->
         <div class="manifest-technical-section">
-          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem; font-style: italic;">The System Manifest & Engineering Log</h3>
+          <h3 class="text-center" style="font-size: 1.8rem; margin-bottom: 2rem;">The System Manifest & Engineering Log</h3>
           <p class="text-center section-sub" style="margin-bottom: 2.5rem;">An open technical catalog detailing the psychometric calculations and codebase files.</p>
           
-          <div class="vt-card manifest-card-full" style="padding: 2rem; border-style: solid; margin-bottom: 2rem; background-color: var(--color-bg-card);">
+          <div class="vt-card manifest-card-full" style="padding: 2.5rem; margin-bottom: 2rem;">
             
-            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem;">
+            <h4 style="font-size: 1.3rem; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">
               1. The Algorithmic Flow & Data Pipelines
             </h4>
             
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.72rem; line-height: 1.4; background: var(--color-bg-base); padding: 1.2rem; border: 1.5px solid var(--color-border-dark); border-radius: 4px; overflow-x: auto; margin-bottom: 1.5rem; white-space: pre;">
+            <div class="manifest-log-console">
 [Stage 1-5 Questionnaire Matrix]  ───►  [js/questions.js]
                                             │
                                             ▼
@@ -566,7 +566,7 @@
 [9-Tab Cabinet Presentation Drawer] ──►  [js/report.js]  ──► Dynamic VARK Sandboxes & Gaps
             </div>
 
-            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: var(--color-text-body);">
+            <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--color-text-body);">
               The platform implements a multi-stage scoring loop. When a user submits an answer, 
               <strong>URCAREERBUDDY</strong> maps the score dynamically across coordinates in 
               <a href="file:///Users/wreckerknight/.gemini/antigravity/scratch/career-guidance-platform/js/questions.js" style="color: var(--color-accent-rust); font-weight: 700; text-decoration: underline;">questions.js</a>.
@@ -575,30 +575,30 @@
               adds the points to multiple category buckets simultaneously.
             </p>
 
-            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
+            <h4 style="font-size: 1.3rem; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
               2. Mathematical Foundations & Vector Distance Math
             </h4>
             
-            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.2rem; color: var(--color-text-body);">
+            <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.2rem; color: var(--color-text-body);">
               Unlike standard career systems that rely on hardcoded rules, this system uses <strong>Euclidean distance matching</strong> 
               to determine career suitability. Your scores for RIASEC interests (6 dimensions) and Specialized Skills (5 dimensions) 
               form an <strong>11-dimensional vector</strong>. This vector is compared directly against the ideal coordinates of 25+ global career benchmarks:
             </p>
             
-            <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; background: var(--color-bg-base); padding: 1rem; border: 1px dashed var(--color-border-dark); text-align: center; margin-bottom: 1.5rem; border-radius: 4px; font-weight: 700; color: var(--color-text-heading);">
+            <div class="manifest-log-console text-center" style="font-weight: 700; font-size: 0.95rem;">
               d = &radic;&sum;<sub>i=1</sub><sup>11</sup> (User<sub>i</sub> - Career<sub>i</sub>)<sup>2</sup> / 11
             </div>
 
-            <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; color: var(--color-text-body);">
+            <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--color-text-body);">
               The distance is normalized to a percentage compatibility score. An <strong>Anti-Gaming consistency check</strong> evaluates 
               rephrased questions to detect random clicking. Discrepancies apply a penalty multiplier, reducing the career suitability percentage to maintain diagnostic integrity.
             </p>
 
-            <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1.5px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
+            <h4 style="font-size: 1.3rem; color: var(--color-accent-rust); margin-bottom: 1.2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-top: 2rem;">
               3. The Codebase Components & File Map
             </h4>
 
-            <ul style="font-size: 0.88rem; line-height: 1.6; padding-left: 1.2rem; list-style: square; color: var(--color-text-body);">
+            <ul style="font-size: 0.95rem; line-height: 1.7; padding-left: 1.2rem; list-style: square; color: var(--color-text-body);">
               <li style="margin-bottom: 0.6rem;">
                 <strong>index.html:</strong> The HTML5 structure displaying progress bulbs, landing pages, simulator widgets, and modal accord drawers.
               </li>
@@ -826,7 +826,7 @@
 
     <!-- Platform Footer -->
     <footer>
-      <p>&copy; 2026 AI-Driven Psychometric Career Guidance Platform. Constructed with classic sepia styling, scroll parallax gears, and wax-seal diagnostic checks. Made by Harshit Mishra.</p>
+      <p>&copy; 2026 AI-Driven Psychometric Career Guidance Platform. Powered by deep neural vector mapping models and high-end glassmorphic diagnostics. Created by Harshit Mishra.</p>
     </footer>
   </div>
 
