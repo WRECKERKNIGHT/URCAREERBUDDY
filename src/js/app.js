@@ -1790,6 +1790,7 @@ function initRedesignFeatures() {
     });
 
     // --- Dynamic interactive neural hologram canvas ---
+    // --- Dynamic interactive neural hologram canvas (Animated 5-Axis Calibration Radar Chart) ---
     function initNeuralHologram() {
       const canvas = document.getElementById("neural-hologram-canvas");
       if (!canvas) return;
@@ -1798,13 +1799,18 @@ function initRedesignFeatures() {
       let width = canvas.width = canvas.offsetWidth;
       let height = canvas.height = canvas.offsetHeight;
 
-      const particles = [];
-      const particleCount = 45;
-      const maxDistance = 65;
-
+      // 5-axis layout configuration
+      const axes = ["INTEGRITY", "COGNITIVE", "LOGIC", "APTITUDE", "ALIGNMENT"];
+      const numAxes = axes.length;
+      
+      // Target values that breathe/morph
+      const targetValues = [0.82, 0.76, 0.90, 0.85, 0.88];
+      const currentValues = [...targetValues];
+      
       let mouseX = width / 2;
       let mouseY = height / 2;
       let isHovering = false;
+      let time = 0;
 
       // Resize listener
       const resizeObserver = new ResizeObserver(() => {
@@ -1812,18 +1818,6 @@ function initRedesignFeatures() {
         height = canvas.height = canvas.offsetHeight;
       });
       resizeObserver.observe(canvas);
-
-      // Initialize particles
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          radius: Math.random() * 2 + 1,
-          alpha: Math.random() * 0.5 + 0.3
-        });
-      }
 
       // Mouse listeners
       canvas.addEventListener("mousemove", (e) => {
@@ -1837,94 +1831,171 @@ function initRedesignFeatures() {
         isHovering = false;
       });
 
-      // Pulse factor
-      let pulseAngle = 0;
+      // Particle system for ambient dust
+      const particles = [];
+      const particleCount = 20;
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          angle: Math.random() * Math.PI * 2,
+          radius: 30 + Math.random() * 120,
+          speed: 0.003 + Math.random() * 0.005,
+          size: Math.random() * 1.5 + 0.8,
+          alpha: Math.random() * 0.4 + 0.2
+        });
+      }
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
+        time += 0.015;
 
-        pulseAngle += 0.02;
-        const corePulse = Math.sin(pulseAngle) * 5 + 25;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const maxRadius = Math.min(width, height) * 0.38;
 
-        // Draw central glowing core
-        const coreX = width / 2;
-        const coreY = height / 2;
-        const coreGrad = ctx.createRadialGradient(coreX, coreY, 2, coreX, coreY, corePulse);
-        coreGrad.addColorStop(0, "rgba(129, 140, 248, 0.8)");
-        coreGrad.addColorStop(0.3, "rgba(129, 140, 248, 0.2)");
-        coreGrad.addColorStop(1, "rgba(129, 140, 248, 0)");
-        ctx.fillStyle = coreGrad;
+        // 1. Draw concentric pentagonal grid lines (calibration rings)
+        ctx.lineWidth = 0.8;
+        for (let level = 1; level <= 5; level++) {
+          const r = (level / 5) * maxRadius;
+          ctx.strokeStyle = `rgba(226, 192, 141, ${0.03 + (level * 0.015)})`;
+          ctx.beginPath();
+          for (let i = 0; i < numAxes; i++) {
+            const angle = (i * Math.PI * 2) / numAxes - Math.PI / 2;
+            const x = centerX + Math.cos(angle) * r;
+            const y = centerY + Math.sin(angle) * r;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        // 2. Draw axis lines and label ticks
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+        ctx.lineWidth = 0.8;
+        for (let i = 0; i < numAxes; i++) {
+          const angle = (i * Math.PI * 2) / numAxes - Math.PI / 2;
+          const x = centerX + Math.cos(angle) * maxRadius;
+          const y = centerY + Math.sin(angle) * maxRadius;
+          
+          // Draw axis spoke line
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+
+          // Draw axis label text
+          const labelX = centerX + Math.cos(angle) * (maxRadius + 22);
+          const labelY = centerY + Math.sin(angle) * (maxRadius + 14);
+          
+          ctx.fillStyle = "rgba(148, 163, 184, 0.8)";
+          ctx.font = "bold 9px 'Courier Prime', monospace";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(axes[i], labelX, labelY);
+        }
+
+        // 3. Update values using sine waves (breathing calibration loop)
+        for (let i = 0; i < numAxes; i++) {
+          const noise = Math.sin(time + i * 2) * 0.04;
+          let target = targetValues[i] + noise;
+          
+          // Interaction: attract slightly towards mouse if hovering
+          if (isHovering) {
+            const angle = (i * Math.PI * 2) / numAxes - Math.PI / 2;
+            const px = centerX + Math.cos(angle) * maxRadius * target;
+            const py = centerY + Math.sin(angle) * maxRadius * target;
+            const dx = mouseX - px;
+            const dy = mouseY - py;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+              const pull = (100 - dist) / 100 * 0.12;
+              target += pull;
+            }
+          }
+          
+          // Smooth transition
+          currentValues[i] += (target - currentValues[i]) * 0.1;
+        }
+
+        // 4. Draw calibration fill area (radar polygon)
+        const polyPoints = [];
+        for (let i = 0; i < numAxes; i++) {
+          const angle = (i * Math.PI * 2) / numAxes - Math.PI / 2;
+          const r = maxRadius * currentValues[i];
+          const x = centerX + Math.cos(angle) * r;
+          const y = centerY + Math.sin(angle) * r;
+          polyPoints.push({ x, y });
+        }
+
+        // Draw filled glow shape
+        const fillGrad = ctx.createRadialGradient(centerX, centerY, 5, centerX, centerY, maxRadius * 0.9);
+        fillGrad.addColorStop(0, "rgba(129, 140, 248, 0.32)");
+        fillGrad.addColorStop(0.5, "rgba(129, 140, 248, 0.14)");
+        fillGrad.addColorStop(1, "rgba(129, 140, 248, 0)");
+        
+        ctx.fillStyle = fillGrad;
         ctx.beginPath();
-        ctx.arc(coreX, coreY, corePulse, 0, Math.PI * 2);
+        ctx.moveTo(polyPoints[0].x, polyPoints[0].y);
+        for (let i = 1; i < numAxes; i++) {
+          ctx.lineTo(polyPoints[i].x, polyPoints[i].y);
+        }
+        ctx.closePath();
         ctx.fill();
 
-        // Draw concentric orbit path lines
-        ctx.strokeStyle = "rgba(226, 192, 141, 0.08)";
-        ctx.lineWidth = 1;
+        // Draw boundary stroke
+        ctx.strokeStyle = "rgba(129, 140, 248, 0.85)";
+        ctx.lineWidth = 1.6;
+        ctx.shadowColor = "rgba(129, 140, 248, 0.4)";
+        ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.arc(coreX, coreY, 80, 0, Math.PI * 2);
+        ctx.moveTo(polyPoints[0].x, polyPoints[0].y);
+        for (let i = 1; i < numAxes; i++) {
+          ctx.lineTo(polyPoints[i].x, polyPoints[i].y);
+        }
+        ctx.closePath();
         ctx.stroke();
+        ctx.shadowBlur = 0; // reset shadow
 
-        ctx.beginPath();
-        ctx.arc(coreX, coreY, 130, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // Update and draw particles
-        particles.forEach((p, idx) => {
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0 || p.x > width) p.vx *= -1;
-          if (p.y < 0 || p.y > height) p.vy *= -1;
-
-          p.x = Math.max(0, Math.min(p.x, width));
-          p.y = Math.max(0, Math.min(p.y, height));
-
-          if (isHovering) {
-            const dx = p.x - mouseX;
-            const dy = p.y - mouseY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 80) {
-              const force = (80 - dist) / 80;
-              p.x += (dx / dist) * force * 1.5;
-              p.y += (dy / dist) * force * 1.5;
-            }
-          }
-
-          ctx.fillStyle = `rgba(129, 140, 248, ${p.alpha})`;
+        // 5. Draw glowing vertex nodes
+        polyPoints.forEach((p, i) => {
+          ctx.fillStyle = "#ffffff";
+          ctx.strokeStyle = "rgba(129, 140, 248, 0.9)";
+          ctx.lineWidth = 2;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
 
-          for (let j = idx + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+          // Small outer halo ring
+          ctx.strokeStyle = "rgba(129, 140, 248, 0.25)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 9 + Math.sin(time * 2 + i) * 2, 0, Math.PI * 2);
+          ctx.stroke();
+        });
 
-            if (dist < maxDistance) {
-              const connAlpha = (1 - dist / maxDistance) * 0.15;
-              ctx.strokeStyle = `rgba(129, 140, 248, ${connAlpha})`;
-              ctx.lineWidth = 0.8;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
+        // 6. Draw central glowing core (the astrolabe center point)
+        const corePulse = Math.sin(time * 3) * 2 + 10;
+        const coreGrad = ctx.createRadialGradient(centerX, centerY, 1, centerX, centerY, corePulse);
+        coreGrad.addColorStop(0, "rgba(226, 192, 141, 0.9)");
+        coreGrad.addColorStop(0.4, "rgba(226, 192, 141, 0.3)");
+        coreGrad.addColorStop(1, "rgba(226, 192, 141, 0)");
+        
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, corePulse, 0, Math.PI * 2);
+        ctx.fill();
 
-          const dxCore = p.x - coreX;
-          const dyCore = p.y - coreY;
-          const distCore = Math.sqrt(dxCore * dxCore + dyCore * dyCore);
-          if (distCore < 120) {
-            const coreConnAlpha = (1 - distCore / 120) * 0.08;
-            ctx.strokeStyle = `rgba(226, 192, 141, ${coreConnAlpha})`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(coreX, coreY);
-            ctx.stroke();
-          }
+        // 7. Update and draw orbiting ambient dust particles
+        particles.forEach(p => {
+          p.angle += p.speed;
+          const px = centerX + Math.cos(p.angle) * p.radius;
+          const py = centerY + Math.sin(p.angle) * p.radius;
+          
+          ctx.fillStyle = `rgba(226, 192, 141, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.arc(px, py, p.size, 0, Math.PI * 2);
+          ctx.fill();
         });
 
         requestAnimationFrame(animate);
@@ -2204,6 +2275,16 @@ function initRedesignFeatures() {
             Math.round(progress * (slides.length - 1)),
             slides.length - 1
           );
+          
+          // Update vertical stages navigation active indicator states
+          const navItems = document.querySelectorAll(".stages-vertical-nav .stage-nav-item");
+          navItems.forEach((navItem, idx) => {
+            if (idx === activeIndex) {
+              navItem.classList.add("active");
+            } else {
+              navItem.classList.remove("active");
+            }
+          });
           
           slides.forEach((slide, idx) => {
             if (idx === activeIndex) {

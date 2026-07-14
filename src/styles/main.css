@@ -999,39 +999,95 @@
   /* Pinned floating header overlay in stages scroll pinner */
   .stages-pinned-header {
     position: absolute;
-    top: 10%;
-    left: 5vw;
+    top: 15%;
+    left: 4.5vw;
     z-index: 10;
-    max-width: 380px;
-    pointer-events: none;
+    max-width: 320px;
   }
 
-  .stages-pinned-header h3 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    margin: 0.4rem 0;
-    color: var(--color-text-heading);
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, var(--color-text-heading) 50%, var(--color-accent-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .stages-vertical-nav {
+    position: relative;
+    padding-left: 12px;
   }
 
-  .stages-pinned-header p {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: var(--color-text-body);
-    opacity: 0.8;
+  /* Vertical timeline line connecting indicators */
+  .stages-vertical-nav::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 12px;
+    bottom: 22px;
+    width: 1.5px;
+    background: linear-gradient(180deg, 
+      rgba(129, 140, 248, 0.3) 0%, 
+      rgba(255, 255, 255, 0.05) 50%, 
+      rgba(129, 140, 248, 0.02) 100%
+    );
+    z-index: 1;
   }
 
-  .stage-status-tag {
-    font-size: 0.8rem;
+  .stage-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.2rem;
+    position: relative;
+    opacity: 0.28;
+    transform: translateX(0);
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stage-nav-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .stage-nav-item.active {
+    opacity: 1;
+    transform: translateX(6px);
+  }
+
+  .stage-nav-dot {
+    position: relative;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border-dark);
+    background: var(--color-bg-base);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stage-nav-item.active .stage-nav-dot {
+    border-color: var(--color-accent-secondary);
+    background: var(--color-accent-secondary);
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.85);
+    transform: scale(1.3);
+  }
+
+  .stage-nav-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .stage-nav-number {
+    font-size: 0.72rem;
+    font-weight: 700;
     letter-spacing: 0.08em;
     color: var(--color-accent-secondary);
     text-transform: uppercase;
-    font-weight: 700;
-    display: block;
-    margin-bottom: 0.4rem;
+  }
+
+  .stage-nav-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-text-heading);
+    letter-spacing: -0.01em;
+    transition: color 0.3s;
+  }
+
+  .stage-nav-item.active .stage-nav-title {
+    color: #ffffff;
   }
 
   .stages-viewport-mask {
