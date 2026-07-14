@@ -31,32 +31,36 @@
 }
 
 @layer theme {
-  /* Premium Frost-Glass Light Theme */
+  /* Premium Frost-Glass Light Theme (Redesigned for Perfect Contrast) */
   .theme-light {
-    --color-bg-base: #f3f5fa;
-    --color-bg-card: rgba(255, 255, 255, 0.7);
-    --color-text-body: #475569;
+    --color-bg-base: #f1f3f9;
+    --color-bg-card: rgba(255, 255, 255, 0.78);
+    --color-bg-header: rgba(255, 255, 255, 0.72);
+    --color-text-body: #334155;
     --color-text-heading: #0f172a;
     --color-border: rgba(15, 23, 42, 0.08);
     --color-border-dark: rgba(15, 23, 42, 0.16);
     
-    --color-accent-rust: #e11d48;       /* Rose-pink */
-    --color-accent-sage: #0d9488;       /* Teal */
+    --color-accent-rust: #e11d48;       /* Vibrant Rose */
+    --color-accent-sage: #0f766e;       /* Forest Teal */
     --color-accent-gold: #b58d3c;       /* Muted gold */
-    --color-accent-primary: #8c714d;    /* Warm Bronze */
-    --color-accent-secondary: #4f46e5;  /* Royal Indigo */
+    --color-accent-primary: #7c6853;    /* Warm Earth */
+    --color-accent-secondary: #4f46e5;  /* Deep Indigo */
     --color-accent-muted: #64748b;      /* Slate Gray */
-    --color-glow: rgba(79, 70, 229, 0.15);
+    --color-glow: rgba(79, 70, 229, 0.1);
     
-    --color-shadow: rgba(15, 23, 42, 0.06);
-    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-    --shadow-hover: 0 20px 50px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    --color-shadow: rgba(15, 23, 42, 0.05);
+    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    --shadow-hover: 0 20px 50px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+    --gradient-glow-1: rgba(99, 102, 241, 0.12);
+    --gradient-glow-2: rgba(244, 63, 94, 0.08);
   }
 
   /* Premium Holographic Deep-Space Dark Theme */
   .theme-dark {
     --color-bg-base: #04050a;
     --color-bg-card: rgba(10, 15, 30, 0.55);
+    --color-bg-header: rgba(10, 15, 30, 0.65);
     --color-text-body: #94a3b8;
     --color-text-heading: #ffffff;
     --color-border: rgba(255, 255, 255, 0.07);
@@ -73,6 +77,8 @@
     --color-shadow: rgba(0, 0, 0, 0.5);
     --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.08);
     --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    --gradient-glow-1: rgba(129, 140, 248, 0.08);
+    --gradient-glow-2: rgba(226, 192, 141, 0.06);
   }
 }
 
@@ -98,7 +104,7 @@
     left: -10%;
     width: 65vw;
     height: 65vw;
-    background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--gradient-glow-1) 0%, transparent 70%);
     z-index: -1;
     pointer-events: none;
   }
@@ -110,7 +116,7 @@
     right: -10%;
     width: 65vw;
     height: 65vw;
-    background: radial-gradient(circle, rgba(226, 192, 141, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--gradient-glow-2) 0%, transparent 70%);
     z-index: -1;
     pointer-events: none;
   }
@@ -162,26 +168,32 @@
 
   header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 72px;
-    background: rgba(4, 5, 10, 0.65);
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1000px;
+    height: 60px;
+    background: var(--color-bg-header);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid var(--color-border) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 5vw;
+    padding: 0 2rem;
     z-index: 1000;
+    box-shadow: 
+      0 10px 40px var(--color-shadow),
+      inset 0 1px 1px rgba(255, 255, 255, 0.08);
   }
 
   main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding-top: 72px; /* Offset the fixed header perfectly */
+    padding-top: 96px; /* Offset the floating header perfectly */
   }
 
   footer {
@@ -347,9 +359,9 @@
   .lang-toggle-container {
     display: inline-flex;
     border: 1px solid var(--color-border);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     padding: 3px;
-    border-radius: 8px;
+    border-radius: 100px;
   }
 
   .lang-switch-btn {
@@ -359,15 +371,15 @@
     border: none;
     background: none;
     color: var(--color-text-body);
-    padding: 5px 12px;
+    padding: 5px 14px;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 100px;
     transition: all 0.25s;
   }
 
   .lang-switch-btn.active {
-    background: var(--color-accent-gold);
-    color: #000 !important;
+    background: var(--color-accent-secondary);
+    color: #ffffff !important;
   }
 
   /* Theme Switcher */
@@ -379,7 +391,7 @@
   .theme-switch {
     width: 56px;
     height: 28px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid var(--color-border);
     border-radius: 100px;
     cursor: pointer;
@@ -984,29 +996,32 @@
     z-index: 2;
   }
 
-  .stages-intro-column {
-    width: 30vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 12;
-    position: relative;
-    flex-shrink: 0;
-    background: var(--color-bg-base);
-    border-right: 1px solid var(--color-border);
-    box-sizing: border-box;
-    padding: 0 3vw;
+  /* Pinned floating header overlay in stages scroll pinner */
+  .stages-pinned-header {
+    position: absolute;
+    top: 10%;
+    left: 5vw;
+    z-index: 10;
+    max-width: 380px;
+    pointer-events: none;
   }
 
-  .stages-intro-card {
-    width: 100%;
-    max-width: 320px;
-    padding: 2.2rem;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    box-sizing: border-box;
+  .stages-pinned-header h3 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin: 0.4rem 0;
+    color: var(--color-text-heading);
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--color-text-heading) 50%, var(--color-accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stages-pinned-header p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-text-body);
+    opacity: 0.8;
   }
 
   .stage-status-tag {
@@ -1016,31 +1031,11 @@
     text-transform: uppercase;
     font-weight: 700;
     display: block;
-    margin-bottom: 0.6rem;
-  }
-
-  .stages-intro-card h3 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0.5rem 0;
-    color: var(--color-text-heading);
-  }
-
-  .stages-intro-card p {
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: var(--color-text-body);
-  }
-
-  .scroll-arrow-down-indicator {
-    font-size: 0.78rem;
-    color: var(--color-accent-primary);
-    font-weight: 600;
-    margin-top: 2rem;
+    margin-bottom: 0.4rem;
   }
 
   .stages-viewport-mask {
-    width: 70vw;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
     position: relative;
@@ -1062,24 +1057,24 @@
   }
 
   .stage-slide-card-container {
-    width: 70vw;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
     box-sizing: border-box;
-    padding: 0 6vw;
+    padding: 0 10vw;
   }
 
   /* Large glass stage sliding cards (Holographic tablets styling) */
   .stage-slide-card {
     width: 100%;
-    max-width: 520px;
-    height: 55vh;
-    max-height: 440px;
-    padding: 2.8rem;
-    border-radius: 20px;
+    max-width: 650px;
+    height: 62vh;
+    max-height: 500px;
+    padding: 3.5rem;
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1090,9 +1085,7 @@
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--color-border);
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.45),
-      inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
   }
 
@@ -1127,21 +1120,23 @@
   }
 
   .stage-card-icon {
-    width: 32px;
-    height: 32px;
-    opacity: 0.85;
-    filter: drop-shadow(0 0 8px currentColor);
+    width: 48px;
+    height: 48px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px currentColor);
   }
 
   .stage-slide-card h4 {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--color-text-heading);
-    margin: 0.5rem 0;
+    font-size: 1.65rem;
+    font-weight: 800;
+    margin: 0.6rem 0;
+    background: linear-gradient(135deg, var(--color-text-heading) 30%, var(--color-accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .stage-slide-card p {
-    font-size: 0.9rem;
+    font-size: 0.98rem;
     line-height: 1.65;
     color: var(--color-text-body);
   }

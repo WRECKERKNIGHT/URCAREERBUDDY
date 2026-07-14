@@ -24,7 +24,7 @@
   <!-- Primary Content Container -->
   <div class="app-container">
     <!-- Platform Header -->
-    <header style="padding: 1.5rem 2rem; border-bottom: 1.5px solid var(--color-border-dark); background: var(--color-bg-base);">
+    <header>
       <div class="header-left">
         <div class="logo-area" id="platform-logo" title="Click to start over and return home" style="cursor: pointer; display: flex; align-items: center; gap: 0.8rem;">
           <!-- Custom Vector Brand Emblem -->
@@ -53,9 +53,9 @@
         </nav>
         
         <!-- Bilingual Language Selector Toggle -->
-        <div class="lang-toggle-container" style="display: inline-flex; border: 1.5px solid var(--color-border-dark); background: var(--color-bg-card); padding: 2px; box-shadow: var(--shadow-button); border-radius: 0px;">
-          <button type="button" class="lang-switch-btn active" id="btn-lang-en" style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; font-weight: 700; border: none; background: var(--color-accent-rust); color: var(--color-bg-base); padding: 4px 8px; cursor: pointer;">EN</button>
-          <button type="button" class="lang-switch-btn" id="btn-lang-hi" style="font-family: 'Courier Prime', monospace; font-size: 0.7rem; font-weight: 700; border: none; background: none; color: var(--color-text-body); padding: 4px 8px; cursor: pointer; opacity: 0.85;">हिंदी</button>
+        <div class="lang-toggle-container">
+          <button type="button" class="lang-switch-btn active" id="btn-lang-en">EN</button>
+          <button type="button" class="lang-switch-btn" id="btn-lang-hi">हिंदी</button>
         </div>
 
         <div class="theme-toggle-container">
@@ -266,17 +266,14 @@
               </svg>
             </div>
 
-            <!-- Left Fixed Column: Title Area -->
-            <div class="stages-intro-column">
-              <div class="stages-intro-card">
-                <span class="stage-status-tag">SEQUENCE CALIBRATION</span>
-                <h3>PORTAL INTAKE STAGES</h3>
-                <p>Scroll down to advance through the diagnostic components horizontally.</p>
-                <div class="scroll-arrow-down-indicator">&darr; Scroll to advance</div>
-              </div>
+            <!-- Pinned Title Header Overlay -->
+            <div class="stages-pinned-header">
+              <span class="stage-status-tag">SEQUENCE CALIBRATION</span>
+              <h3>PORTAL INTAKE STAGES</h3>
+              <p>Scroll down to trace the diagnostic pipeline horizontally.</p>
             </div>
             
-            <!-- Right Mask Column: Slider Area -->
+            <!-- Full Screen Viewport Mask Column: Slider Area -->
             <div class="stages-viewport-mask">
               <div class="stages-horizontal-scroll-track" id="stages-horizontal-scroll-track">
                 <!-- Stage 1: Personality (Gold Bevel) -->

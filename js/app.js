@@ -2168,8 +2168,8 @@ function initRedesignFeatures() {
     const slides = stagesTrack.querySelectorAll(".stage-slide-card");
     
     const getScrollDistance = () => {
-      // scrollWidth of track minus the 70vw visible window area
-      return stagesTrack.scrollWidth - (window.innerWidth * 0.7);
+      // scrollWidth of track minus the 100vw visible window area
+      return stagesTrack.scrollWidth - window.innerWidth;
     };
     
     gsap.to(stagesTrack, {
