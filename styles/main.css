@@ -1,5 +1,5 @@
 /* ==========================================================================
-   URCAREERBUDDY - The Ultimate SaaS Glassmorphism Design System (Premium Redesign)
+   URCAREERBUDDY - Holographic & High-End Sci-Fi Glassmorphism Design System
    ========================================================================== */
 
 @layer reset, base, theme, layout, components, utilities;
@@ -33,33 +33,34 @@
 @layer theme {
   /* Premium Frost-Glass Light Theme */
   .theme-light {
-    --color-bg-base: #f1f5f9;
-    --color-bg-card: rgba(255, 255, 255, 0.6);
-    --color-text-body: #334155;
+    --color-bg-base: #f3f5fa;
+    --color-bg-card: rgba(255, 255, 255, 0.7);
+    --color-text-body: #475569;
     --color-text-heading: #0f172a;
-    --color-border: rgba(15, 23, 42, 0.06);
-    --color-border-dark: rgba(15, 23, 42, 0.12);
+    --color-border: rgba(15, 23, 42, 0.08);
+    --color-border-dark: rgba(15, 23, 42, 0.16);
     
     --color-accent-rust: #e11d48;       /* Rose-pink */
     --color-accent-sage: #0d9488;       /* Teal */
-    --color-accent-gold: #c59b27;       /* Dark gold */
-    --color-accent-primary: #8c6d3f;    /* Warm Bronze */
+    --color-accent-gold: #b58d3c;       /* Muted gold */
+    --color-accent-primary: #8c714d;    /* Warm Bronze */
     --color-accent-secondary: #4f46e5;  /* Royal Indigo */
     --color-accent-muted: #64748b;      /* Slate Gray */
+    --color-glow: rgba(79, 70, 229, 0.15);
     
-    --color-shadow: rgba(15, 23, 42, 0.04);
-    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-    --shadow-hover: 0 20px 50px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    --color-shadow: rgba(15, 23, 42, 0.06);
+    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    --shadow-hover: 0 20px 50px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8);
   }
 
-  /* Premium Obsidian-Glass Dark Theme */
+  /* Premium Holographic Deep-Space Dark Theme */
   .theme-dark {
-    --color-bg-base: #030408;
-    --color-bg-card: rgba(13, 17, 30, 0.45);
+    --color-bg-base: #04050a;
+    --color-bg-card: rgba(10, 15, 30, 0.55);
     --color-text-body: #94a3b8;
     --color-text-heading: #ffffff;
-    --color-border: rgba(255, 255, 255, 0.05);
-    --color-border-dark: rgba(255, 255, 255, 0.12);
+    --color-border: rgba(255, 255, 255, 0.07);
+    --color-border-dark: rgba(255, 255, 255, 0.18);
     
     --color-accent-rust: #f07167;       /* Amber coral */
     --color-accent-sage: #4ea8de;       /* Vivid sky */
@@ -67,10 +68,11 @@
     --color-accent-primary: #baa894;    /* Light bronze */
     --color-accent-secondary: #818cf8;  /* Bright indigo */
     --color-accent-muted: #475569;      /* Muted slate */
+    --color-glow: rgba(129, 140, 248, 0.2);
     
-    --color-shadow: rgba(0, 0, 0, 0.4);
-    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.06);
-    --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+    --color-shadow: rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.15);
   }
 }
 
@@ -86,14 +88,31 @@
     display: flex;
     flex-direction: column;
     transition: background-color 0.4s ease, color 0.4s ease;
-    
-    /* Dynamic background mesh gradient and repeating digital dots layout */
-    background-image: 
-      radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.04) 0%, transparent 45%),
-      radial-gradient(circle at 90% 80%, rgba(226, 192, 141, 0.03) 0%, transparent 50%),
-      radial-gradient(var(--color-border) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 32px 32px;
-    background-attachment: fixed;
+  }
+
+  /* Multi-layered futuristic glowing mesh backdrops */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 65vw;
+    height: 65vw;
+    background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 65vw;
+    height: 65vw;
+    background: radial-gradient(circle, rgba(226, 192, 141, 0.06) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -113,10 +132,10 @@
     color: var(--color-text-heading);
   }
 
-  /* High-end modern scrollbar */
+  /* High-end minimalist scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
@@ -124,6 +143,7 @@
   ::-webkit-scrollbar-thumb {
     background: var(--color-border-dark);
     border-radius: 10px;
+    border: 2px solid var(--color-bg-base);
   }
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-text-body);
@@ -146,7 +166,7 @@
     left: 0;
     right: 0;
     height: 72px;
-    background: rgba(3, 4, 8, 0.65);
+    background: rgba(4, 5, 10, 0.65);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid var(--color-border) !important;
@@ -165,27 +185,26 @@
   }
 
   footer {
-    padding: 5rem 2rem;
+    padding: 4rem 2rem;
     text-align: center;
     background: transparent;
     border-top: 1px solid var(--color-border);
     font-size: 0.85rem;
     color: var(--color-accent-muted);
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     width: 90%;
-    line-height: 1.6;
   }
 }
 
 @layer components {
   /* ============================================================
-     GLASS COMPONENT STYLING (True Glassmorphism)
+     GLASS COMPONENT BASICS
      ============================================================ */
   .glass-panel, .vt-card {
     background: var(--color-bg-card);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--color-border) !important;
     box-shadow: var(--shadow-card);
     border-radius: 16px;
@@ -198,14 +217,17 @@
     transform: translateY(-3px);
   }
 
-  /* Screen fade-in transitions */
-  .fade-in-section {
-    animation: fadeInEffect 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  @keyframes fadeInEffect {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Grid dots overlay */
+  .parallax-graphics-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 32px 32px;
+    z-index: 1;
+    pointer-events: none;
   }
 
   /* Elegant Divider */
@@ -238,7 +260,7 @@
     z-index: 2000;
   }
 
-  /* Navigation elements */
+  /* Header Logo & Navigation Menu */
   .logo-area {
     display: flex;
     align-items: center;
@@ -272,7 +294,7 @@
     color: var(--color-text-heading);
   }
 
-  /* Premium Buttons styling */
+  /* Premium Buttons */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -283,19 +305,18 @@
     font-size: 0.88rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, var(--color-accent-secondary) 0%, #4338ca 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 15px rgba(129, 140, 248, 0.3);
+    background: linear-gradient(135deg, #ffffff 0%, var(--color-accent-primary) 100%);
+    color: #030408;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
   }
 
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(129, 140, 248, 0.5);
-    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.12);
   }
 
   .btn-secondary {
@@ -322,7 +343,7 @@
     box-shadow: 0 8px 25px var(--color-shadow);
   }
 
-  /* Bilingual switcher toggles */
+  /* Language Switcher */
   .lang-toggle-container {
     display: inline-flex;
     border: 1px solid var(--color-border);
@@ -349,7 +370,7 @@
     color: #000 !important;
   }
 
-  /* Theme Switcher slider toggle */
+  /* Theme Switcher */
   .theme-toggle-container {
     display: flex;
     align-items: center;
@@ -411,6 +432,7 @@
     overflow: hidden;
   }
 
+  /* Absolute position canvas behind content */
   #hero-3d-astrolabe-container {
     position: absolute;
     top: 0;
@@ -520,7 +542,6 @@
     align-items: center;
   }
 
-  /* Frosted Glass Hologram Container */
   .neural-hologram-container {
     position: relative;
     width: 100%;
@@ -956,7 +977,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: var(--color-bg-base);
+    background: radial-gradient(circle at center, rgba(129, 140, 248, 0.06) 0%, var(--color-bg-base) 100%);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -982,12 +1003,9 @@
     width: 100%;
     max-width: 320px;
     padding: 2.2rem;
-    background: rgba(13, 17, 30, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-left: 4px solid var(--color-accent-secondary) !important;
-    border-radius: 16px !important;
-    box-shadow: var(--shadow-card) !important;
-    backdrop-filter: blur(20px);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     box-sizing: border-box;
   }
 
@@ -1054,7 +1072,7 @@
     padding: 0 6vw;
   }
 
-  /* Large glass stage sliding cards */
+  /* Large glass stage sliding cards (Holographic tablets styling) */
   .stage-slide-card {
     width: 100%;
     max-width: 520px;
@@ -1068,26 +1086,29 @@
     box-sizing: border-box;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    background: rgba(13, 17, 30, 0.45);
+    background: var(--color-bg-card);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--color-border);
     box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 15px 40px rgba(0, 0, 0, 0.45),
+      inset 0 1px 1px rgba(255, 255, 255, 0.08);
     overflow: hidden;
   }
 
   .stage-gold-card {
-    border-top: 4px solid var(--color-accent-gold) !important;
+    border: 1px solid rgba(226, 192, 141, 0.2) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(226, 192, 141, 0.06);
   }
 
   .stage-copper-card {
-    border-top: 4px solid var(--color-accent-rust) !important;
+    border: 1px solid rgba(240, 113, 103, 0.2) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(240, 113, 103, 0.06);
   }
 
   .stage-silver-card {
-    border-top: 4px solid var(--color-accent-secondary) !important;
+    border: 1px solid rgba(129, 140, 248, 0.2) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(129, 140, 248, 0.06);
   }
 
   .slide-card-header-row {
@@ -1102,12 +1123,14 @@
     font-weight: 800;
     color: var(--color-accent-muted);
     opacity: 0.45;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
   }
 
   .stage-card-icon {
     width: 32px;
     height: 32px;
-    opacity: 0.8;
+    opacity: 0.85;
+    filter: drop-shadow(0 0 8px currentColor);
   }
 
   .stage-slide-card h4 {
@@ -1133,9 +1156,20 @@
   }
 
   .stage-slide-card.active {
-    transform: scale(1.02) translateY(-4px);
-    border-color: var(--color-accent-secondary);
-    box-shadow: 0 25px 50px rgba(129, 140, 248, 0.15);
+    transform: translateY(-8px) scale(1.02);
+  }
+  
+  .stage-slide-card.active.stage-gold-card {
+    border-color: var(--color-accent-gold) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(226, 192, 141, 0.2);
+  }
+  .stage-slide-card.active.stage-copper-card {
+    border-color: var(--color-accent-rust) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(240, 113, 103, 0.2);
+  }
+  .stage-slide-card.active.stage-silver-card {
+    border-color: var(--color-accent-secondary) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(129, 140, 248, 0.2);
   }
 
   .stages-scrollbar-track {
@@ -1249,6 +1283,12 @@
     box-shadow: var(--shadow-card);
   }
 
+  .highlight-card:hover {
+    border-color: var(--color-border-dark) !important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+
   .h-card-header span {
     font-size: 0.75rem;
     font-weight: 700;
@@ -1296,7 +1336,7 @@
     font-weight: 700;
   }
 
-  /* Radial meter progress card */
+  /* Radial meter progress card styling (Unified Class Names) */
   .circle-progress-card {
     flex-direction: row !important;
     align-items: center;
@@ -1312,7 +1352,7 @@
     }
   }
 
-  .circle-progress-wrapper {
+  .circle-progress-meter-container {
     position: relative;
     width: 80px;
     height: 80px;
@@ -1333,6 +1373,12 @@
     font-size: 1.35rem;
     font-weight: 800;
     color: var(--color-text-heading);
+  }
+  
+  .meter-fill-line {
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px var(--color-accent-rust));
   }
 
   .success-footer-label {
@@ -1494,40 +1540,48 @@
   }
 
   /* ============================================================
-     SCIENTIFIC FOUNDATIONS & ENGINEERING MANIFESTS (NEW LOOK)
+     SCIENTIFIC FOUNDATIONS GRID STYLING
      ============================================================ */
   .scientific-foundations-section {
     max-width: 1200px;
     width: 90%;
-    margin: 4rem auto;
+    margin: 0 auto;
   }
 
   .foundations-deck {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.2rem;
+    margin-top: 3rem;
   }
 
   .foundation-card {
     padding: 2.2rem;
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border) !important;
     border-radius: 16px;
-    box-shadow: var(--shadow-card);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
   }
 
-  .foundation-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--color-accent-secondary) !important;
-    box-shadow: var(--shadow-hover);
+  .foundation-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--color-accent-primary);
+  }
+
+  .foundation-card:nth-child(2)::after {
+    background: var(--color-accent-secondary);
+  }
+
+  .foundation-card:nth-child(3)::after {
+    background: var(--color-accent-rust);
   }
 
   .foundation-card-title {
     font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
     color: var(--color-text-heading);
   }
 
@@ -1537,34 +1591,90 @@
     color: var(--color-text-body);
   }
 
+  .foundation-card:hover {
+    border-color: var(--color-border-dark) !important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+  }
+
+  /* ============================================================
+     SYSTEM MANIFEST & ENG LOG STYLING
+     ============================================================ */
   .manifest-technical-section {
     max-width: 1200px;
     width: 90%;
-    margin: 4rem auto;
+    margin: 0 auto;
   }
 
-  /* Full Width glass manifest drawer */
   .manifest-card-full {
     background: var(--color-bg-card);
     border: 1px solid var(--color-border) !important;
-    border-radius: 20px;
+    border-radius: 16px;
     box-shadow: var(--shadow-card);
-    transition: all 0.3s ease;
   }
 
-  /* retro technical console box style */
-  .manifest-log-console {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    background: rgba(3, 4, 8, 0.85);
-    color: #a5b4fc;
-    padding: 1.5rem;
-    border: 1px solid var(--color-border-dark);
-    border-radius: 12px;
+  .manifest-card-full:hover {
+    border-color: var(--color-border-dark) !important;
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Cyberpunk Console terminal box */
+  .manifest-card-full pre,
+  .manifest-card-full div[style*="Courier Prime"] {
+    font-family: 'Courier New', Courier, monospace !important;
+    background: #020306 !important;
+    border: 1px solid rgba(129, 140, 248, 0.25) !important;
+    box-shadow: 
+      0 0 15px rgba(129, 140, 248, 0.05),
+      inset 0 0 15px rgba(129, 140, 248, 0.05) !important;
+    color: var(--color-accent-secondary) !important;
+    border-radius: 8px !important;
+    padding: 1.4rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1.5 !important;
+    position: relative;
     overflow-x: auto;
-    margin-bottom: 1.8rem;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Double-line ISO Plaque design */
+  .disclaimer-panel-section .vt-card[style*="double"] {
+    border: 2px double var(--color-border-dark) !important;
+    background: linear-gradient(135deg, rgba(226, 192, 141, 0.02) 0%, rgba(129, 140, 248, 0.02) 100%) !important;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.35),
+      inset 0 0 20px rgba(255, 255, 255, 0.01) !important;
+    border-radius: 16px !important;
+    padding: 2.5rem !important;
+  }
+
+  .disclaimer-panel-section .vt-card[style*="double"]:hover {
+    border-style: solid !important;
+    border-color: var(--color-accent-gold) !important;
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.45),
+      0 0 20px rgba(226, 192, 141, 0.08) !important;
+  }
+
+  /* Disclaimer seals */
+  .disclaimer-card-panel {
+    display: flex;
+    gap: 2rem;
+    padding: 2.5rem !important;
+    border: 1px dashed var(--color-border-dark) !important;
+    background: var(--color-bg-card) !important;
+    border-radius: 16px !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .disclaimer-card-panel:hover {
+    border-style: solid !important;
+    border-color: var(--color-accent-rust) !important;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .disclaimer-seal svg circle[stroke*="var(--color-accent-rust)"] {
+    filter: drop-shadow(0 0 6px var(--color-accent-rust));
   }
 
   /* ============================================================
@@ -1603,7 +1713,8 @@
   }
 
   .form-control:focus {
-    border-color: var(--color-border-dark);
+    border-color: var(--color-accent-secondary) !important;
+    box-shadow: 0 0 15px rgba(129, 140, 248, 0.25) !important;
     background-color: rgba(255, 255, 255, 0.02);
   }
 
@@ -1983,7 +2094,7 @@
 
   .encyclopedia-empty-view {
     text-align: center;
-    color: var(--accent-muted);
+    color: var(--color-accent-muted);
     padding: 5rem 0;
   }
 
@@ -2491,9 +2602,5 @@
   
   .align-center {
     align-items: center;
-  }
-  
-  .text-center {
-    text-align: center;
   }
 }
