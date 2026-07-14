@@ -100,16 +100,27 @@
         <!-- SECTION 1: FULLSCREEN PREMIUM HERO SECTION -->
         <div class="screen-one-container">
           
-          <!-- Left Column: The Confused Boy & Floating Glass Thinking Cloud -->
+          <!-- Left Column: Dynamic Interactive Neural Hologram -->
           <div class="boy-panel">
-            <div class="boy-wrapper">
-              <img src="./assets/confused_boy.jpg" alt="Confused Teenage Boy" class="boy-image">
+            <div class="neural-hologram-container">
+              <div class="hologram-grid-overlay"></div>
+              <canvas id="neural-hologram-canvas"></canvas>
+              <div class="hologram-core-scanner"></div>
+              
+              <!-- Floating HUD Glass Labels -->
+              <div class="hologram-hud-tag tag-top">
+                <span class="hud-tag-pulse"></span>
+                <span class="hud-tag-text">NEURAL_CORE_ACTIVE</span>
+              </div>
+              <div class="hologram-hud-tag tag-bottom">
+                <span class="hud-tag-text">VECTORS: 11_DIMENSIONS</span>
+              </div>
               <div class="thinking-cloud">
                 <span class="cloud-bubble-1"></span>
                 <span class="cloud-bubble-2"></span>
                 <div class="cloud-content">
-                  <span class="cloud-text-top">WHAT SHOULD BE</span>
-                  <span class="cloud-text-bottom">MY FUTURE?</span>
+                  <span class="cloud-text-top">Calibrating Alignment</span>
+                  <span class="cloud-text-bottom" id="hologram-status-label">COGNITIVE_SYNC</span>
                 </div>
               </div>
             </div>

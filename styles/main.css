@@ -433,16 +433,23 @@
   /* Absolute position canvas behind content */
   #hero-3d-astrolabe-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    max-width: 650px;
-    max-height: 650px;
     z-index: 1;
     pointer-events: none;
     opacity: 0.85;
+    overflow: hidden;
+  }
+
+  #hero-3d-astrolabe-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
   }
 
   .hud-frame-left, .hud-frame-right {
@@ -533,19 +540,109 @@
     align-items: center;
   }
 
-  .boy-wrapper {
+  .neural-hologram-container {
     position: relative;
-    max-width: 320px;
     width: 100%;
+    max-width: 340px;
+    height: 480px;
+    background: var(--color-bg-card);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--color-border);
+    border-radius: 24px;
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  .boy-image {
+  .hologram-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+  }
+
+  #neural-hologram-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 2;
+    display: block;
+  }
+
+  .hologram-core-scanner {
+    position: absolute;
+    left: 0;
     width: 100%;
-    height: auto;
-    border-radius: 16px;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-secondary), transparent);
+    opacity: 0.4;
+    z-index: 3;
+    animation: hologramScan 6s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes hologramScan {
+    0%   { top: 0%; }
+    50%  { top: 100%; }
+    100% { top: 0%; }
+  }
+
+  .hologram-hud-tag {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    background: rgba(15, 20, 35, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-card);
-    object-fit: cover;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-heading);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .tag-top {
+    top: 24px;
+    left: 24px;
+  }
+
+  .tag-bottom {
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .hud-tag-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-secondary);
+    box-shadow: 0 0 8px var(--color-accent-secondary);
+    animation: pulseGlow 2s infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 1; }
+  }
+
+  .hud-tag-text {
+    letter-spacing: 0.05em;
   }
 
   /* Thinking cloud frosted glass */

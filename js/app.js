@@ -1180,8 +1180,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("hero-3d-astrolabe-container");
     if (!container || typeof THREE === "undefined") return;
 
-    const width = container.clientWidth || window.innerWidth;
-    const height = container.clientHeight || window.innerHeight;
+    // Use full billboard container client width/height
+    let width = container.clientWidth || window.innerWidth;
+    let height = container.clientHeight || window.innerHeight;
 
     const scene = new THREE.Scene();
 
@@ -1191,7 +1192,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // Clear any duplicate canvas in hot reload/reinitialization
+    container.innerHTML = "";
     container.appendChild(renderer.domElement);
+
+    // Dynamic responsive resizing
+    window.addEventListener("resize", () => {
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+
+    // Recalculate once layout resolves fully
+    setTimeout(() => {
+      const w = container.clientWidth || window.innerWidth;
+      const h = container.clientHeight || window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }, 250);
 
     // --- Lighting System (Required for MeshStandardMaterial) ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -1766,6 +1788,169 @@ function initRedesignFeatures() {
         }
       });
     });
+
+    // --- Dynamic interactive neural hologram canvas ---
+    function initNeuralHologram() {
+      const canvas = document.getElementById("neural-hologram-canvas");
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+      let width = canvas.width = canvas.offsetWidth;
+      let height = canvas.height = canvas.offsetHeight;
+
+      const particles = [];
+      const particleCount = 45;
+      const maxDistance = 65;
+
+      let mouseX = width / 2;
+      let mouseY = height / 2;
+      let isHovering = false;
+
+      // Resize listener
+      const resizeObserver = new ResizeObserver(() => {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      });
+      resizeObserver.observe(canvas);
+
+      // Initialize particles
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.5 + 0.3
+        });
+      }
+
+      // Mouse listeners
+      canvas.addEventListener("mousemove", (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+        isHovering = true;
+      });
+
+      canvas.addEventListener("mouseleave", () => {
+        isHovering = false;
+      });
+
+      // Pulse factor
+      let pulseAngle = 0;
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        pulseAngle += 0.02;
+        const corePulse = Math.sin(pulseAngle) * 5 + 25;
+
+        // Draw central glowing core
+        const coreX = width / 2;
+        const coreY = height / 2;
+        const coreGrad = ctx.createRadialGradient(coreX, coreY, 2, coreX, coreY, corePulse);
+        coreGrad.addColorStop(0, "rgba(129, 140, 248, 0.8)");
+        coreGrad.addColorStop(0.3, "rgba(129, 140, 248, 0.2)");
+        coreGrad.addColorStop(1, "rgba(129, 140, 248, 0)");
+        ctx.fillStyle = coreGrad;
+        ctx.beginPath();
+        ctx.arc(coreX, coreY, corePulse, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw concentric orbit path lines
+        ctx.strokeStyle = "rgba(226, 192, 141, 0.08)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(coreX, coreY, 80, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(coreX, coreY, 130, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Update and draw particles
+        particles.forEach((p, idx) => {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          p.x = Math.max(0, Math.min(p.x, width));
+          p.y = Math.max(0, Math.min(p.y, height));
+
+          if (isHovering) {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 80) {
+              const force = (80 - dist) / 80;
+              p.x += (dx / dist) * force * 1.5;
+              p.y += (dy / dist) * force * 1.5;
+            }
+          }
+
+          ctx.fillStyle = `rgba(129, 140, 248, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = idx + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < maxDistance) {
+              const connAlpha = (1 - dist / maxDistance) * 0.15;
+              ctx.strokeStyle = `rgba(129, 140, 248, ${connAlpha})`;
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+
+          const dxCore = p.x - coreX;
+          const dyCore = p.y - coreY;
+          const distCore = Math.sqrt(dxCore * dxCore + dyCore * dyCore);
+          if (distCore < 120) {
+            const coreConnAlpha = (1 - distCore / 120) * 0.08;
+            ctx.strokeStyle = `rgba(226, 192, 141, ${coreConnAlpha})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(coreX, coreY);
+            ctx.stroke();
+          }
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      const statusLabel = document.getElementById("hologram-status-label");
+      if (statusLabel) {
+        const statuses = [
+          "COGNITIVE_SYNC",
+          "MAPPING_APTITUDE",
+          "VECTORS_ALIGNING",
+          "CALIBRATING_FIT",
+          "INTEGRITY_CHECK",
+          "APPARATUS_ACTIVE"
+        ];
+        let statusIdx = 0;
+        setInterval(() => {
+          statusIdx = (statusIdx + 1) % statuses.length;
+          statusLabel.innerText = statuses[statusIdx];
+        }, 2500);
+      }
+    }
+
+    initNeuralHologram();
   }
 
   // --- Horizontal Marquee pause on hover ---
