@@ -1201,15 +1201,16 @@ document.addEventListener("DOMContentLoaded", () => {
     dirLight1.position.set(5, 8, 5);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xeb5e28, 0.6);
+    const dirLight2 = new THREE.DirectionalLight(0x6070a0, 0.6);
     dirLight2.position.set(-5, -5, 2);
     scene.add(dirLight2);
 
     // Dynamic mouse-tracking PointLights to create gorgeous specular glows
-    const mouseLight1 = new THREE.PointLight(0xeb5e28, 4.0, 15);
+    const mouseLight1 = new THREE.PointLight(0x6070a0, 4.0, 15);
     scene.add(mouseLight1);
 
-    const mouseLight2 = new THREE.PointLight(0xffdf6d, 3.0, 12);
+    // Muted Gold
+    const mouseLight2 = new THREE.PointLight(0xc5a880, 3.0, 12);
     scene.add(mouseLight2);
 
     const mainGroup = new THREE.Group();
@@ -1218,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Central Core Sphere - Faceted Geodesic Ball (catches light at angles)
     const coreGeo = new THREE.IcosahedronGeometry(1.3, 3);
     const coreMat = new THREE.MeshStandardMaterial({
-      color: 0xffdf6d,
+      color: 0xc5a880,
       metalness: 0.95,
       roughness: 0.15,
       flatShading: true
@@ -1229,7 +1230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Subtle outer glowing wireframe sphere around the core
     const wireCoreGeo = new THREE.IcosahedronGeometry(1.5, 2);
     const wireCoreMat = new THREE.MeshBasicMaterial({
-      color: 0xeb5e28,
+      color: 0x6070a0,
       wireframe: true,
       transparent: true,
       opacity: 0.18
@@ -1239,7 +1240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Outer revolving orbit rings (3D Torus geometries catch lighting)
     const rings = [];
-    const ringColors = [0xeb5e28, 0xffdf6d, 0xeb5e28];
+    const ringColors = [0x6070a0, 0xc5a880, 0x6070a0];
     const ringRadii = [2.4, 3.1, 3.7];
     const ringTubeWidths = [0.035, 0.025, 0.02];
 
@@ -1272,8 +1273,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const starPos = new Float32Array(starCount * 3);
     const starColors = new Float32Array(starCount * 3);
 
-    const c1 = new THREE.Color(0xffdf6d);
-    const c2 = new THREE.Color(0xeb5e28);
+    const c1 = new THREE.Color(0xc5a880);
+    const c2 = new THREE.Color(0x6070a0);
 
     for (let i = 0; i < starCount; i++) {
       const r = 4.0 + Math.random() * 4.0;
@@ -1377,9 +1378,9 @@ document.addEventListener("DOMContentLoaded", () => {
           mainGroup.add(model);
 
           // subtle point light for nicer shading
-          const pLight = new THREE.PointLight(0xffdf6d, 0.7, 12);
-          pLight.position.set(2, 3, 6);
-          scene.add(pLight);
+           const pLight = new THREE.PointLight(0xc5a880, 0.7, 12);
+           pLight.position.set(2, 3, 6);
+           scene.add(pLight);
 
           // keep controls updating
           (function updateControls() {
@@ -1744,8 +1745,12 @@ function initRedesignFeatures() {
           // If already active, toggle expand/collapse
           card.classList.toggle("expanded-card");
         } else {
-          // If not active, scroll to center
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // If not active, scroll internally to center without moving the viewport
+          const containerTop = scrollContainer.getBoundingClientRect().top;
+          const cardTop = card.getBoundingClientRect().top;
+          const currentScroll = scrollContainer.scrollTop;
+          const targetScroll = currentScroll + (cardTop - containerTop) - (scrollContainer.clientHeight / 2) + (card.clientHeight / 2);
+          scrollContainer.scrollTo({ top: targetScroll, behavior: 'smooth' });
         }
       });
     });
@@ -2011,7 +2016,7 @@ function initRedesignFeatures() {
           
           // Calculate which slide card is active (nearest to viewport center)
           const activeIndex = Math.min(
-            Math.floor(progress * (slides.length + 1)),
+            Math.round(progress * (slides.length - 1)),
             slides.length - 1
           );
           
