@@ -2707,3 +2707,158 @@
     align-items: center;
   }
 }
+
+/* ==========================================
+   PREMIUM SWOT GRID & REPORT VIEWS STYLING
+   ========================================== */
+
+/* Legibility font sizes & padding updates */
+.report-output-stage p,
+.report-output-stage .drop-cap {
+  font-size: 1.05rem !important;
+  line-height: 1.8 !important;
+  color: var(--color-text-body) !important;
+  margin-bottom: 1.6rem;
+}
+
+.report-output-stage h2 {
+  font-size: 2.2rem !important;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-heading);
+}
+
+.report-output-stage h3 {
+  font-size: 1.65rem !important;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  color: var(--color-text-heading);
+  margin-top: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.report-output-stage h4 {
+  font-size: 1.15rem !important;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+/* SWOT Profile Creative Grid layout */
+.swot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  margin-top: 1.8rem;
+  margin-bottom: 1.8rem;
+}
+
+@media (max-width: 768px) {
+  .swot-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+}
+
+.swot-box {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-dark) !important;
+  border-radius: 16px;
+  padding: 1.8rem 2.2rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.swot-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.swot-box.strengths::after { background: var(--color-accent-sage); }
+.swot-box.weaknesses::after { background: var(--color-accent-rust); }
+.swot-box.opportunities::after { background: var(--color-accent-gold); }
+.swot-box.threats::after { background: var(--color-accent-secondary); }
+
+.swot-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-border) !important;
+}
+
+.swot-box.strengths:hover { box-shadow: 0 12px 35px rgba(12, 148, 136, 0.08); }
+.swot-box.weaknesses:hover { box-shadow: 0 12px 35px rgba(235, 94, 40, 0.08); }
+.swot-box.opportunities:hover { box-shadow: 0 12px 35px rgba(226, 192, 141, 0.08); }
+.swot-box.threats:hover { box-shadow: 0 12px 35px rgba(129, 140, 248, 0.08); }
+
+.swot-header {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: uppercase;
+}
+
+.swot-box.strengths .swot-header { color: var(--color-accent-sage); }
+.swot-box.weaknesses .swot-header { color: var(--color-accent-rust); }
+.swot-box.opportunities .swot-header { color: var(--color-accent-gold); }
+.swot-box.threats .swot-header { color: var(--color-accent-secondary); }
+
+.swot-box ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.swot-box li {
+  font-size: 1rem !important; /* Larger readable bullet text */
+  line-height: 1.65 !important;
+  color: var(--color-text-body);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.swot-box li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  font-size: 0.8rem;
+  line-height: 2.1;
+  font-weight: 900;
+}
+
+.swot-box.strengths li::before { color: var(--color-accent-sage); }
+.swot-box.weaknesses li::before { color: var(--color-accent-rust); }
+.swot-box.opportunities li::before { color: var(--color-accent-gold); }
+.swot-box.threats li::before { color: var(--color-accent-secondary); }
+
+/* Double-check tab animations */
+.tab-slide-3d {
+  animation: tabSlideEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tabSlideEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

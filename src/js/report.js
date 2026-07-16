@@ -123,9 +123,11 @@ export class ReportRenderer {
     const buttons = sidebarEl.querySelectorAll(".sidebar-tab-btn");
     buttons.forEach(btn => {
       btn.addEventListener("click", (e) => {
-        this.currentTab = e.target.getAttribute("data-tab");
+        const tabId = e.currentTarget.getAttribute("data-tab");
+        if (!tabId) return;
+        this.currentTab = tabId;
         buttons.forEach(b => b.classList.remove("active"));
-        e.target.classList.add("active");
+        e.currentTarget.classList.add("active");
         this.renderContent();
       });
     });
@@ -149,9 +151,6 @@ export class ReportRenderer {
         break;
       case "cognitive_analytics":
         stageEl.innerHTML = this.getCognitiveAnalyticsHTML();
-        break;
-      case "dashboard":
-        stageEl.innerHTML = this.getDashboardHTML();
         break;
       case "personality":
         stageEl.innerHTML = this.getPersonalityHTML();
@@ -224,37 +223,116 @@ export class ReportRenderer {
   // ==========================================
 
   getDashboardHTML() {
-    const topCareers = this.archetype && this.archetype.careers ? this.archetype.careers : {};
+    const stageLabels = {
+      ignorant: "Ignorant Phase (Low awareness/variability)",
+      confused: "Confused Phase (High interests in conflicting fields)",
+      diffused: "Diffused Phase (Balanced moderate interests)",
+      methodical: "Methodical Phase (Systematic planning core)",
+      optimized: "Optimized Phase (Clear peaks & target alignment)"
+    };
+    
+    const stageClass = this.scores.planningStage || "methodical";
+    const stageText = stageLabels[stageClass] || "Methodical Phase";
+
     return `
-      <section class="vt-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;">
-          <div>
-            <h2 style="margin:0;">Interactive Fit Matrix</h2>
-            <p style="margin:0.4rem 0 0; opacity:0.9;">Visualize why you match recommended careers and tweak priorities.</p>
+      <!-- Part 1: Current Diagnostic Mindset State Card -->
+      <section class="vt-card" style="margin-bottom: 2rem; padding: 2.2rem;">
+        <div class="archetype-badge">CURRENT DIAGNOSTIC STATE</div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 800;">
+          ${stageText}
+        </h2>
+        <p style="color: var(--color-accent-rust); font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 1.1rem; margin-bottom: 1.5rem;">
+          Calculated Archetype: ${this.archetype.title}
+        </p>
+
+        <!-- Planning State Meter -->
+        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem;">
+          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.2rem; text-transform: uppercase; font-weight: 700;">Planning Execution Timeline Meter</h4>
+          ${this.generatePlanningTimelineMeter(stageClass)}
+        </div>
+
+        <p class="drop-cap" style="line-height: 1.75; margin-bottom: 2rem; font-size: 1.05rem; color: var(--color-text-body);">
+          Based on the diagnostic intake, your current placement is mapped to the <strong>${stageClass.toUpperCase()}</strong> planning mindset.
+          This category characterizes how crystallised your professional orientation is, and the degree of alignment between your capabilities and interests.
+        </p>
+
+        <div class="consistency-meter container-flex" style="margin-bottom: 1rem; border-top: 1px dashed var(--color-border-dark); padding-top: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+          <span class="consistency-title" style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; font-weight: 700; color: var(--color-accent-primary); text-transform: uppercase;">Anti-Bias Integrity Index:</span>
+          <div class="consistency-val-badge ${this.scores.consistency >= 70 ? 'high' : 'low'}" style="padding: 0.3rem 0.8rem; font-size: 0.85rem; font-weight: 700; border-radius: 6px; border: 1px solid var(--color-border-dark);">
+            ${this.scores.consistency}% &mdash; ${this.scores.consistency >= 70 ? 'Strong Consistency' : 'High Variance'}
           </div>
-          <div style="display:flex; gap:0.6rem; align-items:center;">
-            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Aptitude</label>
-            <input id="filter-aptitude" type="range" min="0" max="100" value="60">
-            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Interests</label>
-            <input id="filter-interests" type="range" min="0" max="100" value="60">
-            <label style="font-family: 'Courier Prime', monospace; font-size:0.8rem;">Personality</label>
-            <input id="filter-personality" type="range" min="0" max="100" value="60">
+        </div>
+      </section>
+
+      <!-- Part 2: Interactive Fit Matrix & Priority Sliders -->
+      <section class="vt-card" style="margin-bottom: 2rem; padding: 2.2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1.2rem; flex-wrap:wrap; border-bottom: 1px solid var(--color-border-dark); padding-bottom: 1.2rem; margin-bottom: 1.5rem;">
+          <div>
+            <h3 style="margin:0; font-size: 1.6rem; font-weight: 800; color: var(--color-text-heading);">Interactive Fit Matrix</h3>
+            <p style="margin:0.4rem 0 0; opacity:0.9; font-size: 0.92rem; color: var(--color-text-body);">Visualize why you match recommended careers and tweak priorities in real time.</p>
+          </div>
+          <div style="display:flex; gap:1.2rem; align-items:center; flex-wrap: wrap;">
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+              <label style="font-family: 'Courier Prime', monospace; font-size:0.75rem; font-weight:700; color: var(--color-text-heading);">Aptitude</label>
+              <input id="filter-aptitude" type="range" min="0" max="100" value="60" style="width: 80px; accent-color: var(--color-accent-rust); cursor: pointer;">
+            </div>
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+              <label style="font-family: 'Courier Prime', monospace; font-size:0.75rem; font-weight:700; color: var(--color-text-heading);">Interests</label>
+              <input id="filter-interests" type="range" min="0" max="100" value="60" style="width: 80px; accent-color: var(--color-accent-rust); cursor: pointer;">
+            </div>
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+              <label style="font-family: 'Courier Prime', monospace; font-size:0.75rem; font-weight:700; color: var(--color-text-heading);">Personality</label>
+              <input id="filter-personality" type="range" min="0" max="100" value="60" style="width: 80px; accent-color: var(--color-accent-rust); cursor: pointer;">
+            </div>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns: 1fr 360px; gap:1rem; margin-top:1rem; align-items:start;">
-          <div id="fit-matrix-canvas" style="min-height:320px; background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent); border:1px dashed var(--color-border-dark); padding:1rem; border-radius:6px;"></div>
-
-          <div style="display:flex; flex-direction:column; gap:0.8rem;">
-            <div class="vt-card" style="padding:1rem;">
-              <h4 style="margin:0 0 0.6rem 0;">Top Career Matches</h4>
-              <div id="career-match-list" style="display:flex; flex-direction:column; gap:0.6rem;"></div>
+        <div class="fit-matrix-layout" style="display:grid; grid-template-columns: 1fr 340px; gap:2rem; align-items:start;">
+          <div>
+            <h4 style="font-family:'Courier Prime', monospace; font-size:0.85rem; text-transform:uppercase; margin-bottom: 1.2rem; color:var(--color-accent-rust); font-weight: 700;">Dynamic Suitability Standings</h4>
+            <div id="career-match-list" style="display:flex; flex-direction:column; gap:1.2rem; min-height: 200px;">
+              <!-- Loaded reactively by bindDashboardEvents() -->
             </div>
-
-            <div class="vt-card" style="padding:1rem;">
-              <h4 style="margin:0 0 0.6rem 0;">Venn Overview</h4>
-              <div id="venn-overview" style="width:100%; height:160px;"></div>
+          </div>
+          <div class="vt-card" style="padding:1.5rem; background:rgba(255, 255, 255, 0.01); border-color:var(--color-border-dark); border-radius: 12px;">
+            <h4 style="font-family:'Courier Prime', monospace; font-size:0.85rem; text-transform:uppercase; margin-bottom: 0.8rem; color:var(--color-accent-gold); font-weight: 700;">Dimensional Intersection</h4>
+            <div id="venn-overview" style="width:100%; height:130px; display: flex; justify-content: center; align-items: center;">
+              <!-- Loaded reactively by bindDashboardEvents() -->
             </div>
+            <div id="fit-matrix-canvas" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Part 3: Personal SWOT Profile -->
+      <section class="vt-card swot-section" style="padding: 2.2rem; margin-bottom: 1rem;">
+        <h3 style="margin-bottom: 0.5rem; font-size: 1.6rem; font-weight: 800; color: var(--color-text-heading);">Personal SWOT Profile</h3>
+        <p class="section-sub" style="color: var(--color-text-body); font-size: 0.95rem; margin-bottom: 1.5rem;">Dynamic mapping of your psychometric coordinates to workplace impact.</p>
+        
+        <div class="swot-grid">
+          <div class="swot-box strengths">
+            <div class="swot-header">💪 Strengths</div>
+            <ul>
+              ${this.archetype.swot.strengths.map(s => `<li>${s}</li>`).join("")}
+            </ul>
+          </div>
+          <div class="swot-box weaknesses">
+            <div class="swot-header">⚠️ Weaknesses</div>
+            <ul>
+              ${this.archetype.swot.weaknesses.map(w => `<li>${w}</li>`).join("")}
+            </ul>
+          </div>
+          <div class="swot-box opportunities">
+            <div class="swot-header">🚀 Opportunities</div>
+            <ul>
+              ${this.archetype.swot.opportunities.map(o => `<li>${o}</li>`).join("")}
+            </ul>
+          </div>
+          <div class="swot-box threats">
+            <div class="swot-header">🛡️ Threats</div>
+            <ul>
+              ${this.archetype.swot.threats.map(t => `<li>${t}</li>`).join("")}
+            </ul>
           </div>
         </div>
       </section>
@@ -301,7 +379,7 @@ export class ReportRenderer {
       // final match (simple weighted sum)
       const match = Math.round((skillScore * 0.45) + (interestScore * 0.35) + (abilityScore * 0.20));
 
-      careers.push({ id: k, title: item.primary ? item.primary.title : item.title || k, description: item.primary ? item.primary.description : '', match, skillScore, interestScore, abilityScore, raw: item });
+      careers.push({ id: k, title: item.title || k, description: item.description || '', match, skillScore, interestScore, abilityScore, raw: item });
     });
 
     careers.sort((a,b)=>b.match - a.match);
@@ -1127,80 +1205,7 @@ export class ReportRenderer {
     `;
   }
 
-  getDashboardHTML() {
-    const stageLabels = {
-      ignorant: "Ignorant Phase (Low awareness/variability)",
-      confused: "Confused Phase (High interests in conflicting fields)",
-      diffused: "Diffused Phase (Balanced moderate interests)",
-      methodical: "Methodical Phase (Systematic planning core)",
-      optimized: "Optimized Phase (Clear peaks & target alignment)"
-    };
-    
-    const stageClass = this.scores.planningStage;
-    const stageText = stageLabels[stageClass] || "Methodical Phase";
 
-    return `
-      <section class="vt-card">
-        <div class="archetype-badge">CURRENT DIAGNOSTIC STATE</div>
-        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; font-style: normal; text-transform: uppercase;">
-          ${stageText}
-        </h2>
-        <p style="color: var(--color-accent-rust); font-family: 'Courier Prime', monospace; font-weight: 700; font-size: 1.1rem; margin-bottom: 1.5rem;">
-          Calculated Archetype: ${this.archetype.title}
-        </p>
-
-        <!-- Planning State Meter (PRD Part 1) -->
-        <div class="vt-card" style="padding: 1.5rem; border-style: dashed; margin-bottom: 2rem;">
-          <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.9rem; margin-bottom: 1.2rem; text-transform: uppercase;">Planning Execution Timeline Meter</h4>
-          ${this.generatePlanningTimelineMeter(stageClass)}
-        </div>
-
-        <p class="drop-cap" style="line-height: 1.7; margin-bottom: 2rem;">
-          Based on the diagnostic intake, your current placement is mapped to the <strong>${stageClass.toUpperCase()}</strong> planning mindset.
-          This category characterizes how crystallised your professional orientation is, and the degree of alignment between your capabilities and interests.
-        </p>
-
-        <div class="consistency-meter container-flex">
-          <span class="consistency-title">Anti-Bias Integrity Index:</span>
-          <div class="consistency-val-badge ${this.scores.consistency >= 70 ? 'high' : 'low'}">
-            ${this.scores.consistency}% &mdash; ${this.scores.consistency >= 70 ? 'Strong Consistency' : 'High Variance'}
-          </div>
-        </div>
-      </section>
-
-      <section class="vt-card swot-section">
-        <h3 style="margin-bottom: 0.5rem; font-style: italic;">Personal SWOT Profile</h3>
-        <p class="section-sub">Dynamic mapping of your psychometric coordinates to workplace impact.</p>
-        
-        <div class="swot-grid">
-          <div class="swot-box strengths">
-            <div class="swot-header">Strengths</div>
-            <ul>
-              ${this.archetype.swot.strengths.map(s => `<li>${s}</li>`).join("")}
-            </ul>
-          </div>
-          <div class="swot-box weaknesses">
-            <div class="swot-header">Weaknesses</div>
-            <ul>
-              ${this.archetype.swot.weaknesses.map(w => `<li>${w}</li>`).join("")}
-            </ul>
-          </div>
-          <div class="swot-box opportunities">
-            <div class="swot-header">Opportunities</div>
-            <ul>
-              ${this.archetype.swot.opportunities.map(o => `<li>${o}</li>`).join("")}
-            </ul>
-          </div>
-          <div class="swot-box threats">
-            <div class="swot-header">Threats</div>
-            <ul>
-              ${this.archetype.swot.threats.map(t => `<li>${t}</li>`).join("")}
-            </ul>
-          </div>
-        </div>
-      </section>
-    `;
-  }
 
   getMBTIIdentityInfo(mbtiCode, identitySuffix) {
     const code = mbtiCode.toUpperCase();
@@ -1806,6 +1811,7 @@ export class ReportRenderer {
       {
         name: "Industrial & Mechatronics Engineering",
         careers: [
+          { name: "Merchant Navy Officer", profile: "Realistic / Enterprising", description: "Navigate massive cargo vessels across international trade routes, coordinate deck operations, and manage maritime transportation logistics.", skills: ["spatial", "mechanical", "leadership"], streams: ["PCM"] },
           { name: "Robotics Sensor Fusion Developer", profile: "Realistic / Investigative", description: "Calibrate lidar coordinates, write motor control drivers, and align physical sensors.", skills: ["spatial", "numerical", "logical"], streams: ["PCM"] },
           { name: "Industrial CAD Prototyper", profile: "Spatial / Methodical", description: "Draw physical gear structures in CAD, inspect spatial clearances, and generate blueprints.", skills: ["spatial", "administrative", "logical"], streams: ["PCM"] },
           { name: "Grid Automation Analyst", profile: "Investigative / Stability", description: "Deploy electrical distribution logic, audit transformer logs, and manage switch gears.", skills: ["logical", "numerical", "administrative"], streams: ["PCM"] },
@@ -1989,11 +1995,11 @@ export class ReportRenderer {
       salary = "$135,000 / ₹18.0 LPA";
       outlook = "Hyper Growth (+18.4% YoY)";
       aiResilience = "92% (Exceptional)";
-    } else if (name.includes("full-stack") || name.includes("blockchain") || name.includes("devops") || name.includes("cybersecurity") || name.includes("actuarial") || name.includes("forensic") || name.includes("investment banking") || name.includes("powertrain") || name.includes("aerospace")) {
-      zone = "Job Zone 4: High Preparation (Bachelor's Degree)";
-      salary = "$115,000 / ₹14.5 LPA";
-      outlook = "Rapid Growth (+11.8% YoY)";
-      aiResilience = "84% (High)";
+    } else if (name.includes("full-stack") || name.includes("blockchain") || name.includes("devops") || name.includes("cybersecurity") || name.includes("actuarial") || name.includes("forensic") || name.includes("investment banking") || name.includes("powertrain") || name.includes("aerospace") || name.includes("navy") || name.includes("maritime")) {
+      zone = "Job Zone 4: High Preparation (Bachelor's / Certification)";
+      salary = "$120,000 / ₹16.0 LPA";
+      outlook = "Rapid Growth (+10.5% YoY)";
+      aiResilience = "95% (Exceptional Resilience)";
     } else if (name.includes("cad") || name.includes("cnc") || name.includes("haptic") || name.includes("textile") || name.includes("cartography") || name.includes("layout")) {
       zone = "Job Zone 3: Medium Preparation (Associate / Vocational)";
       salary = "$70,000 / ₹8.5 LPA";
@@ -2902,6 +2908,10 @@ export class ReportRenderer {
         skills: { administrative: 85, spatial: 50, leadership: 70, social: 50, mechanical: 35 }
       },
       // Mechatronics
+      "Merchant Navy Officer": {
+        interests: { realistic: 90, investigative: 75, artistic: 40, social: 50, enterprising: 80, conventional: 70 },
+        skills: { administrative: 75, spatial: 85, leadership: 85, social: 60, mechanical: 90 }
+      },
       "Robotics Sensor Fusion Developer": {
         interests: { realistic: 95, investigative: 90, artistic: 40, social: 40, enterprising: 60, conventional: 70 },
         skills: { administrative: 60, spatial: 85, leadership: 65, social: 50, mechanical: 95 }
