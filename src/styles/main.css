@@ -229,7 +229,7 @@
     transform: translateY(-3px);
   }
 
-  /* Grid dots overlay */
+  /* Grid dots overlay & ambient background blur spheres */
   .parallax-graphics-container {
     position: fixed;
     top: 0;
@@ -240,6 +240,33 @@
     background-size: 32px 32px;
     z-index: 1;
     pointer-events: none;
+    overflow: hidden;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.09;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+
+  .orb-1 {
+    width: 480px;
+    height: 480px;
+    background: var(--color-accent-rust);
+    top: 15%;
+    left: 10%;
+  }
+
+  .orb-2 {
+    width: 650px;
+    height: 650px;
+    background: var(--color-accent-gold);
+    top: 55%;
+    right: 5%;
   }
 
   /* Elegant Divider */

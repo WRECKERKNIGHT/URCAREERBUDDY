@@ -1585,28 +1585,13 @@ function initGSAPMotionEngine() {
     });
   }
 
-  // --- Stat cards count-up on scroll ---
-  const statNumbers = document.querySelectorAll('.stat-number[data-target]');
-  statNumbers.forEach(el => {
-    const target = parseInt(el.getAttribute('data-target'), 10);
-    if (isNaN(target)) return;
-    gsap.fromTo({ val: 0 },
-      { val: target },
-      {
-        val: target,
-        duration: 2.2,
-        ease: 'power2.out',
-        onUpdate: function() { el.textContent = Math.round(this.targets()[0].val) + '+'; },
-        scrollTrigger: { trigger: el, start: 'top 85%', once: true }
-      }
-    );
-  });
+
 
   // --- Hero title glow pulse ---
-  const heroTitle = document.querySelector('.hero-title-new');
+  const heroTitle = document.querySelector('.billboard-title');
   if (heroTitle) {
     gsap.to(heroTitle, {
-      filter: 'drop-shadow(0 0 20px rgba(235,94,40,0.35))',
+      filter: 'drop-shadow(0 0 25px rgba(235,94,40,0.55))',
       duration: 2.5,
       repeat: -1,
       yoyo: true,
@@ -2406,8 +2391,11 @@ function playUIBlip(freq = 600, duration = 0.08) {
 //  3D PERSPECTIVE CARD TILT
 // ============================================================
 function init3DTiltCards() {
-  const tiltCards = document.querySelectorAll(".foundation-card, .marquee-card");
+  const tiltCards = document.querySelectorAll(".boy-panel, .carousel-card, .swot-box, .career-path-card, .vt-card:not(.swot-section), .branding-hero-billboard");
   tiltCards.forEach(card => {
+    // Enable 3D relative perspective context
+    card.style.transformStyle = "preserve-3d";
+    
     card.addEventListener("mousemove", e => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -2415,20 +2403,23 @@ function init3DTiltCards() {
       const xc = rect.width / 2;
       const yc = rect.height / 2;
       
-      const angleX = -(y - yc) / 12;
-      const angleY = (x - xc) / 12;
+      // Calculate rotation angles (max 8 degrees for clean visuals)
+      const angleX = -(y - yc) / (rect.height / 8);
+      const angleY = (x - xc) / (rect.width / 8);
       
-      card.style.transform = `perspective(800px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.02, 1.02, 1.02)`;
-      card.style.boxShadow = "0 15px 35px rgba(0,0,0,0.4)";
+      // Disable transitions on hover for lag-free responsiveness
+      card.style.transition = "none";
+      card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.015, 1.015, 1.015)`;
     });
     
     card.addEventListener("mouseleave", () => {
-      card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-      card.style.boxShadow = "";
-      card.style.transition = "transform 0.4s ease, box-shadow 0.4s ease";
+      // Smoothly return card to origin when cursor exits
+      card.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease";
+      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
     });
   });
 }
+window.init3DTiltCards = init3DTiltCards;
 });
 
 

@@ -215,6 +215,11 @@ export class ReportRenderer {
         const targetWidth = bar.getAttribute("data-width");
         bar.style.width = targetWidth;
       });
+      
+      // Re-initialize 3D perspective cards for dynamic tab contents
+      if (window.init3DTiltCards) {
+        window.init3DTiltCards();
+      }
     }, 50);
   }
 
