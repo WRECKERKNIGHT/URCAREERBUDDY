@@ -302,7 +302,8 @@ export class AssessmentEngine {
       learning,
       skills,
       consistency,
-      planningStage
+      planningStage,
+      answers: this.answers
     };
   }
 

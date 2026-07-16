@@ -349,46 +349,43 @@ export class ReportRenderer {
     const user = this.scores;
     if (!user) return [];
 
-    const mapSkillKey = (name) => {
-      const key = name.toLowerCase();
-      if (key.includes('spatial') || key.includes('3d') || key.includes('cad')) return 'spatial';
-      if (key.includes('lead') || key.includes('management')) return 'leadership';
-      if (key.includes('social') || key.includes('people') || key.includes('communication')) return 'social';
-      if (key.includes('admin') || key.includes('compliance') || key.includes('administrative')) return 'administrative';
-      if (key.includes('mechan') || key.includes('hardware') || key.includes('robot')) return 'mechanical';
-      return null;
-    };
-
+    const clustersData = this.getDetailedClusterData();
     const careers = [];
-    const careersObj = (this.archetype && this.archetype.careers) || {};
-    Object.keys(careersObj).forEach(k => {
-      const item = careersObj[k];
-      // gather required skill keys
-      const requiredKeys = (item.skills || []).map(s => mapSkillKey(s.name)).filter(Boolean);
-      // compute skill match
-      let skillScore = 0;
-      if (requiredKeys.length === 0) skillScore = 60;
-      else {
-        const vals = requiredKeys.map(rk => (user.skills && user.skills[rk]) || 50);
-        skillScore = Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
-      }
 
-      // interest proxy: average of interests
-      const interestsVals = Object.values(user.interests || {}).slice(0,6);
-      const interestScore = Math.round(interestsVals.reduce((a,b)=>a+b,0)/interestsVals.length || 50);
+    clustersData.forEach(cluster => {
+      cluster.careers.forEach(car => {
+        const match = this.calculateEuclideanSuitability(car.name, user);
+        
+        // Map skills to user scores
+        const carSkills = car.skills || car.fill || car.stroke || [];
+        const skillVals = carSkills.map(sk => user.skills[sk] || user.ability[sk] || 50);
+        const skillScore = skillVals.length > 0 ? Math.round(skillVals.reduce((a,b)=>a+b, 0) / skillVals.length) : 60;
+        
+        // Map interest proxy
+        const interestScore = match; 
+        
+        // Map ability proxy
+        const abilityScore = Math.round((user.ability.logical + user.ability.numerical + user.ability.verbal) / 3);
 
-      // aptitude proxy: average of ability
-      const abilityVals = Object.values(user.ability || {}).slice(0,4);
-      const abilityScore = Math.round(abilityVals.reduce((a,b)=>a+b,0)/abilityVals.length || 50);
-
-      // final match (simple weighted sum)
-      const match = Math.round((skillScore * 0.45) + (interestScore * 0.35) + (abilityScore * 0.20));
-
-      careers.push({ id: k, title: item.title || k, description: item.description || '', match, skillScore, interestScore, abilityScore, raw: item });
+        careers.push({
+          id: car.name.toLowerCase().replace(/[^a-z0-9]/g, "-"),
+          title: car.name,
+          description: car.description,
+          match,
+          skillScore,
+          interestScore,
+          abilityScore,
+          clusterName: cluster.name,
+          raw: car
+        });
+      });
     });
 
-    careers.sort((a,b)=>b.match - a.match);
-    return careers;
+    // Sort by highest match suitability
+    careers.sort((a,b) => b.match - a.match);
+    
+    // Return top 5 unique recommendations
+    return careers.slice(0, 5);
   }
 
   bindDashboardEvents() {
@@ -844,8 +841,34 @@ export class ReportRenderer {
   }
 
   getSubconsciousBiasHTML() {
-    const acquiescence = Math.round(18 + Math.random() * 12);
-    const socialDesirability = Math.round(22 + Math.random() * 15);
+    const answers = this.scores.answers || {};
+    const keys = Object.keys(answers);
+    let likertCount = 0;
+    let acquiescenceCount = 0;
+    let socialDesirabilityCount = 0;
+    let socialDesirabilityTotal = 0;
+
+    keys.forEach(qId => {
+      const val = answers[qId];
+      if (typeof val === 'number') {
+        likertCount++;
+        // Acquiescence bias is the tendency to select positive responses (4 or 5)
+        if (val >= 4) {
+          acquiescenceCount++;
+        }
+        // Social Desirability is calculated as high positive responses on social-facing values
+        if (qId.startsWith("q5_") || qId.includes("lead") || qId.includes("soc") || qId.includes("extra") || qId.includes("feel")) {
+          socialDesirabilityTotal++;
+          if (val === 5) {
+            socialDesirabilityCount++;
+          }
+        }
+      }
+    });
+
+    const acquiescence = likertCount > 0 ? Math.round((acquiescenceCount / likertCount) * 100) : 25;
+    const socialDesirability = socialDesirabilityTotal > 0 ? Math.round((socialDesirabilityCount / socialDesirabilityTotal) * 100) : 30;
+
     const track = this.scores.userTrack || "Track A";
     const stream = this.scores.userStream || "PCM";
 
@@ -1085,10 +1108,23 @@ export class ReportRenderer {
       { name: "Kinesthetic (K)", score: this.scores.learning.kinesthetic }
     ].sort((a,b) => b.score - a.score);
 
+    const topInterestName = riasec[0].name.split(" ")[0];
+    const secInterestName = riasec[1].name.split(" ")[0];
+    const interestDesc = `Your primary interest vectors show high alignment with ${topInterestName} activities, backed by secondary strengths in ${secInterestName} environments. This indicates a career matching profile suited for high-growth tasks in these fields.`;
+
+    const learningDesc = `Your dominant learning channel is ${vark[0].name.split(" ")[0]}, meaning you absorb and process educational material most effectively through ${vark[0].name.toLowerCase().includes("visual") ? "structured diagrams, flowcharts, and visual mappings" : vark[0].name.toLowerCase().includes("auditory") ? "verbal explanations, group discussions, and lectures" : vark[0].name.toLowerCase().includes("read") ? "written texts, reports, and documentation" : "hands-on practice, physical labs, and trial-and-error simulation"}.`;
+
+    const mbti = this.scores.mbtiCode || "INTJ";
+    let enneagramType = "Type 5 (The Investigator)";
+    if (mbti === "ENTJ" || mbti === "ESTJ") enneagramType = "Type 8 (The Challenger)";
+    else if (mbti === "ENFJ" || mbti === "ENFP" || mbti === "ENTP" || mbti === "ESFP") enneagramType = "Type 7 (The Enthusiast)";
+    else if (mbti === "INFJ" || mbti === "INFP" || mbti === "ISFP") enneagramType = "Type 4 (The Individualist)";
+    else if (mbti === "ISFJ" || mbti === "ISTJ" || mbti === "ESFJ") enneagramType = "Type 6 (The Loyalist)";
+
     return `
-      <section class="vt-card" style="border-width: 4px; padding: 2.5rem;">
+      <section class="vt-card" style="border-width: 4px; padding: 2.5rem; background: radial-gradient(circle at top right, rgba(235,94,40,0.03) 0%, transparent 60%);">
         <div class="archetype-badge" style="background-color: var(--color-accent-rust); color: #fff;">CONFIDENTIAL CAREER DOSSIER</div>
-        <h2 style="font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase;">
+        <h2 style="font-size: 2.4rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: -0.5px;">
           Executive Summary Report
         </h2>
         <p style="color: var(--color-accent-gold); font-family: 'Courier Prime', monospace; font-weight: 700; margin-bottom: 2rem;">
@@ -1100,20 +1136,20 @@ export class ReportRenderer {
           
           <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-rust);">
             <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-rust);">🧬 Personality Profile</h4>
-            <p style="font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${this.scores.personality.code || "INFP"}</p>
+            <p style="font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${this.scores.mbtiCode || "INFP"}</p>
             <p style="font-size: 0.9rem; line-height: 1.5;">Your MBTI personality matches the archetype of the <strong>${this.archetype.title}</strong>, demonstrating strengths in analytical alignment and strategic execution.</p>
           </div>
 
           <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-gold);">
             <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-gold);">🏺 Primary Interests (RIASEC)</h4>
             <p style="font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${riasec[0].name} & ${riasec[1].name}</p>
-            <p style="font-size: 0.9rem; line-height: 1.5;">You possess deep interest inclinations towards investigative inquiries and creative endeavors, mapping directly to high-autonomy career profiles.</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">${interestDesc}</p>
           </div>
 
           <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-sage);">
             <h4 style="font-family: 'Courier Prime', monospace; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 1rem; color: var(--color-accent-sage);">📖 Preferred Learning Style</h4>
             <p style="font-size: 1.3rem; font-weight: 900; margin-bottom: 0.5rem; color: var(--color-text-heading);">${vark[0].name} dominant</p>
-            <p style="font-size: 0.9rem; line-height: 1.5;">Your cognitive learning channel maps to <strong>${vark[0].name}</strong>, showing that you process information best through high-detail inputs and visual structures.</p>
+            <p style="font-size: 0.9rem; line-height: 1.5;">${learningDesc}</p>
           </div>
 
           <div class="vt-card" style="padding: 1.5rem; border-color: var(--color-accent-ink);">
@@ -1131,10 +1167,15 @@ export class ReportRenderer {
           </p>
         </div>
 
-        <div class="consistency-meter container-flex" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 4px;">
-          <span style="font-family: 'Courier Prime', monospace; font-weight: 700;">Anti-Bias Consistency Checker Match:</span>
-          <div class="consistency-val-badge high" style="background-color: var(--color-accent-sage); color: #000; padding: 4px 10px; font-weight: 900;">
-            ${this.scores.consistency}% (Certified Match)
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 4px;">
+          <div class="consistency-meter container-flex" style="align-items: center; gap: 0.5rem;">
+            <span style="font-family: 'Courier Prime', monospace; font-weight: 700;">Anti-Bias Consistency Checker Match:</span>
+            <div class="consistency-val-badge high" style="background-color: var(--color-accent-sage); color: #000; padding: 4px 10px; font-weight: 900; border-radius: 4px;">
+              ${this.scores.consistency}% (Certified Match)
+            </div>
+          </div>
+          <div class="enneagram-seal" style="font-family: 'Courier Prime', monospace; font-size: 0.78rem; font-weight: 700; color: var(--color-accent-gold);">
+            DOMINANT SUB-TYPOLOGY: <span style="border: 1px solid var(--color-accent-gold); padding: 2px 6px; border-radius: 3px;">${enneagramType.toUpperCase()}</span>
           </div>
         </div>
       </section>
@@ -1674,6 +1715,18 @@ export class ReportRenderer {
   }
 
   getClustersHTML() {
+    const sortedCareers = this.calculateCareerMatches();
+    const topCluster1 = sortedCareers[0] ? sortedCareers[0].clusterName : "Technology & Systems";
+    const topCluster2 = sortedCareers[1] ? sortedCareers[1].clusterName : "Industrial & Mechatronics Engineering";
+    
+    // Personality trait representation
+    const isIntrovert = this.scores.mbti.introvert >= 50;
+    const mindStyle = isIntrovert ? "introverted troubleshooting mindset" : "extraverted collaborative leadership style";
+    const learningStyleName = this.scores.learning.visual >= 50 ? "visual schematic maps" : "hands-on physical interaction";
+    const topAbilityKey = Object.keys(this.scores.ability).sort((a,b)=>this.scores.ability[b]-this.scores.ability[a])[0];
+    
+    const narrativeText = `Your unified psychometric profile combines high ${topAbilityKey} reasoning capacity, an ${mindStyle}, and a preference for learning via ${learningStyleName}. This dictates a strong vocational trajectory mapping directly to the **${topCluster1}** and **${topCluster2}** clusters, where you can maximize your highest natural aptitudes.`;
+
     return `
       <section class="vt-card" style="padding-bottom: 1rem;">
         <h3>Part 3: The Career Cluster Alignment Funnel</h3>
@@ -1689,8 +1742,7 @@ export class ReportRenderer {
         <div class="analysis-narrative-box" style="margin-bottom: 2rem; border-left: 3px solid var(--color-accent-rust); padding-left: 1.2rem;">
           <h4>Universal Synthesis Context</h4>
           <p style="line-height: 1.6; font-size: 0.92rem; opacity: 0.9;">
-            Your unified psychometric profile combines high logical capacity, an introverted troubleshooting mindset, and strong spatial visualization. 
-            This dictates an alignment toward structured, technical systems where you formulate digital blueprints or analyze datasets, mapping strongly to the **Technology** and **Engineering** clusters.
+            ${narrativeText}
           </p>
         </div>
       </section>
@@ -1808,8 +1860,8 @@ export class ReportRenderer {
           { name: "Carbon Credit Exchange Arbitrageur", profile: "Enterprising / Trading", description: "Trade offset allowances across global carbon market ledgers.", skills: ["numerical", "leadership", "abstract"], streams: ["Commerce"] },
           { name: "Intellectual Property Valuation Analyst", profile: "Conventional / Legal", description: "Evaluate royalty models and write licensing worth audit reports.", skills: ["administrative", "logical", "verbal"], streams: ["Commerce"] },
           { name: "Crisis Liquidity Consultant", profile: "Enterprising / Advisor", description: "Advise distressed corporate structures on asset liquidation schedules.", skills: ["leadership", "numerical", "verbal"], streams: ["Commerce"] },
-          { name: "Venture Debt Structurer", profile: "Enterprising / Financial", description: "Design collateral loan agreements and warrants portfolios for high-growth firms.", fill: ["numerical", "leadership", "administrative"], streams: ["Commerce"] },
-          { name: "Behavioral Purchase Flow Modeler", profile: "Investigative / Retail", description: "Examine consumer click-to-buy ratios and model shopping transaction states.", fill: ["numerical", "logical", "social"], streams: ["Commerce", "Arts"] },
+          { name: "Venture Debt Structurer", profile: "Enterprising / Financial", description: "Design collateral loan agreements and warrants portfolios for high-growth firms.", skills: ["numerical", "leadership", "administrative"], streams: ["Commerce"] },
+          { name: "Behavioral Purchase Flow Modeler", profile: "Investigative / Retail", description: "Examine consumer click-to-buy ratios and model shopping transaction states.", skills: ["numerical", "logical", "social"], streams: ["Commerce", "Arts"] },
           { name: "Supply Chain Resiliency Specialist", profile: "Conventional / Systems", description: "Audit supplier dependency networks and draft alternative routing logistics.", skills: ["administrative", "logical", "numerical"], streams: ["Commerce", "PCM"] }
         ]
       },
@@ -1850,7 +1902,7 @@ export class ReportRenderer {
           { name: "Autonomous Drone Swarm Coordinator", profile: "Realistic / Programming", description: "Program coordination rules for groups of mapping drones and calibrate telemetry logs.", skills: ["logical", "spatial", "mechanical"], streams: ["PCM"] },
           { name: "Precision Laser Welder Programmer", profile: "Realistic / Precision", description: "Program coordinate laser tools to stitch sheet metal for electric vehicle chassis.", skills: ["spatial", "mechanical", "logical"], streams: ["PCM"] },
           { name: "Bionic Exoskeleton Joint Calibrator", profile: "Realistic / Assistive", description: "Calibrate robotic knee joints to offset mechanical strain for logistics workers.", skills: ["spatial", "logical", "mechanical"], streams: ["PCM"] },
-          { name: "Acoustic Noise Control Engineer", profile: "Investigative / Sound", description: "Design spatial acoustic dampening shields for industrial pump chambers.", stroke: ["spatial", "abstract", "numerical"], streams: ["PCM"] },
+          { name: "Acoustic Noise Control Engineer", profile: "Investigative / Sound", description: "Design spatial acoustic dampening shields for industrial pump chambers.", skills: ["spatial", "abstract", "numerical"], streams: ["PCM"] },
           { name: "Additive Dental Prototyper", profile: "Realistic / Medical", description: "Operate high-resolution resin 3D printers and audit fit clearances.", skills: ["spatial", "mechanical", "administrative"], streams: ["PCM", "PCB"] },
           { name: "Industrial Vibration Diagnostics Specialist", profile: "Conventional / Auditing", description: "Analyze generator bearing noise signatures to prevent mechanical breakdown.", skills: ["mechanical", "spatial", "logical"], streams: ["PCM"] }
         ]
@@ -2172,20 +2224,48 @@ export class ReportRenderer {
   }
 
   getDeepDiveHTML() {
-    const primary = this.archetype.careers.primary;
+    const careers = this.calculateCareerMatches();
+    const topCareer = careers[0] || { title: "Machine Learning Engineer", description: "Design high-performance algorithmic pipelines.", raw: { profile: "Investigative / Programming", skills: ["logical", "numerical", "abstract"] }, clusterName: "Tech & Systems" };
+    const primaryTitle = topCareer.title;
     const s = this.scores.skills;
+
+    // Retrieve the actual required skills from database details
+    const targetSkills = {};
+    const carSkills = topCareer.raw ? (topCareer.raw.skills || topCareer.raw.fill || topCareer.raw.stroke || []) : [];
+    carSkills.forEach(sk => {
+      targetSkills[sk] = 80; // Required value benchmark
+    });
+
+    let salaryEntry = "$85K - $110K";
+    let salaryMid = "$140K - $175K";
+    let salaryExec = "$210K - $260K+";
+
+    const clusterName = (topCareer.clusterName || "").toLowerCase();
+    if (clusterName.includes("media") || clusterName.includes("design")) {
+      salaryEntry = "$60K - $75K";
+      salaryMid = "$90K - $120K";
+      salaryExec = "$140K - $180K+";
+    } else if (clusterName.includes("biotech") || clusterName.includes("health")) {
+      salaryEntry = "$75K - $95K";
+      salaryMid = "$120K - $155K";
+      salaryExec = "$190K - $240K+";
+    } else if (clusterName.includes("finance") || clusterName.includes("commerce")) {
+      salaryEntry = "$70K - $90K";
+      salaryMid = "$110K - $145K";
+      salaryExec = "$180K - $230K+";
+    }
 
     return `
       <section class="vt-card">
         <div class="archetype-badge">FAVORITE PATHWAY DEEP-DIVE</div>
-        <h2 style="font-size: 2rem; margin-bottom: 0.5rem; font-style: normal;">${primary.title}</h2>
+        <h2 style="font-size: 2rem; margin-bottom: 0.5rem; font-style: normal;">${primaryTitle}</h2>
         
         <div style="margin-top: 1.5rem; margin-bottom: 2.2rem;">
           <h5 style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.6rem; color: var(--color-accent-rust);">
             Work Nature Details
           </h5>
           <p style="font-size: 0.95rem; line-height: 1.6;">
-            A raw, unvarnished look into the day-to-day operation. In this role, you analyze systems architectures, write logic code pipelines, debug mechanical and sensor inputs under tight pressure thresholds, and review code with operations groups. Expect moderate stress cycles during final product releases, balanced by high individual autonomy and task flexibility.
+            ${topCareer.description || "Detailed profile diagnostics mapping to dynamic sector requirements."} Expect moderate stress cycles during final product releases, balanced by high individual autonomy and task flexibility.
           </p>
         </div>
 
@@ -2197,15 +2277,15 @@ export class ReportRenderer {
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
             <div style="padding: 1rem; border: 1px solid var(--color-border); background: var(--color-bg-base); text-align: center;">
               <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; font-weight: 700; opacity: 0.75;">ENTRY LEVEL</div>
-              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-text-heading);">$85K - $110K</div>
+              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-text-heading);">${salaryEntry}</div>
             </div>
             <div style="padding: 1rem; border: 1px solid var(--color-border); background: var(--color-bg-base); text-align: center;">
               <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; font-weight: 700; opacity: 0.75;">MID-TIER</div>
-              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-accent-rust);">$140K - $175K</div>
+              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-accent-rust);">${salaryMid}</div>
             </div>
             <div style="padding: 1rem; border: 1px solid var(--color-border); background: var(--color-bg-base); text-align: center;">
               <div style="font-family: 'Courier Prime', monospace; font-size: 0.75rem; font-weight: 700; opacity: 0.75;">EXECUTIVE LEAD</div>
-              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-text-heading);">$210K - $260K+</div>
+              <div style="font-size: 1.3rem; font-weight: 800; color: var(--color-text-heading);">${salaryExec}</div>
             </div>
           </div>
         </div>
@@ -2215,7 +2295,7 @@ export class ReportRenderer {
           <h5 style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 1.2rem; color: var(--color-accent-rust);">
             Key Skills Gap Analysis (Required vs. Your Score)
           </h5>
-          ${this.generateSkillsGapChartHTML(s)}
+          ${this.generateSkillsGapChartHTML(s, targetSkills)}
         </div>
 
         <!-- Career Navigator Assembly: Dynamic Gap Checklist (PRD Stage 4) -->
@@ -2225,7 +2305,7 @@ export class ReportRenderer {
           </h5>
           <p style="font-size: 0.8rem; margin-bottom: 1rem; opacity: 0.85;">Below are the skill milestones dynamically compiled where your current competencies sit below industry targets:</p>
           <div class="skill-checkbox-list">
-            ${this.generateDynamicGapChecklistHTML(s)}
+            ${this.generateDynamicGapChecklistHTML(s, targetSkills)}
           </div>
         </div>
 
@@ -2252,9 +2332,50 @@ export class ReportRenderer {
         <!-- Step-by-Step Roadmap timeline -->
         <div class="roadmap-drawer" style="border-top: 1px dashed var(--color-border-dark); padding-top: 1.5rem;">
           <h5>Actionable Academic & Skill Roadmap</h5>
-          ${this.getRoadmapSectionHTML(primary, "primary")}
+          ${this.getRoadmapSectionHTML(primaryTitle, "primary")}
         </div>
       </section>
+    `;
+  }
+
+  getRoadmapSectionHTML(careerName, index) {
+    const stream = (this.scores.userStream || "Science (PCM)").toLowerCase();
+    let steps = [];
+    if (stream.includes("pcm")) {
+      steps = [
+        "Milestone 1 (High School): Master core calculus, statistics, and pattern physics models.",
+        "Milestone 2 (University): Graduate from advanced numerical analytics or quantitative systems engineering pipelines.",
+        "Milestone 3 (Industry): Complete a 6-month laboratory data pipeline or mechanical simulator internship."
+      ];
+    } else if (stream.includes("pcb")) {
+      steps = [
+        "Milestone 1 (High School): Excel in molecular cell biology, organic reaction paths, and lab protocols.",
+        "Milestone 2 (University): Matriculate into biotechnology or clinical research degree tracks.",
+        "Milestone 3 (Industry): Complete clinical laboratory assays or genetic telemetry audits."
+      ];
+    } else if (stream.includes("commerce")) {
+      steps = [
+        "Milestone 1 (High School): Master financial ledger bookkeeping, statistical forecasting, and business economics.",
+        "Milestone 2 (University): Complete B.Com Honors or finance product modeling degree tracks.",
+        "Milestone 3 (Industry): Secure auditing assistant or junior equity analyst positions."
+      ];
+    } else {
+      steps = [
+        "Milestone 1 (High School): Practice communication design guidelines, styling history, and layout composition.",
+        "Milestone 2 (University): Focus on product UI/UX systems design or cognitive psychology tracks.",
+        "Milestone 3 (Industry): Develop a personal vector design portfolio and apply to creative agencies."
+      ];
+    }
+
+    return `
+      <div style="position: relative; padding-left: 1.5rem; border-left: 1.5px dashed var(--color-border-dark); margin-top: 1rem;">
+        \${steps.map((st, idx) => \`
+          <div style="position: relative; margin-bottom: 1.2rem;">
+            <div style="position: absolute; left: -2.05rem; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--color-accent-rust); border: 2px solid var(--color-border-dark);"></div>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin: 0; color: var(--color-text-body);">\${st}</p>
+          </div>
+        \`).join("")}
+      </div>
     `;
   }
 
@@ -2708,9 +2829,15 @@ export class ReportRenderer {
     }
   }
 
-  generateDynamicGapChecklistHTML(skills) {
-    // Map required skills: Admin=70, Spatial=75, Leadership=80, Social=65, Mechanical=85
-    const required = { administrative: 70, spatial: 75, leadership: 80, social: 65, mechanical: 85 };
+  generateDynamicGapChecklistHTML(skills, targetSkills = {}) {
+    // Map required skills dynamically, falling back to typical profile targets
+    const required = {
+      administrative: targetSkills.administrative || 70,
+      spatial: targetSkills.spatial || 75,
+      leadership: targetSkills.leadership || 80,
+      social: targetSkills.social || 65,
+      mechanical: targetSkills.mechanical || 85
+    };
     const labels = {
       administrative: "Master administrative operations and file records management templates",
       spatial: "Develop spatial CAD wireframing and geometric 3D visualization rules",
@@ -2763,8 +2890,14 @@ export class ReportRenderer {
     `;
   }
 
-  generateSkillsGapChartHTML(skills) {
-    const required = { administrative: 70, spatial: 75, leadership: 80, social: 65, mechanical: 85 };
+  generateSkillsGapChartHTML(skills, targetSkills = {}) {
+    const required = {
+      administrative: targetSkills.administrative || 70,
+      spatial: targetSkills.spatial || 75,
+      leadership: targetSkills.leadership || 80,
+      social: targetSkills.social || 65,
+      mechanical: targetSkills.mechanical || 85
+    };
     const keys = ["administrative", "spatial", "leadership", "social", "mechanical"];
     const labels = ["Administrative", "Spatial & Visual", "Leadership", "Social Cooperation", "Mechanical & Tech"];
 
@@ -2923,7 +3056,7 @@ export class ReportRenderer {
       },
       "Industrial CAD Prototyper": {
         interests: { realistic: 90, investigative: 75, artistic: 70, social: 45, enterprising: 55, conventional: 80 },
-        skills: { administrative: 75, spatial: 95, leadership: 60, stroke: 50, mechanical: 90 }
+        skills: { administrative: 75, spatial: 95, leadership: 60, social: 50, mechanical: 90 }
       },
       "Grid Automation Analyst": {
         interests: { realistic: 80, investigative: 85, artistic: 40, social: 40, enterprising: 65, conventional: 80 },
@@ -3092,7 +3225,7 @@ export class ReportRenderer {
         skills: { administrative: 90, spatial: 90, leadership: 60, social: 55, mechanical: 40 }
       },
       "Digital Colorist & Render Specialist": {
-        interests: { realistic: 65, investigative: 75, artistic: 90, stroke: 40, enterprising: 55, conventional: 70 },
+        interests: { realistic: 65, investigative: 75, artistic: 90, social: 40, enterprising: 55, conventional: 70 },
         skills: { administrative: 60, spatial: 95, leadership: 60, social: 45, mechanical: 70 }
       },
       "Audio Synthesizer Designer": {
@@ -3101,8 +3234,64 @@ export class ReportRenderer {
       }
     };
 
-    const target = database[careerName];
-    if (!target) return 75;
+    let target = database[careerName];
+    if (!target) {
+      const clustersData = this.getDetailedClusterData();
+      let foundCareer = null;
+      let clusterIdx = 0;
+      for (let i = 0; i < clustersData.length; i++) {
+        const car = clustersData[i].careers.find(c => c.name === careerName);
+        if (car) {
+          foundCareer = car;
+          clusterIdx = i;
+          break;
+        }
+      }
+
+      if (foundCareer) {
+        const interests = { realistic: 50, investigative: 50, artistic: 50, social: 50, enterprising: 50, conventional: 50 };
+        const skills = { administrative: 50, spatial: 50, leadership: 50, social: 50, mechanical: 50 };
+
+        const profLower = (foundCareer.profile || "").toLowerCase();
+        if (profLower.includes("realistic")) interests.realistic = 90;
+        if (profLower.includes("investigative")) interests.investigative = 90;
+        if (profLower.includes("artistic")) interests.artistic = 90;
+        if (profLower.includes("social")) interests.social = 90;
+        if (profLower.includes("enterprising")) interests.enterprising = 90;
+        if (profLower.includes("conventional")) interests.conventional = 90;
+
+        if (clusterIdx === 0) {
+          interests.investigative = Math.max(interests.investigative, 80);
+          interests.conventional = Math.max(interests.conventional, 70);
+        } else if (clusterIdx === 1) {
+          interests.conventional = Math.max(interests.conventional, 90);
+          interests.enterprising = Math.max(interests.enterprising, 80);
+        } else if (clusterIdx === 2) {
+          interests.realistic = Math.max(interests.realistic, 90);
+          interests.investigative = Math.max(interests.investigative, 75);
+        } else if (clusterIdx === 3) {
+          interests.investigative = Math.max(interests.investigative, 90);
+          interests.realistic = Math.max(interests.realistic, 60);
+        } else if (clusterIdx === 4) {
+          interests.artistic = Math.max(interests.artistic, 90);
+        }
+
+        const carSkills = foundCareer.skills || foundCareer.fill || foundCareer.stroke || [];
+        carSkills.forEach(s => {
+          const sLower = s.toLowerCase();
+          if (skills[sLower] !== undefined) {
+            skills[sLower] = 85;
+          }
+        });
+
+        target = { interests, skills };
+      } else {
+        target = {
+          interests: { realistic: 60, investigative: 60, artistic: 60, social: 60, enterprising: 60, conventional: 60 },
+          skills: { administrative: 60, spatial: 60, leadership: 60, social: 60, mechanical: 60 }
+        };
+      }
+    }
 
     let sumSq = 0;
     let count = 0;
