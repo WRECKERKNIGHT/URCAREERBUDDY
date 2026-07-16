@@ -2889,3 +2889,15 @@
   }
 }
 
+/* Floating glow micro-particles on landing billboard */
+.data-particle {
+  position: absolute;
+  background: var(--color-accent-rust);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--color-accent-rust), 0 0 4px var(--color-accent-gold);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 1;
+}
+

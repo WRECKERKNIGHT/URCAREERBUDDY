@@ -178,20 +178,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollVal = window.scrollY;
     
     // Scroll Parallax hero text (applied if mouse is not shifting the card)
-    const title = document.getElementById("parallax-text-1");
-    const sub = document.getElementById("parallax-text-2");
+    const title = document.querySelector(".billboard-title");
+    const sub = document.querySelector(".billboard-subtext");
     
     // Only apply scroll parallax if screen width is large and scroll is active
     if (window.innerWidth > 768) {
       if (title) title.style.transform = `translate3d(0, ${scrollVal * 0.18}px, 0)`;
       if (sub) sub.style.transform = `translate3d(0, ${scrollVal * 0.08}px, 0)`;
     }
-    
   });
 
   // Interactive mousemove parallax on the central hero card
-  const heroBlock = document.querySelector(".hero-block");
-  const heroCard = document.querySelector(".hero-central-card");
+  const heroBlock = document.querySelector(".branding-hero-billboard");
+  const heroCard = document.querySelector(".billboard-content");
   const heroGear1 = document.getElementById("hero-gear-1");
   const heroGear2 = document.getElementById("hero-gear-2");
 
@@ -204,6 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const tiltX = (y / (rect.height / 2)) * -12;
       const tiltY = (x / (rect.width / 2)) * 12;
       
+      // Responsive 3D transform with none transition for buttery performance
+      heroCard.style.transition = "none";
       heroCard.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translate3d(${x * 0.02}px, ${y * 0.02}px, 20px) scale(1.015)`;
       
       if (heroGear1) heroGear1.style.transform = `translate3d(${x * -0.01}px, ${y * -0.01}px, 0) rotate(${x * 0.04}deg)`;
@@ -211,6 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     heroBlock.addEventListener("mouseleave", () => {
+      heroCard.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
       heroCard.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0) scale(1)";
       if (heroGear1) heroGear1.style.transform = "translate3d(0, 0, 0)";
       if (heroGear2) heroGear2.style.transform = "translate3d(0, 0, 0)";
